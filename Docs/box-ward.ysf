@@ -1,0 +1,138 @@
+# sample scene with cylinder and ball inside a box
+
+# --- global scene settings ---
+
+canvas:
+  width: 800
+  height: 600
+  !gaussian-filter filter: 
+    width: 1
+    height: 1
+
+camera:
+  fov: 1
+  transform:
+    rotate: 0 0 0
+    translate: 0 0 -30
+  !const-sampler sampler:
+    dimension: 2
+    value: 0.5
+  !stratified-sampler aa-sampler:
+    dimension: 2
+    strata-count: 5
+
+# --- lights ---
+
+!point-light light:
+  position: 7 7 -9
+  power: 1500 1500 1500
+  
+!point-light light:
+  position: -7 -7 -9
+  power: 300 300 300
+
+# --- shapes ---
+
+!plane shape:
+  name: Floor
+  normal: 0 1 0
+  distance: 10
+  
+!plane shape:
+  name: Left Wall
+  normal: 1 0 0
+  distance: 10
+  
+!plane shape:
+  name: Right Wall
+  normal: -1 0 0
+  distance: 10
+
+!plane shape:
+  name: Ceiling
+  normal: 0 -1 0
+  distance: 10
+
+!plane shape:
+  name: Back Wall
+  normal: 0 0 -1
+  distance: 10
+  
+!sphere shape:
+  name: Ball
+  radius: 5
+  center: 3 -5 3
+
+!cylinder shape:
+  name: Cylinder
+  radius: 2
+  height: 15
+  transform:
+    translate: -4 -10 0
+    
+# --- materials ---
+  
+!ward material:
+  name: Gold CT
+  specular: 0.19
+  diffuse: 0.15
+  refractive-real: 1.587 0.347 0.161
+  refractive-imaginary: 1.921 2.638 3.952
+  alpha-x: 0.088
+  alpha-y: 0.13
+
+!ward material:
+  name: Silver CT
+  specular: 0.21
+  diffuse: 0.1
+  refractive-real: 0.158 0.126 0.142
+  refractive-imaginary: 2.336 3.307 4.523
+  alpha-x: 0.04
+  alpha-y: 0.09
+
+!ward material:
+  name: Iron CT
+  specular: 0.75
+  diffuse: 0
+  refractive-real: 2.51 2.94 2.87
+  refractive-imaginary: 2.73 2.93 3.18
+  alpha-x: 0.01
+  alpha-y: 0.01
+
+!cook-torrance material:
+  name: Diffuse Only
+  diffuse: 1
+  refractive-real: 0.158 0.126 0.142
+  refractive-imaginary: 2.336 3.307 4.523
+  rms: 0.8
+  slope-distribution: beckmann
+
+# --- shape-material bindings ---
+
+primitive:
+  shape-name: Ball
+  material-name: Silver CT
+
+primitive:
+  shape-name: Cylinder
+  material-name: Silver CT
+
+primitive:
+  shape-name: Floor
+  material-name: Diffuse Only
+  
+primitive:
+  shape-name: Ceiling
+  material-name: Diffuse Only
+  
+primitive:
+  shape-name: Back Wall
+  material-name: Diffuse Only
+
+primitive:
+  shape-name: Left Wall
+  material-name: Diffuse Only
+  
+primitive:
+  shape-name: Right Wall
+  material-name: Diffuse Only

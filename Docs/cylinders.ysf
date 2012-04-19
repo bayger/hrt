@@ -1,0 +1,75 @@
+canvas:
+  width: 800
+  height: 600
+  !gaussian-filter filter: 
+    width: 1
+    height: 1
+
+camera:
+  transform:
+    rotate: 0 0 0
+    translate: 0 0 -10
+  !const-sampler sampler:
+    dimension: 2
+    value: 0.5
+  !stratified-sampler aa-sampler:
+    dimension: 2
+    strata-count: 5
+
+!point-light light: 
+  position:	2 10 0
+  power: 171 171 171
+
+!point-light light:
+  position: -2 10 0
+  power: 200 200 200
+
+!sphere shape:
+  name: Plastic Ball
+  radius: 4
+  center: 0 4 10
+
+!cylinder shape:
+  name: Metal Cyl
+  radius: 4
+  height: 10
+  transform:
+    make-translation: 0 10 0
+    rotate: 0 1.6 0
+    
+!plane shape:
+  name: Far Wall
+  normal: 0 0 -1
+  distance: 15
+
+!ashikhmin-shirley material:
+  name: Green Plastic
+  specular-factor: 0.5
+  diffuse-factor: 0.5
+  anisotropy-u: 10
+  anisotropy-v: 20
+
+!phong material:
+  name: Phong
+  specular-absorption: 0 0 0
+  diffuse-absorption: 1 1 1
+  specular-power: 300
+  
+!htsg material:
+  name: Aluminium
+  refractive-real: 1.3 1.5 2.0
+  refractive-imaginary: 3 3 3
+  sigma: 0.48e-6
+  tau: 3e-6
+
+primitive:
+  shape-name: Plastic Ball
+  material-name: Phong
+
+#primitive:
+#  shape-name: Metal Cyl
+#  material-name: Phong
+
+primitive:
+  shape-name: Far Wall
+  material-name: Green Plastic

@@ -1,0 +1,67 @@
+Setup of development environment (Linux)
+========================================
+
+NetBeans 6 for C++ are used to develop H-RayTracer. In the following
+steps we present a way to setup development environment in Debian
+GNU/Linux (version lenny).
+
+
+0. GNU C++ Compiler
+
+First of all, you need a compiler. We are using gcc-4.2. It is probably
+already installed on your linux machine. If not - use apt-get to install
+it.
+
+
+1. Install NetBeans
+
+You will need two things. First is Sun JDK 6. In debian/lenny this
+is a package named sun-java6-jdk. It's probably in non-free package
+repository.
+
+Next step is downloading and installing NetBeans 6. You can obtain
+a copy from http://netbeans.org (click download and get C++ version).
+Just download and run setup as root.
+
+
+2. Install needed libraries
+
+H-RT is using a couple of open source libraries. You have to install
+libraries in order to build all the projects. This is the list of libs:
+
+ libgsl0-dev
+ libgmp3-dev
+ libfreeimage-dev
+ libboost-dev
+ libboost-program-options-dev
+ libboost-thread-dev
+ libboost-date-time-dev
+
+Just use 'apt-get install <libs>' to get these libs.
+
+
+3. Install libyaml-0.0.1
+
+H-RT is also using experimental YAML parser library. You have to download
+its sources, compile it and install. Here's the recipe:
+
+ a) get libyaml from http://pyyaml.org/wiki/LibYAML
+ b) unpak it somewhere and go to its directory
+ c) ./configure
+ d) make
+ e) sudo make install
+
+
+After all these steps you should have all stuff needed to build and develop
+H-RayTracer. Just run netbeans and open project called HrtRender with all
+its dependent projects (by using a checkbox in the open project dialog).
+If you have any questions... feel free to contact us at 
+
+bayger[4t]users.sourceforge.net
+
+Have fun! :)
+- H-RT Team
+
+PS. We abandoned support for Visual Studio. If you want to develop H-RT under 
+Windows we suggest to use VirtualBox and install Debian on a virtual machine.
+

@@ -1,0 +1,156 @@
+# sample scene with cylinder and ball inside a box
+
+# --- global scene settings ---
+
+canvas:
+  width: 1000
+  height: 600
+  !gaussian-filter filter: 
+    width: 1
+    height: 1
+
+camera:
+  fov: 1
+  transform:
+    rotate: 0 0 0
+    translate: 0.01 -6.5 -30	# 0.01 to avoid debug-mode FPU exception
+  !const-sampler sampler:
+    dimension: 2
+    value: 0.5
+  !stratified-sampler aa-sampler:
+    dimension: 2
+    strata-count: 3
+
+# --- lights ---
+
+!point-light light:
+  position: 7 7 -9
+  power: 2500 2500 2500
+  
+!point-light light:
+  position: 5 -1.5 9
+  power: 1300 1300 1300
+
+# --- shapes ---
+
+!plane shape:
+  name: Floor
+  normal: 0 1 0
+  distance: 10
+
+!plane shape:
+  name: Ceiling
+  normal: 0 -1 0
+  distance: 10
+
+!plane shape:
+  name: Back Wall
+  normal: 0 0 -1
+  distance: 10
+
+!sphere shape:
+  name: Ball 1
+  radius: 3.5
+  center: -16 -6.5 3  
+
+!sphere shape:
+  name: Ball 2
+  radius: 3.5
+  center: -8 -6.5 3
+
+!sphere shape:
+  name: Ball 3
+  radius: 3.5
+  center: 0 -6.5 3
+
+!sphere shape:
+  name: Ball 4
+  radius: 3.5
+  center: 8 -6.5 3
+!sphere shape:
+  name: Ball 5
+  radius: 3.5
+  center: 16 -6.5 3
+
+    
+# --- materials ---
+
+!htsg material:
+  name: Aluminium 0.18
+  refractive-real: 0.58 0.942 1.83
+  refractive-imaginary: 5.298 6.64 8.31
+  sigma: 0.00000018
+  tau: 0.000003
+
+!htsg material:
+  name: Aluminium 0.28
+  refractive-real: 0.58 0.942 1.83
+  refractive-imaginary: 5.298 6.64 8.31
+  sigma: 0.00000028
+  tau: 0.000003
+
+!htsg material:
+  name: Aluminium 0.38
+  refractive-real: 0.58 0.942 1.83
+  refractive-imaginary: 5.298 6.64 8.31
+  sigma: 0.00000038
+  tau: 0.000003
+
+!htsg material:
+  name: Aluminium 0.48
+  refractive-real: 0.58 0.942 1.83
+  refractive-imaginary: 5.298 6.64 8.31
+  sigma: 0.00000048
+  tau: 0.000003
+
+!htsg material:
+  name: Aluminium 0.58
+  refractive-real: 0.58 0.942 1.83
+  refractive-imaginary: 5.298 6.64 8.31
+  sigma: 0.00000058
+  tau: 0.000003
+
+!cook-torrance material:
+  name: Diffuse Only
+  diffuse: 1
+  refractive-real: 0.158 0.126 0.142
+  refractive-imaginary: 2.336 3.307 4.523
+  rms: 0.8
+  slope-distribution: beckmann
+
+# --- shape-material bindings ---
+
+primitive:
+  shape-name: Ball 3
+  material-name: Aluminium 0.18
+
+primitive:
+  shape-name: Ball 2
+  material-name: Aluminium 0.28
+
+primitive:
+  shape-name: Ball 4
+  material-name: Aluminium 0.38
+
+primitive:
+  shape-name: Ball 1
+  material-name: Aluminium 0.48
+
+primitive:
+  shape-name: Ball 5
+  material-name: Aluminium 0.58
+
+
+primitive:
+  shape-name: Floor
+  material-name: Diffuse Only
+  
+primitive:
+  shape-name: Ceiling
+  material-name: Diffuse Only
+  
+primitive:
+  shape-name: Back Wall
+  material-name: Diffuse Only
+
+

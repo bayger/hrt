@@ -1,0 +1,12 @@
+To do list (*) / ideas (^)
+==========================
+
+* separate scene description from canvas and camera
+* log rendering parameters along with render filename
+* BRDF should not take into account actual radiance of ray (assume it as one [1])
+
+^ add spectrum definition by color temp and power (for lights)
+^ add spectrum definition by RGB #RRGGBB (0->1)
+^ add ability to dump all paths to a file and retrieve them for reprocessing
+^ experiment: multi-pass rendering (pixel variance is lower for low spp)
+^ decouple serializer from objects
