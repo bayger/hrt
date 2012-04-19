@@ -1,0 +1,11 @@
+.obj
+.user
+.suo
+.opensdf
+.sdf
+.tlog
+[Bb]in
+[Dd]ebug*/
+obj/
+[Rr]elease*/
+ipch/
