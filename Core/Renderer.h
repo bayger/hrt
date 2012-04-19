@@ -24,7 +24,7 @@ namespace Hrt
 	public:
 		/// Creates multi-threaded scene renderer.
 		/// \note The size of instances vector determines the number of rendering threads. Make sure that all instances contain the same scene data.
-		Renderer(SceneOwnedPtr scene, CanvasPtr canvas, LightIntegratorPtr integrator, number sigmaFilter, size_t threadCount);
+		Renderer(SceneOwnedPtr scene, CanvasPtr canvas, LightIntegratorPtr integrator, number sigmaFilter, size_t threadCount, number varianceFilter, int maxPasses);
 
 		/// Starts rendering using provided pixel sampler factory
 		/// \note This factory will be also used for creating per-level path randomizers
@@ -89,6 +89,8 @@ namespace Hrt
 		shared_array<number> m_varianceTable;
 		std::string m_recordingFileName;
 		shared_ptr<std::ofstream> m_recordingStream;
+    number m_varianceFilter;
+    int m_maxPasses;
 
 		void NotifyThreadFinished(int64 paths, int64 rejections);
 		bool GetNextPixel(number& x, number& y);

@@ -41,9 +41,11 @@ namespace Hrt
 		function<SamplerOwnedPtr ()> PixelSamplerFactory;
 		shared_array<number> VarianceTable;
 		number SigmaFilter;
+    number VarianceFilter;
+    unsigned int MaxPasses;
 	};
 
-  static void calcStats(std::vector<Hrt::CanvasRay> &canvasSamples, number& outMean, number& outStandardDeviation) 
+  static void calcStats(std::vector<Hrt::CanvasRay> &canvasSamples, number& outMean, number& outStandardDeviation, number& outVariance) 
   {
     Spectrum sampleSum;
     for(size_t i=0; i<canvasSamples.size(); i++)
@@ -58,6 +60,8 @@ namespace Hrt
     for(size_t i=0; i<canvasSamples.size(); i++)
       sum += Math::Square(canvasSamples[i].Radiance.GetAverage() - outMean);
     outStandardDeviation = Math::Sqrt(sum / canvasSamples.size());
+
+    outVariance = outStandardDeviation / outMean;
   }
 
 	static void RenderThread(RenderContext context, NotifyFinishFunc notifyFinishFunc, RayFetchFunc rayFetchFunc, SavePathsFunc savePathsFunc)
@@ -89,37 +93,45 @@ namespace Hrt
 		RenderingContext rc(context.ThreadId, context.Canvas, randomizer, levelSamplers, context.Scene);
 
 		// the render loop
+    std::vector<Hrt::CanvasRay> allPixelSamples;
 		number pixel[2] = { 0 };
 		while(rayFetchFunc(x, y))
 		{
-			Spectrum sum(0);
+      allPixelSamples.clear();
+      number mean, standardDeviation, variance;
+      int passes = 0;
 
-			rc.ShuffleLevelSamplers();
+      do
+      {
+        canvasSamples.clear();
+        rc.ShuffleLevelSamplers();
+			  pixelSampler->Shuffle(rc.GetRandomizer());
+			  while(pixelSampler->NextSample(pixel, rc.GetRandomizer()))
+			  {
+				  rc.NextLevelSamples();
 
-			pixelSampler->Shuffle(rc.GetRandomizer());
-			canvasSamples.clear();
-			while(pixelSampler->NextSample(pixel, rc.GetRandomizer()))
-			{
-				rc.NextLevelSamples();
+				  RayLight result;
+				  result.Radiance = 0;
 
-				RayLight result;
-				result.Radiance = 0;
+				  number canvasX, canvasY;
+				  context.Camera->ComputeRay(pixel, ray, canvasX, canvasY, (uint)x, (uint)y);
+				  context.Integrator->CalculateLight(ray, *(context.Scene), result, 0, rc);
 
-				number canvasX, canvasY;
-				context.Camera->ComputeRay(pixel, ray, canvasX, canvasY, (uint)x, (uint)y);
-				context.Integrator->CalculateLight(ray, *(context.Scene), result, 0, rc);
+				  // omit invalid samples
+				  if (!_isnan(result.Radiance.GetAverage()))
+          {
+            canvasSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, result.Radiance, result.TotalDistance));
+            allPixelSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, result.Radiance, result.TotalDistance));
+          }
+				  else
+					  rejections++;
 
-				// omit invalid samples
-				if (!_isnan(result.Radiance.GetAverage()))
-					canvasSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, result.Radiance, result.TotalDistance));
-				else
-					rejections++;
+				  paths++;
+			  }
 
-				sum += result.Radiance;
-				paths++;
-			}
-
-			savePathsFunc(canvasSamples);
+        calcStats(canvasSamples, mean, standardDeviation, variance);
+        passes++;
+      } while (context.VarianceFilter > 0 && passes < context.MaxPasses && variance > context.VarianceFilter);
 
 			if (canvasSamples.size() < 8 || context.SigmaFilter <= 0)
 			{
@@ -127,29 +139,31 @@ namespace Hrt
 			}
 			else
 			{
-        number mean, standardDeviation;
-        calcStats(canvasSamples, mean, standardDeviation);
+        std::vector<Hrt::CanvasRay>& samples = passes == context.MaxPasses ? allPixelSamples : canvasSamples;
 
 				// filter out extreme samples (deviation > 3*sd)
-				for(size_t i=0; i<canvasSamples.size(); i++)
+				for(size_t i=0; i<samples.size(); i++)
 				{
-					number sa = canvasSamples[i].Radiance.GetAverage();
+					number sa = samples[i].Radiance.GetAverage();
 
 					if (context.SigmaFilter <= 0 || Math::Abs(mean - sa) < context.SigmaFilter*standardDeviation)
-						context.Canvas->CollectRay(canvasSamples[i].CanvasX, canvasSamples[i].CanvasY, canvasSamples[i].Radiance, canvasSamples[i].Depth);
+				    context.Canvas->CollectRay(samples[i].CanvasX, samples[i].CanvasY, samples[i].Radiance, samples[i].Depth);
 					else
 						rejections++;
 				}
 
-				context.VarianceTable[(int)x + context.Canvas->GetWidth()*(int)y] = standardDeviation / mean;
+				context.VarianceTable[(int)x + context.Canvas->GetWidth()*(int)y] = variance;
 			}
+
+      savePathsFunc(canvasSamples);
 		}
 
 		// tell Renderer that this thread has just finished execution
 		notifyFinishFunc(paths, rejections);
 	}
 
-	Renderer::Renderer(SceneOwnedPtr scene, CanvasPtr canvas, LightIntegratorPtr integrator, number sigmaFilter, size_t threadCount)	
+	Renderer::Renderer(SceneOwnedPtr scene, CanvasPtr canvas, LightIntegratorPtr integrator, number sigmaFilter, size_t threadCount,
+    number varianceFilter, int maxPasses)	
 	:	m_threadCount(threadCount),
 		m_scene(scene),
 		m_canvas(canvas),
@@ -158,7 +172,9 @@ namespace Hrt
 		m_threadsRunning(0),
 		m_x(-1), m_y(0),
 		m_rejections(0),
-		m_paths(0)
+		m_paths(0),
+    m_varianceFilter(varianceFilter),
+    m_maxPasses(maxPasses)
 	{
 	}
 
@@ -196,6 +212,8 @@ namespace Hrt
 			rc.Scene = m_scene;
 			rc.VarianceTable = m_varianceTable;
 			rc.SigmaFilter = m_sigmaFilter;
+      rc.VarianceFilter = m_varianceFilter;
+      rc.MaxPasses = m_maxPasses;
 
 			thread* t = new thread(&RenderThread, rc, ntf, pfc, spf);
 			m_threads.push_back(shared_ptr<thread>(t));

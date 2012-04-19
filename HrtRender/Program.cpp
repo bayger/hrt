@@ -44,6 +44,8 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
 	number sigmaFilter = 0;
 	std::string pixelSampler;
 	std::string pathDumpFileName;
+  number varianceFilter = 0;
+  unsigned int maxPasses = 16;
 
 	po::positional_options_description args;
 	args.add("scene-file", 1);
@@ -60,6 +62,8 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
 		("paths,r", po::value<unsigned int>(&rays), "sets number of paths per pixel [16]")
 		("pixel-sampler,p", po::value<std::string>(&pixelSampler), "pixel sampler: random, lhc, stratified [auto]")
 		("sigma-filter", po::value<number>(&sigmaFilter), "sigma filter value [disabled=0]")
+    ("variance-filter", po::value<number>(&varianceFilter), "variance filter value [disabled=0]")
+    ("variance-max-passes", po::value<unsigned int>(&maxPasses), "max passes for variance filtering [16]")
 		("dump-paths", po::value<std::string>(&pathDumpFileName), "dumps all paths to a file [disabled]")
 		("save-variance", "saves also per-pixel path variance [disabled]");
 
@@ -130,6 +134,8 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
 	this->sigmaFilter = sigmaFilter;
 	this->pathDumpFileName = pathDumpFileName;
 	this->saveVariance = m_cmdArgs.count("save-variance") > 0;
+  this->varianceFilter = varianceFilter;
+  this->maxPasses = maxPasses;
 	return true;
 }
 
@@ -195,7 +201,7 @@ void Program::RenderScene()
 	m_scene->PrepareForConcurrency(cpus);
 
 	// create renderer
-	Renderer renderer(m_scene, m_scene->GetCanvas(), integrator, sigmaFilter, cpus);
+	Renderer renderer(m_scene, m_scene->GetCanvas(), integrator, sigmaFilter, cpus, varianceFilter, maxPasses);
 	if (!pathDumpFileName.empty())
 		renderer.EnablePathsRecording(pathDumpFileName);
 

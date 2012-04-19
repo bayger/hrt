@@ -24,6 +24,8 @@ private:
 	std::string pathDumpFileName;
 	bool saveVariance;
 	bool dontUseAdaptiveRR;
+  Hrt::number varianceFilter;
+  unsigned int maxPasses;
 
 	bool ProcessCmdArgs( int argc, _TCHAR* * argv );
 	std::string ReadSceneFile();
