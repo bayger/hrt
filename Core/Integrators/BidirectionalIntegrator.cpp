@@ -56,7 +56,7 @@ namespace Hrt
 
 		// randomize and calculate light subpath
 		lightSubpath.clear();
-		size_t s = 0;
+		int s = 0;
 		alpha = 1;
 		r = rl;
 		Spectrum f;
@@ -97,7 +97,7 @@ namespace Hrt
 
 		// randomize and calculate eye subpath
 		eyeSubpath.clear();
-		size_t t = 0;
+		int t = 0;
 		alpha = 1;
 		r = ray;
 		prevPos = ray.Position;
@@ -136,10 +136,10 @@ namespace Hrt
 
 		// connect the dots ;)
 		result.Radiance = 0;
-		for(size_t l=0; l<s; l++)
+		for(int l=0; l<s; l++)
 		{
 			const BdptVertex& vl = lightSubpath[l];
-			for(size_t e=1; e<t; e++) // ignore 1st vertex
+			for(int e=1; e<t; e++) // ignore 1st vertex
 			{
 				const BdptVertex& ve = eyeSubpath[e];
 				bool g = l > 0 ? geometry->CheckVisibility(vl.Position, ve.Position) : true;

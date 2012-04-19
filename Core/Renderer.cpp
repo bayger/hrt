@@ -43,6 +43,23 @@ namespace Hrt
 		number SigmaFilter;
 	};
 
+  static void calcStats(std::vector<Hrt::CanvasRay> &canvasSamples, number& outMean, number& outStandardDeviation) 
+  {
+    Spectrum sampleSum;
+    for(size_t i=0; i<canvasSamples.size(); i++)
+      sampleSum += canvasSamples[i].Radiance;
+
+    // calculate mean value
+    auto mean = sampleSum / canvasSamples.size();
+    outMean = mean.GetAverage();
+
+    // calculate standard deviation
+    number sum = 0;
+    for(size_t i=0; i<canvasSamples.size(); i++)
+      sum += Math::Square(canvasSamples[i].Radiance.GetAverage() - outMean);
+    outStandardDeviation = Math::Sqrt(sum / canvasSamples.size());
+  }
+
 	static void RenderThread(RenderContext context, NotifyFinishFunc notifyFinishFunc, RayFetchFunc rayFetchFunc, SavePathsFunc savePathsFunc)
 	{
 		Ray ray;
@@ -75,7 +92,7 @@ namespace Hrt
 		number pixel[2] = { 0 };
 		while(rayFetchFunc(x, y))
 		{
-			Spectrum mean(0);
+			Spectrum sum(0);
 
 			rc.ShuffleLevelSamplers();
 
@@ -98,7 +115,7 @@ namespace Hrt
 				else
 					rejections++;
 
-				mean += result.Radiance;
+				sum += result.Radiance;
 				paths++;
 			}
 
@@ -110,27 +127,21 @@ namespace Hrt
 			}
 			else
 			{
-				mean /= canvasSamples.size();
-				number ma = mean.GetAverage();
-
-				// calculate standard deviation
-				number sum = 0;
-				for(size_t i=0; i<canvasSamples.size(); i++)
-					sum += Math::Square(canvasSamples[i].Radiance.GetAverage() - ma);
-				number sd = Math::Sqrt(sum / canvasSamples.size());
+        number mean, standardDeviation;
+        calcStats(canvasSamples, mean, standardDeviation);
 
 				// filter out extreme samples (deviation > 3*sd)
 				for(size_t i=0; i<canvasSamples.size(); i++)
 				{
 					number sa = canvasSamples[i].Radiance.GetAverage();
 
-					if (context.SigmaFilter <= 0 || Math::Abs(ma - sa) < context.SigmaFilter*sd)
+					if (context.SigmaFilter <= 0 || Math::Abs(mean - sa) < context.SigmaFilter*standardDeviation)
 						context.Canvas->CollectRay(canvasSamples[i].CanvasX, canvasSamples[i].CanvasY, canvasSamples[i].Radiance, canvasSamples[i].Depth);
 					else
 						rejections++;
 				}
 
-				context.VarianceTable[(int)x + context.Canvas->GetWidth()*(int)y] = sd / ma;
+				context.VarianceTable[(int)x + context.Canvas->GetWidth()*(int)y] = standardDeviation / mean;
 			}
 		}
 

@@ -41,7 +41,7 @@ namespace Hrt
 		virtual void FinishDeserialization();
 
 	private:
-		number m_divNumber;
+		int m_divNumber;
 		int* m_positions;
 		number m_recipDivNumber;
 

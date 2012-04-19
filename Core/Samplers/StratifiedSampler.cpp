@@ -23,7 +23,7 @@ namespace Hrt
 
 	StratifiedSampler::StratifiedSampler(int dimension, int divNumber)
 		: Sampler(dimension), 
-		m_divNumber((number)divNumber)
+		m_divNumber(divNumber)
 	{
 		Initialize();
 	}
