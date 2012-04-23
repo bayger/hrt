@@ -49,10 +49,13 @@ namespace Hrt
 			return x;
 		}
 
+    /* Solves y=x*exp(x) for x given y */
     static inline number solve_xexpx(number y)
     {
       const int max_iterations = 10000;
-      number x = 1.0;
+      
+      // NOTE: seed is tweaked to avoid NaNs
+      number x = y < 500 ? 1.0 : 100.0; 
       int i = 0;
       number err = 0.0;
       do
@@ -70,26 +73,8 @@ namespace Hrt
 			number K_i = Math::Tan(theta_i)*Math::Erfc((gamma*Math::Ctg(theta_i)) / (2*sigma0));
 			number K_r = Math::Tan(theta_r)*Math::Erfc((gamma*Math::Ctg(theta_r)) / (2*sigma0));
       number two_K2_over_PI = 2*Math::Square(K_i+K_r) / Consts::Pi;
-
-      /*
-      static number minK = 100;
-      static number maxK = 0;
-      
-      if (minK > K)
-      {
-        minK = K;
-        std::cout << "minK=" << minK << std::endl;
-      }
-      if (maxK < K)
-      {
-        maxK = K;
-        std::cout << "maxK=" << maxK << std::endl;
-      }
-      */
-			//number z0_over_sigma0_sqrt2 = solve_xexpx2((K_i+K_r)/Consts::SqrtPi/4);
       number squared_z0_over_sigma0 = solve_xexpx(two_K2_over_PI);
 			return sigma0/Math::Sqrt(1 + (squared_z0_over_sigma0));
-
 		}
 
     Spectrum SimpleHe::CalculateBsdf(const RayLight& incomingRay,

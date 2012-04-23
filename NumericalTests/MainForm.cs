@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MicrosoftResearch.Infer.Maths;
 
 namespace NumericalTests
 {
@@ -25,13 +26,16 @@ namespace NumericalTests
 
     double solve_xexpx(double y)
     {
-      const int iterations = 10000;
-      var x = 1.0;
+      const int iterations = 50000;
+      var x = y < 500 ? 1.0 : 100.0;
       int i = 0;
       var err = 0.0;
       do
       {
-        x = x - (x * Math.Exp(x) - y) / ((x + 1) * Math.Exp(x));
+        var new_x = x - (x * Math.Exp(x) - y) / ((x + 1) * Math.Exp(x));
+        if (double.IsNaN(new_x))
+          x = 0;
+        x = new_x;
         err = (x*Math.Exp(x) - y)/y;
         i++;
       } while (err > 0.001 && i < iterations);
@@ -57,20 +61,10 @@ namespace NumericalTests
       updateX();
     }
 
-    private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-    {
-      updateX();
-    }
-
     private void Form1_Load(object sender, EventArgs e)
     {
       updateX();
       updateZ();
-    }
-
-    private void label6_Click(object sender, EventArgs e)
-    {
-
     }
 
     private void numSigma0_ValueChanged(object sender, EventArgs e)
@@ -81,21 +75,48 @@ namespace NumericalTests
     private void updateZ()
     {
       var sigma0 = (double)numSigma0.Value;
-      var K = (double) numK.Value;
+      var thetaI = (double) numThetaI.Value / 180 * Math.PI;
+      var thetaK = (double)numThetaK.Value / 180 * Math.PI;
+      var tau = (double) numTau.Value;
+
+      var Ki = Math.Tan(thetaI)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaI));
+      var Kr = Math.Tan(thetaK)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaK));
+      var K = (Ki + Kr)/4;
       
       var y = 2*K*K/Math.PI;
       var x = solve_xexpx(y);
       var zz = x*sigma0*sigma0;
-      var z = Math.Sqrt(zz);
+      var z1 = -Math.Sqrt(zz);
+      var z2 = Math.Sqrt(zz);
 
-      numZ.Text = z.ToString();
+      numZ.Text = Math.Abs(z1).ToString();
 
-      var left = Math.Sqrt(Math.PI/2)*z;
+      var left1 = Math.Sqrt(Math.PI/2)*z1;
+      var left2 = Math.Sqrt(Math.PI/2)*z2;
       var right = sigma0*K/Math.Sqrt(Math.Exp(zz/(sigma0*sigma0)));
-      verifyZ.Text = string.Format("err = {0:p8}", Math.Abs((left - right)/left));
+
+      var d1 = Math.Abs(left1 - right);
+      var d2 = Math.Abs(left2 - right);
+      var d = d1 < d2 ? d1 : d2;
+
+      verifyZ.Text = string.Format("E={0:p8}", Math.Abs(d/right));
+      textBoxK.Text = K.ToString();
+
+      var sigma = sigma0/Math.Sqrt(1 + x);
+      textBoxSigma.Text = sigma.ToString("0.000000000000");
     }
 
     private void numK_ValueChanged(object sender, EventArgs e)
+    {
+      updateZ();
+    }
+
+    private void numThetaI_ValueChanged(object sender, EventArgs e)
+    {
+      updateZ();
+    }
+
+    private void numThetaK_ValueChanged(object sender, EventArgs e)
     {
       updateZ();
     }

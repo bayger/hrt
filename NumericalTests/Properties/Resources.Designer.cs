@@ -59,5 +59,33 @@ namespace NumericalTests.Properties {
                 resourceCulture = value;
             }
         }
+        
+        internal static System.Drawing.Bitmap Geometrics {
+            get {
+                object obj = ResourceManager.GetObject("Geometrics", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap SigmaCalc1 {
+            get {
+                object obj = ResourceManager.GetObject("SigmaCalc1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap SigmaCalc2 {
+            get {
+                object obj = ResourceManager.GetObject("SigmaCalc2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap SigmaCalc3 {
+            get {
+                object obj = ResourceManager.GetObject("SigmaCalc3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

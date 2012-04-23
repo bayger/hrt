@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Infer.Runtime">
+      <HintPath>..\..\..\Program Files (x86)\Microsoft Research\Infer.NET 2.4 Beta\bin\Release\Infer.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -76,6 +79,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SigmaCalc1.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SigmaCalc2.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SigmaCalc3.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Geometrics.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

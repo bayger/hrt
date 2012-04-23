@@ -124,7 +124,13 @@ namespace Hrt
             allPixelSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, result.Radiance, result.TotalDistance));
           }
 				  else
-					  rejections++;
+          {
+            Spectrum s(100);
+            canvasSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
+            allPixelSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
+            rejections++;
+          }
+					  
 
 				  paths++;
 			  }
