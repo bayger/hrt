@@ -34,24 +34,61 @@ namespace Hrt
 		/* Solves y=x*exp(x^2) for x given y */
 		static inline number solve_xexpx2(number y)
 		{
+      const int iterations = 8; // more iterations == better quality of the result
+      // NOTE: don't go below 8, because it will degrade performance in the next stages of calculations
+      // due to inaccuracy of the result; use 16 for extremely accurate results (2-3% impact on performance)
+
 			number x=(y>1)?sqrt(log(y)):y;
 			int i;
 			if (y > 3.0)
-				for (i=0;i<4;i++)
+				for (i=0;i<iterations;i++)
 					x=sqrt(log(y/x));
 			else
-				for (i=0;i<4;i++)
+				for (i=0;i<iterations;i++)
 					x=0.5*(x+y*exp(-(x*x)));
 			return x;
 		}
+
+    static inline number solve_xexpx(number y)
+    {
+      const int max_iterations = 10000;
+      number x = 1.0;
+      int i = 0;
+      number err = 0.0;
+      do
+      {
+        x = x - (x * Math::Exp(x) - y) / ((x + 1) * Math::Exp(x));
+        err = (x*Math::Exp(x) - y)/y;
+        i++;
+      } while (err > 0.001 && i < max_iterations);
+
+      return x;
+    }
 
 		static inline number CalculateSigma(number sigma0, number gamma, number theta_i, number theta_r)
 		{
 			number K_i = Math::Tan(theta_i)*Math::Erfc((gamma*Math::Ctg(theta_i)) / (2*sigma0));
 			number K_r = Math::Tan(theta_r)*Math::Erfc((gamma*Math::Ctg(theta_r)) / (2*sigma0));
+      number two_K2_over_PI = 2*Math::Square(K_i+K_r) / Consts::Pi;
 
-			number z0_over_sigma0_sqrt2 = solve_xexpx2((K_i+K_r)/Consts::SqrtPi/4);
-			return sigma0/Math::Sqrt(1 + (z0_over_sigma0_sqrt2*z0_over_sigma0_sqrt2));
+      /*
+      static number minK = 100;
+      static number maxK = 0;
+      
+      if (minK > K)
+      {
+        minK = K;
+        std::cout << "minK=" << minK << std::endl;
+      }
+      if (maxK < K)
+      {
+        maxK = K;
+        std::cout << "maxK=" << maxK << std::endl;
+      }
+      */
+			//number z0_over_sigma0_sqrt2 = solve_xexpx2((K_i+K_r)/Consts::SqrtPi/4);
+      number squared_z0_over_sigma0 = solve_xexpx(two_K2_over_PI);
+			return sigma0/Math::Sqrt(1 + (squared_z0_over_sigma0));
 
 		}
 
