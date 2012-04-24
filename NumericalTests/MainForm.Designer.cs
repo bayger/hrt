@@ -44,8 +44,8 @@
       this.groupBox1 = new System.Windows.Forms.GroupBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.pictureBox3 = new System.Windows.Forms.PictureBox();
-      this.button2 = new System.Windows.Forms.Button();
-      this.button1 = new System.Windows.Forms.Button();
+      this.genSigmaOfR = new System.Windows.Forms.Button();
+      this.genSigmaOfI = new System.Windows.Forms.Button();
       this.textBoxSigma = new System.Windows.Forms.TextBox();
       this.label4 = new System.Windows.Forms.Label();
       this.textBoxK = new System.Windows.Forms.TextBox();
@@ -277,8 +277,8 @@
       // 
       this.groupBox2.BackColor = System.Drawing.Color.White;
       this.groupBox2.Controls.Add(this.pictureBox3);
-      this.groupBox2.Controls.Add(this.button2);
-      this.groupBox2.Controls.Add(this.button1);
+      this.groupBox2.Controls.Add(this.genSigmaOfR);
+      this.groupBox2.Controls.Add(this.genSigmaOfI);
       this.groupBox2.Controls.Add(this.textBoxSigma);
       this.groupBox2.Controls.Add(this.label4);
       this.groupBox2.Controls.Add(this.textBoxK);
@@ -314,24 +314,25 @@
       this.pictureBox3.TabIndex = 22;
       this.pictureBox3.TabStop = false;
       // 
-      // button2
+      // genSigmaOfR
       // 
-      this.button2.Location = new System.Drawing.Point(404, 225);
-      this.button2.Name = "button2";
-      this.button2.Size = new System.Drawing.Size(159, 29);
-      this.button2.TabIndex = 28;
-      this.button2.Text = "Generate σ(θr)...";
-      this.button2.UseVisualStyleBackColor = true;
+      this.genSigmaOfR.Location = new System.Drawing.Point(404, 225);
+      this.genSigmaOfR.Name = "genSigmaOfR";
+      this.genSigmaOfR.Size = new System.Drawing.Size(159, 29);
+      this.genSigmaOfR.TabIndex = 28;
+      this.genSigmaOfR.Text = "Generate σ(θr)...";
+      this.genSigmaOfR.UseVisualStyleBackColor = true;
+      this.genSigmaOfR.Click += new System.EventHandler(this.genSigmaOfR_Click);
       // 
-      // button1
+      // genSigmaOfI
       // 
-      this.button1.Location = new System.Drawing.Point(569, 225);
-      this.button1.Name = "button1";
-      this.button1.Size = new System.Drawing.Size(159, 29);
-      this.button1.TabIndex = 27;
-      this.button1.Text = "Generate σ(θi)...";
-      this.button1.UseVisualStyleBackColor = true;
-      this.button1.Click += new System.EventHandler(this.button1_Click);
+      this.genSigmaOfI.Location = new System.Drawing.Point(569, 225);
+      this.genSigmaOfI.Name = "genSigmaOfI";
+      this.genSigmaOfI.Size = new System.Drawing.Size(159, 29);
+      this.genSigmaOfI.TabIndex = 27;
+      this.genSigmaOfI.Text = "Generate σ(θi)...";
+      this.genSigmaOfI.UseVisualStyleBackColor = true;
+      this.genSigmaOfI.Click += new System.EventHandler(this.genSigmaOfI_Click);
       // 
       // textBoxSigma
       // 
@@ -545,8 +546,8 @@
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.TextBox textBoxSigma;
     private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.Button button2;
-    private System.Windows.Forms.Button button1;
+    private System.Windows.Forms.Button genSigmaOfR;
+    private System.Windows.Forms.Button genSigmaOfI;
   }
 }
 

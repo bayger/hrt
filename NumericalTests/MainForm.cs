@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using MicrosoftResearch.Infer.Maths;
 
@@ -121,9 +122,56 @@ namespace NumericalTests
       updateZ();
     }
 
-    private void button1_Click(object sender, EventArgs e)
+    private class Thetas
     {
+      public double R { get; set; }
+      public double I { get; set; }
+    }
 
+    private Dictionary<double, double> GenerateSigmaSeries(Action<double, Thetas> thetasUpdater, Thetas thetas)
+    {
+      var results = new Dictionary<double, double>();
+      var sigma0 = (double)numSigma0.Value;
+      var tau = (double)numTau.Value;
+
+      for(double angle=0; angle <= 90.0; angle += 0.1)
+      {
+        thetasUpdater(angle, thetas);
+
+        var thetaI = thetas.I / 180 * Math.PI;
+        var thetaR = thetas.R / 180 * Math.PI;
+
+        var Ki = Math.Tan(thetaI) * MMath.Erfc(tau / (2 * sigma0) / Math.Tan(thetaI));
+        var Kr = Math.Tan(thetaR) * MMath.Erfc(tau / (2 * sigma0) / Math.Tan(thetaR));
+        var K = (Ki + Kr) / 4;
+
+        var y = 2 * K * K / Math.PI;
+        var x = solve_xexpx(y);
+        var sigma = sigma0 / Math.Sqrt(1 + x);
+        results.Add(angle, sigma);
+      }
+
+      return results;
+    }
+
+    private void genSigmaOfI_Click(object sender, EventArgs e)
+    {
+      var thetas = new Thetas
+                     {
+                       I = 0,
+                       R = (double) numThetaK.Value
+                     };
+      var series = GenerateSigmaSeries((angle, ts) => ts.I = angle, thetas);
+    }
+
+    private void genSigmaOfR_Click(object sender, EventArgs e)
+    {
+      var thetas = new Thetas
+      {
+        I = (double)numThetaI.Value,
+        R = 0
+      };
+      var series = GenerateSigmaSeries((angle, ts) => ts.R = angle, thetas);
     }
   }
 }

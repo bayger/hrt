@@ -23,9 +23,9 @@ namespace Hrt
 	typedef std::tr1::unordered_map<std::string, weak_ptr<PrecomputedImportanceSampler>> sampling_cache;
 	sampling_cache s_samplingCache;
 
-	const int outElevationSteps = 90;
-	const int inElevationSteps = 90;
-	const int inAzimuthSteps = 360;
+	const int outElevationSteps = 180;
+	const int inElevationSteps = 180;
+	const int inAzimuthSteps = 180;
 
 	const number outElevationStep = Consts::HalfPi / outElevationSteps;
 	const number inElevationStep = Consts::HalfPi / inElevationSteps;
