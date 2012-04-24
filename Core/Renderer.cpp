@@ -1,6 +1,6 @@
 /*
  * H-RT Core - the core of the H-RayTracer ray tracing renderer.
- * Copyright (c) 2006-2010 H-RT Team.
+ * Copyright (c) Patryk Bajer, H-RT.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -125,9 +125,9 @@ namespace Hrt
           }
 				  else
           {
-            Spectrum s(100);
-            canvasSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
-            allPixelSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
+            //Spectrum s(100);
+            //canvasSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
+            //allPixelSamples.push_back(Hrt::CanvasRay(canvasX, canvasY, s, result.TotalDistance));
             rejections++;
           }
 					  
