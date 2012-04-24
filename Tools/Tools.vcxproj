@@ -80,8 +80,8 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;C:\Projects\FreeImage\Dist;C:\Program Files %28x86%29\boost\boost_1_47;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;C:\Projects\FreeImage\Dist;C:\Program Files %28x86%29\boost\boost_1_47;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;$(SolutionDir)\Libs\FreeImage\Dist;C:\Program Files %28x86%29\boost\boost_1_47;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\Libs\FreeImage\Dist;C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;C:\Program Files %28x86%29\boost\boost_1_47;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

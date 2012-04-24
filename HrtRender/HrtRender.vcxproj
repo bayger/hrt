@@ -84,10 +84,10 @@
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Projects\SDL-1.2.15\include;C:\Projects\FreeImage\Dist;C:\Projects\gsl-1.15;C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\yaml-0.1.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files %28x86%29\boost\boost_1_47\lib;C:\Projects\SDL-1.2.15\lib\x86;C:\Projects\gsl-1.15\build.vc10\lib\Win32\Release;C:\Projects\FreeImage\Dist;C:\Projects\yaml-0.1.4\win32\vs2008\Output\Debug\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Projects\SDL-1.2.15\include;C:\Projects\FreeImage\Dist;C:\Projects\gsl-1.15;C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\yaml-0.1.4\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files %28x86%29\boost\boost_1_47\lib;C:\Projects\SDL-1.2.15\lib\x86;C:\Projects\gsl-1.15\build.vc10\lib\Win32\Release;C:\Projects\FreeImage\Dist;C:\Projects\yaml-0.1.4\win32\vs2008\Output\Release\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Projects\SDL-1.2.15\include;$(SolutionDir)\Libs\FreeImage\Dist;C:\Projects\gsl-1.15;C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\yaml-0.1.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files %28x86%29\boost\boost_1_47\lib;C:\Projects\SDL-1.2.15\lib\x86;C:\Projects\gsl-1.15\build.vc10\lib\Win32\Release;$(SolutionDir)\Libs\FreeImage\Dist;C:\Projects\yaml-0.1.4\win32\vs2008\Output\Debug\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Projects\SDL-1.2.15\include;$(SolutionDir)\Libs\FreeImage\Dist;C:\Projects\gsl-1.15;C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\yaml-0.1.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files %28x86%29\boost\boost_1_47\lib;C:\Projects\SDL-1.2.15\lib\x86;C:\Projects\gsl-1.15\build.vc10\lib\Win32\Release;$(SolutionDir)\Libs\FreeImage\Dist;C:\Projects\yaml-0.1.4\win32\vs2008\Output\Release\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
