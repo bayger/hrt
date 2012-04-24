@@ -99,7 +99,7 @@ namespace NumericalTests
       var d2 = Math.Abs(left2 - right);
       var d = d1 < d2 ? d1 : d2;
 
-      verifyZ.Text = string.Format("E={0:p8}", Math.Abs(d/right));
+      verifyZ.Text = string.Format("±{0:p8}", Math.Abs(d / right));
       textBoxK.Text = K.ToString();
 
       var sigma = sigma0/Math.Sqrt(1 + x);
@@ -119,6 +119,11 @@ namespace NumericalTests
     private void numThetaK_ValueChanged(object sender, EventArgs e)
     {
       updateZ();
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+
     }
   }
 }
