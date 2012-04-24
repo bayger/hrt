@@ -1,7 +1,6 @@
 To do list (*) / ideas (^)
 ==========================
 
-* renderings of ball with parameters as in [He91] paper
 * whitted-style raytracing (simple reflections + direct lighting)
 * analyze of SimpleHe model (glossy part and blue hue)
 * log rendering parameters along with render filename

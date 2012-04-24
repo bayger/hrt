@@ -79,7 +79,8 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
     ("variance-filter", po::value<number>(&varianceFilter), "variance filter value [disabled=0]")
     ("variance-max-passes", po::value<unsigned int>(&maxPasses), "max passes for variance filtering [16]")
 		("dump-paths", po::value<std::string>(&pathDumpFileName), "dumps all paths to a file [disabled]")
-		("save-variance", "saves also per-pixel path variance [disabled]");
+		("save-variance", "saves also per-pixel path variance [disabled]")
+    ("whitted,w", "switches to simple Whitted-style raytracing");
 
 	po::options_description hidden("hidden");
 	hidden.add_options()
@@ -148,6 +149,7 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
 	this->sigmaFilter = sigmaFilter;
 	this->pathDumpFileName = pathDumpFileName;
 	this->saveVariance = m_cmdArgs.count("save-variance") > 0;
+  this->whittedStyle = m_cmdArgs.count("whitted") > 0;
   this->varianceFilter = varianceFilter;
   this->maxPasses = maxPasses;
 	return true;
@@ -208,8 +210,9 @@ void Program::RenderScene()
 	ShowSettings();
 
 	// we'll use path tracing integrator
-	LightIntegratorOwnedPtr integrator(new PathTracingIntegrator(depth, depth > 3 ? 3 : depth, dontUseAdaptiveRR ? alpha : -1));
-  LightIntegratorOwnedPtr integrator2(new DeterministicIntegrator(depth));
+	LightIntegratorOwnedPtr integrator = whittedStyle 
+    ? LightIntegratorOwnedPtr(new DeterministicIntegrator(depth))
+    : LightIntegratorOwnedPtr(new PathTracingIntegrator(depth, depth > 3 ? 3 : depth, dontUseAdaptiveRR ? alpha : -1));
 
 	// prepare scene for concurrency
 	m_scene->PrepareForConcurrency(cpus);

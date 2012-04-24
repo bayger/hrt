@@ -47,7 +47,7 @@ namespace Hrt
       {
         int i = 0;
 
-        LightPtr light = rc.GetLights()[k];// scene.GetLight(k);
+        LightOwnedPtr light = rc.GetLights()[k];// scene.GetLight(k);
         light->Prepare(intersection.Position, intersection.Normal, rc);
         bool isDelta = light->IsDeltaLight();
 

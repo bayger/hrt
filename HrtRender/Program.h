@@ -38,6 +38,7 @@ private:
 	std::string pathDumpFileName;
 	bool saveVariance;
 	bool dontUseAdaptiveRR;
+  bool whittedStyle;
   Hrt::number varianceFilter;
   unsigned int maxPasses;
 
