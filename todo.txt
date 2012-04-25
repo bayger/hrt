@@ -1,7 +1,6 @@
 To do list (*) / ideas (^)
 ==========================
 
-* whitted-style raytracing (simple reflections + direct lighting)
 * analyze of SimpleHe model (glossy part and blue hue)
 * log rendering parameters along with render filename
 * HDR viewer that is using FreeImage

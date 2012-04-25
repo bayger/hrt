@@ -110,9 +110,4 @@ namespace Hrt
 	{
 		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
 	}
-
-	void Ward::FinishDeserialization()
-	{
-		m_importanceSampler->Precompute(shared_from_this());
-	}
 }

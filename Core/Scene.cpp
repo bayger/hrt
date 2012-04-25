@@ -243,7 +243,10 @@ namespace Hrt
 		m_geometry->Clear();
 		PrimitiveOwnedPtr primitive;
 		BOOST_FOREACH(primitive, m_primitives)
+    {
 			m_geometry->AddPrimitive(primitive);
+      primitive->GetMaterial()->Initialize();
+    }
 
 		m_geometry->Preprocess();
 		m_camera->SetCanvas(m_canvas);

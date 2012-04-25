@@ -35,6 +35,7 @@ namespace Hrt
 			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf);
 
 		virtual const std::string GetSignature();
+    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
 
 		// --- Properties ---
 
@@ -65,7 +66,6 @@ namespace Hrt
 
 		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
 		virtual const std::string& YamlType();
-		virtual void FinishDeserialization();
 
 	private:
 		number m_diffuse;

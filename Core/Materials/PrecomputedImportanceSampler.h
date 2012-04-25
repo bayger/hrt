@@ -23,13 +23,14 @@ namespace Hrt
 	public:
 		PrecomputedImportanceSampler();
 
-		void Precompute(MaterialPtr material);
+    void Precompute(MaterialPtr material);
 		Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
 			const Vector3D& n, number& pdf);
 		number GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, 
 			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n);
 
 	private:
+    bool m_isPrepared;
 		struct AnglePrecalc
 		{
 			std::vector<number> Values;

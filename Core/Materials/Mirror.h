@@ -49,6 +49,8 @@ namespace Hrt
 
 		virtual const std::string& YamlType();
 
+    virtual void Initialize() { }
+
 	private:
 		Spectrum m_absorption;
 	};

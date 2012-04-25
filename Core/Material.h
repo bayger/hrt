@@ -93,6 +93,9 @@ namespace Hrt
 		/// Returns a signature of material (describes material and its properties)
 		virtual const std::string GetSignature()=0;
 
+    /// Initializes material for usage in rendering
+    virtual void Initialize()=0;
+
 	protected:
 		Spectrum m_refractionRe;
 		Spectrum m_refractionIm;

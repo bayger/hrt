@@ -72,11 +72,11 @@ namespace Hrt
 
 		virtual const std::string GetSignature();
 
+    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
+
 		// IYamlSerializable Implementation
 		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
 		virtual const std::string& YamlType();
-		virtual void FinishDeserialization()
-		{ Precalculate(); }
 
 	private:
 		number m_nu;
@@ -86,8 +86,6 @@ namespace Hrt
 		Spectrum m_specular;
 		Spectrum m_diffuse;
 		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
-
-		void Precalculate();
 	};
 
 }

@@ -36,8 +36,6 @@ namespace Hrt
 				virtual number CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
 					const Vector3D& n, const Vector3D& incomingDirection);
 
-        void Precalculate();
-        
         number Gamma() const
         { return gamma; }
         void Gamma(number gamma)
@@ -60,12 +58,11 @@ namespace Hrt
         { this->a = a; }
 
 				virtual const std::string GetSignature();
+        virtual void Initialize() { importanceSampler->Precompute(shared_from_this()); }
         
         // IYamlSerializable Implementation
         virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
         virtual const std::string& YamlType();
-        virtual void FinishDeserialization()
-        { Precalculate(); }
         
     private:
         static const unsigned int DistributionIterations = 350;

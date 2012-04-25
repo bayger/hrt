@@ -78,9 +78,12 @@ namespace Hrt
 			// Fresnel coefficients for polarized light
 			number F_s = 0;
 			number F_p = 0;
-			FresnelHelper::CalculateFresnel(incomingRay.MediumRefractionRe, 
-				incomingRay.MediumRefractionIm, m_refractionRe, m_refractionIm,
-				vh, cos_theta_t, lambdaIndex, F_s, F_p);
+			//FresnelHelper::CalculateFresnel(incomingRay.MediumRefractionRe, 
+			//	incomingRay.MediumRefractionIm, m_refractionRe, m_refractionIm,
+			//	vh, cos_theta_t, lambdaIndex, F_s, F_p);
+
+      FresnelHelper::CalcFresnel3(m_refractionRe[lambdaIndex],
+        m_refractionIm[lambdaIndex], Math::Arcos(vh), F_s, F_p);
 
 			number fresnel = (F_s+F_p) / Consts::TwoPi;
 			number D = isInSpecularCone ? 1 : CalculateD(nh, tan_alpha);
@@ -90,7 +93,16 @@ namespace Hrt
 					+ m_diffuse*fresnel/Consts::Pi);
 		}
 
-		return result;
+    if (this->GetName() != "Diffuse Only")
+    {
+      return result;
+    }
+    number scale = 0.4;
+    int tx = (int)Math::Ceiling(scale * intersection.Position.X + 0.5) & 1;
+    int ty = (int)Math::Ceiling(scale * intersection.Position.Y + 0.5) & 1;
+    int tz = (int)Math::Ceiling(scale * intersection.Position.Z + 0.5) & 1;
+
+		return ((tx+ty+tz) & 1) == 1 ? result : result /4;
 	}
 
 	Hrt::number CookTorrance::CalculateG( number nh, number nl, number nv, number vh )
@@ -167,11 +179,6 @@ namespace Hrt
 	{
 		//return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
 		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
-	}
-
-	void CookTorrance::Precalculate()
-	{
-		m_importanceSampler->Precompute(shared_from_this());
 	}
 
 	Hrt::number CookTorrance::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)

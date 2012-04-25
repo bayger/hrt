@@ -65,11 +65,6 @@ namespace Hrt
 		return str(format("%1%:sp=%2%,d=%3%,s=%4%") % yamlType % m_powerSpecular % m_diffuse.ToString() % m_specular.ToString());
 	}
 
-	void Phong::FinishDeserialization()
-	{
-		m_importanceSampler->Precompute(shared_from_this());
-	}
-
 	Hrt::Vector3D Phong::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
 	{
 		//return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);

@@ -82,13 +82,12 @@ namespace Hrt
 		AUTO_PROPERTY(number, m_gaussianC, GaussianC);
 
 		virtual const std::string GetSignature();
+    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
 
 		// --- IYamlSerializable Implementation ---
 
 		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
 		virtual const std::string& YamlType();
-		virtual void FinishDeserialization()
-		{ Precalculate(); }
 
 	private:
 		number m_diffuse;
@@ -99,8 +98,6 @@ namespace Hrt
 
 		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
 
-
-		void Precalculate();
 		number CalculateG(number nh, number nl, number nv, number vh);
 		number CalculateD(number nh, number tan_alpha);
 	};

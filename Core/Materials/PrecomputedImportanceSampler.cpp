@@ -48,6 +48,7 @@ namespace Hrt
 	//
 
 	PrecomputedImportanceSampler::PrecomputedImportanceSampler()
+    : m_isPrepared(false)
 	{
 	}
 
@@ -87,6 +88,9 @@ namespace Hrt
 
 	void PrecomputedImportanceSampler::Precompute(MaterialPtr material)
 	{
+    if (m_isPrepared)
+      return;
+
 		std::string materialSignature = material->GetSignature();
 		sampling_cache::iterator match = s_samplingCache.find(materialSignature);
 		if (match != s_samplingCache.end())
@@ -95,6 +99,7 @@ namespace Hrt
 			if (cached != 0)
 			{
 				angleCdfs = cached->angleCdfs;
+        m_isPrepared = true;
 				return;
 			}
 		}
@@ -110,9 +115,6 @@ namespace Hrt
 		intersection.Normal = Vector3D::UnitZ;
 		intersection.TangentU = Vector3D::UnitX;
 		intersection.TangentV = Vector3D::UnitY;
-
-		//std::string dumpName = SignatureToFilename(materialSignature, ".csv");
-		//std::ofstream dumpFile(dumpName.c_str());
 
 		number hf = (inAzimuthSteps*inElevationSteps)/Consts::TwoPi;
 
@@ -132,8 +134,6 @@ namespace Hrt
 				number inElevationCos = Math::Cos(inElevation);
 				number inElevationSin = Math::Sin(inElevation);
 
-				//dumpFile << std::endl << outElevation << "," << inElevation;
-
 				for(size_t k = 0; k < inAzimuthSteps; k++)
 				{
 					number inAzimuth = (k + 0.5) * inAzimuthStep;
@@ -149,8 +149,6 @@ namespace Hrt
 					number v = (material->CalculateBsdf(incomingRay, intersection) 
 						* Math::Abs(incomingRay.Direction.Z)).GetAverage();
 					cdf += v;
-
-					//dumpFile << "," << (v[0]+v[1]+v[2])/3;
 
 					precalc->Values.push_back(v);
 					precalc->Cdf.push_back(cdf);
@@ -181,6 +179,7 @@ namespace Hrt
 		SaveToFile(materialSignature);
 
 		s_samplingCache[materialSignature] = shared_from_this();
+    m_isPrepared = true;
 	}
 
 	bool PrecomputedImportanceSampler::TryLoadFromFile(const std::string& materialSignature)

@@ -106,7 +106,6 @@ namespace Hrt
         // calc angles
         number theta_i = Math::Arcos(cos_theta_i);
         number theta_r = Math::Arcos(cos_theta_r);
-        //number z_0 = CalcZ0(theta_i, theta_r);
 
 				number sigma2 = CalculateSigma(sigma, gamma, theta_i, theta_r);
         
@@ -267,13 +266,7 @@ namespace Hrt
 			//return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
 			return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
 		}
-
-		void SimpleHe::Precalculate()
-		{
-			importanceSampler->Precompute(shared_from_this());
-		}
-
-
+    
 		const std::string SimpleHe::GetSignature()
 		{
 			return str(format("%1%:s=%2%,t=%3%,rr=%4%,ri=%5%") % yamlType % sigma % gamma % m_refractionRe.ToString() % m_refractionIm.ToString());

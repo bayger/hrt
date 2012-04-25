@@ -149,11 +149,6 @@ namespace Hrt
 		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
 	}
 
-	void ASPhong::Precalculate()
-	{
-		m_importanceSampler->Precompute(shared_from_this());
-	}
-
 	Hrt::number ASPhong::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)
 	{
 		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
