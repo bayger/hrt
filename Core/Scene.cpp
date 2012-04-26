@@ -106,80 +106,6 @@ namespace Hrt
 		m_camera = camera;
 	}
 
-	/*    
-	void Scene::RenderWithAA(const LightIntegrator& integrator)
-	{
-	m_totalStages = 2;
-	m_currentStage = 0;
-	m_isRendering = true;
-	m_timer.restart();
-
-	m_canvas->Prepare();
-
-	// make ordinary rendering
-	DoRender(m_canvas, m_camera->GetSampler(), integrator);
-
-	// analyze canvas color and depth-buffer for edges
-
-	DetectEdges(m_canvas);
-
-	unsigned int additionalCount = 0;
-	for(unsigned int y=0; y<m_canvas->GetHeight(); y++)
-	for(unsigned int x=0; x<m_canvas->GetWidth(); x++)
-	if (m_canvas->GetStencilValue(x, y) != 0)
-	additionalCount++;
-
-	// cast additional rays for edges
-	m_currentStage = 1;
-	m_stageName = str(boost::format("Antialiasing image (%|1$.2|%% pixels)") %
-	(num(100*additionalCount)/(m_canvas->GetWidth()*m_canvas->GetHeight())) );
-	m_progValue = 0;
-	m_progMax = additionalCount;
-	m_timer.restart();
-	unsigned int currentStep = 0;
-	for(unsigned int y=0; y<m_canvas->GetHeight(); y++)
-	for(unsigned int x=0; x<m_canvas->GetWidth(); x++)
-	if (m_canvas->GetStencilValue(x, y) != 0)
-	{
-	Ray ray;
-	number canvasX, canvasY;
-	m_camera->GetAASampler()->Shuffle();
-	while(m_camera->GenerateAdditionalRay(&ray, m_camera->GetAASampler(),
-	x, y, canvasX, canvasY))
-	{
-	RayLight result;
-	integrator.CalculateLight(ray, *this, result, 0);
-
-	m_canvas->CollectRay(x, y, result.Radiance, ray.TotalDistance);
-	}
-
-	m_canvas->SetStencilValue(x, y, 0);
-	m_progValue = (++currentStep);
-	}
-
-	m_renderingTime = (number)m_timer.elapsed();
-	m_isRendering = false;
-	}
-
-	void Scene::DetectEdges(CanvasPtr canvas)
-	{
-	number counter = 0;
-	number threshold = num(0.25);
-	number colorTheshold = num(0.15);
-
-	for(unsigned int y=0; y<canvas->GetHeight(); y++)
-	for(unsigned int x=0; x<canvas->GetWidth(); x++)
-	{
-	if (//CheckDepth(canvas, x, y, threshold) ||
-	CheckColor(canvas, x, y, colorTheshold))
-	{
-	canvas->SetStencilValue(x, y, 1);
-	counter++;
-	}
-	}
-	}
-	*/  
-
 	bool Scene::CheckDepth( CanvasPtr canvas, unsigned int x, unsigned int y,
 		number threshold )
 	{
@@ -351,5 +277,11 @@ namespace Hrt
 			kv->second->PrepareForConcurrency(numberOfThreads);
 		}
 	}
+
+  Hrt::MaterialPtr Scene::GetMaterial(const std::string& name)
+  {
+    return m_namedMaterials[name];
+  }
+
 
 }

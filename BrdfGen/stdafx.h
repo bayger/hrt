@@ -28,6 +28,7 @@
 // TODO: reference additional headers your program requires here
 #include <boost/program_options.hpp>
 #include "../Core/HrtDeps.h"
+#include <fstream>
 
 using namespace boost;
 namespace po = boost::program_options;

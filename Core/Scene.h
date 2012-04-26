@@ -59,6 +59,8 @@ namespace Hrt
 
 		CanvasPtr GetCanvas() const { return m_canvas; }
 
+    MaterialPtr GetMaterial(const std::string& name);
+
 		void Prepare();
 
 

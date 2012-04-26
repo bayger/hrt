@@ -4,14 +4,18 @@
 #include "stdafx.h"
 #include "..\Core\Common.h"
 #include "BrdfGen.h"
+#include "..\Core\Serialization\YamlParser.h"
+#include "..\Core\Serialization\SerializationContext.h"
+#include "..\Core\Math.h"
+#include "..\Core\Vector3D.h"
 
 using namespace Hrt;
 
 bool BrdfGen::Initialize(int argc, _TCHAR* argv[]) 
 {
   po::positional_options_description args;
-  args.add("brdf-name", 1);
-  args.add("output-type", 1);
+  args.add("scene-file", 1);
+  args.add("material-name", 1);
 
   Hrt::number step = 0.1;
   po::options_description options("options");
@@ -23,8 +27,8 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
   
   po::options_description hidden("hidden");
   hidden.add_options()
-    ("brdf-name", "used brdf")
-    ("output-type", "type of output series");
+    ("scene-file", "scene file (YSF format)")
+    ("material-name", "name of material in the scene");
 
   po::options_description all("all options");
   all.add(options).add(hidden);
@@ -41,7 +45,7 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
 
   if (m_cmdArgs.count("help"))
   {
-    std::cout << std::endl << "usage: brdfgen [options] brdf-type output-type" 
+    std::cout << std::endl << "usage: brdfgen [options] scene-file material-name" 
       << std::endl << std::endl;
     std::cout << options << std::endl;
     return false;
@@ -63,19 +67,76 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     return false;
   }
 
-  if (m_cmdArgs.count("brdf-name") == 0 || m_cmdArgs.count("output-type") == 0 || !argsProcessed)
+  if (m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0 || !argsProcessed)
   {
     std::cout << "Invalid number of arguments. Use '--help' option to get detailed help."
       << std::endl;
     return false;
   }
 
+  m_step = m_cmdArgs.count("steps") > 0 ? step : 0.1;
   return true;
+}
+
+std::string BrdfGen::LoadScene()
+{
+  std::string brdfFileName = m_cmdArgs["scene-file"].as<std::string>();
+  std::cout << "Input: " << brdfFileName << std::endl;
+  std::ifstream sceneFile(brdfFileName.c_str());
+
+  sceneFile.seekg(0, std::ios_base::end);
+  long int size = sceneFile.tellg();
+  sceneFile.seekg(0, std::ios_base::beg);
+  scoped_array<char> buffer(new char[size+1]);
+  memset(buffer.get(), 0, sizeof(char)*(1+size));
+  sceneFile.read(buffer.get(), size);
+
+  YamlParser parser(std::string(buffer.get()));
+  m_scene.reset(new Scene);
+
+  try
+  {
+    SerializationContext context;
+    m_scene->Deserialize(parser, context);
+  }
+  catch (SerializationException& e)
+  {
+    std::cout << "Failed to read scene file." << std::endl
+      << "Error: " << e.GetMessage() << std::endl;
+    return false;
+  }
 }
 
 void BrdfGen::Run()
 {
-  std::cout << "fuck";
+  LoadScene();
+  std::string materialName = m_cmdArgs["material-name"].as<std::string>();
+  m_material = m_scene->GetMaterial(materialName);
+  if (m_material != NULL)
+    OutputData();
+}
+
+void BrdfGen::OutputData()
+{
+  std::cout << "# Material: " << m_material->GetName() << std::endl;
+  std::cout << "# Signature: " << m_material->GetSignature() << std::endl;
+  
+  RayLight rayLight;
+  rayLight.Direction = -Vector3D::FromSpherical(0, Consts::Pi / 180 * 30);
+  rayLight.Radiance.SetOne();
+  for(number angle=-90; angle<90.0; angle += m_step)
+  {
+    Intersection intersection;
+    intersection.Normal = Vector3D::UnitZ;
+    intersection.Position.Set(0, 0, 0);
+    intersection.TangentU = Vector3D::UnitX;
+    intersection.TangentV = Vector3D::UnitY;
+    intersection.RayDirection = -Vector3D::FromSpherical(angle < 0 ? Consts::Pi : 0, 
+      Math::Abs(angle) / 180 * Consts::Pi);
+
+    Spectrum x = m_material->CalculateBsdf(rayLight, intersection);
+    std::cout << angle << "\t" << x.GetAverage() << std::endl;
+  }
 }
 
 int _tmain(int argc, _TCHAR* argv[])
