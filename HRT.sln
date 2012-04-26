@@ -25,6 +25,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml", "..\yaml-0.1.4\win32
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsllib", "..\gsl-1.15\build.vc10\gsllib\gsllib.vcxproj", "{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BrdfGen", "BrdfGen\BrdfGen.vcxproj", "{8D2C4445-816B-4161-B96C-A0CD11C2E436}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A63303B-010F-475A-A0A5-815F5C53A1B8} = {0A63303B-010F-475A-A0A5-815F5C53A1B8}
+		{9DBBFF71-E221-412C-B55B-F9D8C2456F45} = {9DBBFF71-E221-412C-B55B-F9D8C2456F45}
+		{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE} = {2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -151,6 +158,24 @@ Global
 		{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}.Release-StaticLib|Win32.ActiveCfg = Release|x64
 		{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}.Release-StaticLib|x64.ActiveCfg = Release|x64
 		{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}.Release-StaticLib|x64.Build.0 = Release|x64
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug|Win32.Build.0 = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug|x64.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-DLL|Win32.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-DLL|Win32.Build.0 = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-DLL|x64.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-StaticLib|Win32.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-StaticLib|Win32.Build.0 = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Debug-StaticLib|x64.ActiveCfg = Debug|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release|Win32.ActiveCfg = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release|Win32.Build.0 = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release|x64.ActiveCfg = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-DLL|Win32.ActiveCfg = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-DLL|Win32.Build.0 = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-DLL|x64.ActiveCfg = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-StaticLib|Win32.ActiveCfg = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-StaticLib|Win32.Build.0 = Release|Win32
+		{8D2C4445-816B-4161-B96C-A0CD11C2E436}.Release-StaticLib|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

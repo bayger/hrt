@@ -163,7 +163,7 @@ namespace Hrt
             // Distribution function            
             number g = Math::Square( (Consts::TwoPi*sigma2 / lambda)
                     * (cos_theta_i + cos_theta_r) );
-            number exp_minus_g = Math::Exp(-g);
+            number exp_minus_g = 1/Math::Exp(g);
             number D = CalcDiffuseDistribution(v_xy, g, exp_minus_g, lambda,
                     cos_theta_r+cos_theta_i, lambdaIndex);
             
