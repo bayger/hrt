@@ -9,12 +9,13 @@ namespace BrdfViewer
 {
   public partial class AngularPlotControl : Control
   {
-    private Dictionary<double, double> _data;
+    private Dictionary<double, List<double>> _data;
     private Color _chartBackColor = Color.White;
     private Color _chartPlotColor = Color.Blue;
     private Color _chartAxisColor = Color.SlateGray;
+    private string _chartTitle;
 
-    public Dictionary<double, double> Data
+    public Dictionary<double, List<double>> Data
     {
       get { return _data; }
       set
@@ -53,6 +54,17 @@ namespace BrdfViewer
         Invalidate();
       }
     }
+
+    public string ChartTitle
+    {
+      get { return _chartTitle; }
+      set
+      {
+        _chartTitle = value;
+        Invalidate();
+      }
+    }
+
     public AngularPlotControl()
     {
       InitializeComponent();
@@ -63,6 +75,11 @@ namespace BrdfViewer
     {
       base.OnSizeChanged(e);
       Invalidate();
+    }
+
+    public void SaveToWmf(string fileName)
+    {
+      
     }
 
     protected override void OnPaint(PaintEventArgs pe)
@@ -81,7 +98,7 @@ namespace BrdfViewer
         g.SmoothingMode = SmoothingMode.AntiAlias;
 
         g.FillRectangle(fillBrush, offsetX, offsetY, size * 2, size);
-        g.DrawRectangle(axisPen, offsetX, offsetY, size * 2, size);
+        //g.DrawRectangle(axisPen, offsetX, offsetY, size * 2, size);
         g.DrawArc(axisPen, offsetX, offsetY, size * 2, size * 2, 0, -180);
         DrawAngleTicks(g, axisPen, offsetX, offsetY, size);
 
@@ -95,32 +112,57 @@ namespace BrdfViewer
       {
         using(var axisBrush = new SolidBrush(ChartAxisColor))
         {
-          g.DrawString("No BRDF data loaded", Font, axisBrush, 10, 10);
+          g.DrawString("No data loaded", Font, axisBrush, offsetX + 10, offsetY + 10);
         }
         return;
       }
 
+      int valCount = Data.First().Value.Count;
+      if (Data.Any(x => x.Value.Count != valCount))
+        throw new InvalidOperationException("Incorrect data for plot");
+
       var angles = Data.Keys.ToList();
       angles.Sort();
 
+      var pens = new List<Pen>();
+      pens.Add(new Pen(Color.Red));
+      pens.Add(new Pen(Color.Green));
+      pens.Add(new Pen(Color.Blue));
+
       using (var plotPen = new Pen(ChartPlotColor))
       {
-        var maxF = Data.Max(x => x.Value);
-        var px = (float) (offsetX + size);
-        var py = (float) (offsetY + size);
-        foreach (var item in angles)
-        {
-          var angle = 180.0f - (item + 90.0f); // -90..90 --> 180..0
-          var radians = angle / 180 * Math.PI;
-          var normalizedF = Data[item]/maxF;
-          var ex = (float) (offsetX + size + Math.Cos(radians)*size*normalizedF);
-          var ey = (float) (offsetY + size - Math.Sin(radians)*size*normalizedF);
-          g.DrawLine(plotPen, px, py, ex, ey);
+        var maxF = new List<double>();
+        for (int i = 0; i < valCount; i++)
+          maxF.Add(Data.Select(x => x.Value[i]).Max());
+        var normalizationFactor = maxF.Max();
 
-          px = ex;
-          py = ey;
+        for (int i = 0; i < valCount; i++)
+        {
+          var px = (float) (offsetX + size);
+          var py = (float) (offsetY + size);
+          foreach (var item in angles)
+          {
+            var angle = 180.0f - (item + 90.0f); // -90..90 --> 180..0
+            var radians = angle/180*Math.PI;
+            var normalizedF = (Data[item])[i]/normalizationFactor;
+            var ex = (float) (offsetX + size + Math.Cos(radians)*size*normalizedF);
+            var ey = (float) (offsetY + size - Math.Sin(radians)*size*normalizedF);
+            g.DrawLine(pens[i % pens.Count], px, py, ex, ey);
+
+            px = ex;
+            py = ey;
+          }
         }
       }
+
+      foreach(var pen in pens)
+        pen.Dispose();
+
+      using (var axisBrush = new SolidBrush(ChartAxisColor))
+      {
+        g.DrawString(_chartTitle, Font, axisBrush, offsetX + 10, offsetY + 10);
+      }
+
     }
 
     private void DrawAngleTicks(Graphics g, Pen drawPen, int offsetX, int offsetY, int size)

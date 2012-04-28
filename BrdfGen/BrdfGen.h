@@ -13,6 +13,7 @@ private:
   Hrt::MaterialOwnedPtr m_material;
   Hrt::number m_step;
   bool m_materialsOnly;
+  Hrt::number m_incidentAngle;
   std::string LoadScene();
   void OutputData();
   void OutputMaterialNames();

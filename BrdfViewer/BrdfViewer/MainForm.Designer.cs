@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
       this.label1 = new System.Windows.Forms.Label();
       this.sceneFileName = new System.Windows.Forms.TextBox();
@@ -36,7 +37,9 @@
       this.groupBox1 = new System.Windows.Forms.GroupBox();
       this.getMaterials = new System.Windows.Forms.Button();
       this.materials = new System.Windows.Forms.ComboBox();
+      this.materialsSource = new System.Windows.Forms.BindingSource(this.components);
       this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
       this.generate = new System.Windows.Forms.Button();
       this.label6 = new System.Windows.Forms.Label();
       this.reflectedAngle = new System.Windows.Forms.NumericUpDown();
@@ -47,8 +50,9 @@
       this.constReflected = new System.Windows.Forms.RadioButton();
       this.constIncidence = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
-      this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
+      this.savePlot = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.reflectedAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).BeginInit();
@@ -123,6 +127,8 @@
       // 
       // materials
       // 
+      this.materials.DataSource = this.materialsSource;
+      this.materials.DisplayMember = "Name";
       this.materials.FormattingEnabled = true;
       this.materials.Location = new System.Drawing.Point(107, 53);
       this.materials.Name = "materials";
@@ -130,11 +136,16 @@
       this.materials.TabIndex = 5;
       this.materials.SelectedIndexChanged += new System.EventHandler(this.materials_SelectedIndexChanged);
       // 
+      // materialsSource
+      // 
+      this.materialsSource.DataSource = typeof(BrdfViewer.MaterialItem);
+      // 
       // groupBox2
       // 
       this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBox2.Controls.Add(this.savePlot);
       this.groupBox2.Controls.Add(this.angularPlotControl1);
       this.groupBox2.Controls.Add(this.generate);
       this.groupBox2.Controls.Add(this.label6);
@@ -153,6 +164,23 @@
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "BRDF Data Generation";
       // 
+      // angularPlotControl1
+      // 
+      this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.SlateGray;
+      this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
+      this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
+      this.angularPlotControl1.ChartTitle = null;
+      this.angularPlotControl1.Data = null;
+      this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+      this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
+      this.angularPlotControl1.Name = "angularPlotControl1";
+      this.angularPlotControl1.Size = new System.Drawing.Size(616, 310);
+      this.angularPlotControl1.TabIndex = 11;
+      this.angularPlotControl1.Text = "angularPlotControl1";
+      // 
       // generate
       // 
       this.generate.Location = new System.Drawing.Point(412, 20);
@@ -166,6 +194,7 @@
       // label6
       // 
       this.label6.AutoSize = true;
+      this.label6.Enabled = false;
       this.label6.Location = new System.Drawing.Point(260, 76);
       this.label6.Name = "label6";
       this.label6.Size = new System.Drawing.Size(85, 13);
@@ -175,12 +204,23 @@
       // reflectedAngle
       // 
       this.reflectedAngle.DecimalPlaces = 2;
+      this.reflectedAngle.Enabled = false;
       this.reflectedAngle.Increment = new decimal(new int[] {
-            1,
+            5,
             0,
             0,
-            65536});
+            0});
       this.reflectedAngle.Location = new System.Drawing.Point(351, 74);
+      this.reflectedAngle.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+      this.reflectedAngle.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
       this.reflectedAngle.Name = "reflectedAngle";
       this.reflectedAngle.Size = new System.Drawing.Size(120, 20);
       this.reflectedAngle.TabIndex = 7;
@@ -203,11 +243,21 @@
       // 
       this.incidentAngle.DecimalPlaces = 2;
       this.incidentAngle.Increment = new decimal(new int[] {
-            1,
+            5,
             0,
             0,
-            65536});
+            0});
       this.incidentAngle.Location = new System.Drawing.Point(107, 72);
+      this.incidentAngle.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+      this.incidentAngle.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
       this.incidentAngle.Name = "incidentAngle";
       this.incidentAngle.Size = new System.Drawing.Size(120, 20);
       this.incidentAngle.TabIndex = 5;
@@ -247,6 +297,7 @@
       // constReflected
       // 
       this.constReflected.AutoSize = true;
+      this.constReflected.Enabled = false;
       this.constReflected.Location = new System.Drawing.Point(262, 23);
       this.constReflected.Name = "constReflected";
       this.constReflected.Size = new System.Drawing.Size(144, 17);
@@ -275,21 +326,15 @@
       this.label3.TabIndex = 0;
       this.label3.Text = "Generation type:";
       // 
-      // angularPlotControl1
+      // savePlot
       // 
-      this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.SlateGray;
-      this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
-      this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
-      this.angularPlotControl1.Data = null;
-      this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-      this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
-      this.angularPlotControl1.Name = "angularPlotControl1";
-      this.angularPlotControl1.Size = new System.Drawing.Size(616, 310);
-      this.angularPlotControl1.TabIndex = 11;
-      this.angularPlotControl1.Text = "angularPlotControl1";
+      this.savePlot.Location = new System.Drawing.Point(521, 19);
+      this.savePlot.Name = "savePlot";
+      this.savePlot.Size = new System.Drawing.Size(103, 23);
+      this.savePlot.TabIndex = 12;
+      this.savePlot.Text = "Save plot...";
+      this.savePlot.UseVisualStyleBackColor = true;
+      this.savePlot.Click += new System.EventHandler(this.savePlot_Click);
       // 
       // MainForm
       // 
@@ -304,6 +349,7 @@
       this.Text = "BRDF Viewer for H-RT";
       this.groupBox1.ResumeLayout(false);
       this.groupBox1.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).EndInit();
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.reflectedAngle)).EndInit();
@@ -334,6 +380,8 @@
     private AngularPlotControl angularPlotControl1;
     private System.Windows.Forms.Button getMaterials;
     private System.Windows.Forms.ComboBox materials;
+    private System.Windows.Forms.BindingSource materialsSource;
+    private System.Windows.Forms.Button savePlot;
   }
 }
 

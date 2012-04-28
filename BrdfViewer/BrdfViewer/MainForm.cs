@@ -40,18 +40,18 @@ namespace BrdfViewer
 
     private void getMaterials_Click(object sender, EventArgs e)
     {
-      var materials = new List<string>();
+      materialsSource.Clear();
       var process = generateBrdf("--materials " + sceneFileName.Text);
       while (!process.StandardOutput.EndOfStream)
       {
         var line = process.StandardOutput.ReadLine();
         if (line.StartsWith("#"))
           continue;
-        materials.Add(line);
-      }
 
-      this.materials.Items.Clear();
-      this.materials.Items.AddRange(materials.ToArray());
+        var split = line.Split('\t');
+        if (split.Length == 2)
+          materialsSource.Add(new MaterialItem() {Name = split[0], Signature = split[1]});
+      }
     }
 
     private void generate_Click(object sender, EventArgs e)
@@ -61,8 +61,8 @@ namespace BrdfViewer
 
     private void generateData()
     {
-      var data = new Dictionary<double, double>();
-      var args = sceneFileName.Text + " \"" + materials.Text + "\"";
+      var data = new Dictionary<double, List<double>>();
+      var args = sceneFileName.Text + " \"" + materials.Text + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture);
       var process = generateBrdf(args);
       var reader = process.StandardOutput;
       while (!reader.EndOfStream)
@@ -73,16 +73,34 @@ namespace BrdfViewer
 
         var split = line.Split('\t');
         double angle, f;
-        if (double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out angle)
-            && double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out f))
-          data.Add(angle, f);
+        var angleParsed = double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out angle);
+
+        if (angleParsed)
+        {
+          var cells = new List<double>();
+          for (int i = 1; i < split.Length; i++)
+          {
+            if (double.TryParse(split[i], NumberStyles.Number, CultureInfo.InvariantCulture, out f))
+              cells.Add(f);
+            else
+              cells.Add(0);
+          }
+          data.Add(angle, cells);
+        }
       }
       angularPlotControl1.Data = data;
+      var item = materials.SelectedItem as MaterialItem;
+      angularPlotControl1.ChartTitle = item != null ? item.Signature : string.Empty;
     }
 
     private void materials_SelectedIndexChanged(object sender, EventArgs e)
     {
       generateData();
+    }
+
+    private void savePlot_Click(object sender, EventArgs e)
+    {
+      angularPlotControl1.SaveToWmf("plot.wmf");
     }
   }
 }

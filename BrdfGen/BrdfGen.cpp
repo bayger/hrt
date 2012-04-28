@@ -18,12 +18,14 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
   args.add("material-name", 1);
 
   Hrt::number step = 0.1;
+  Hrt::number incidentAngle = 30;
   po::options_description options("options");
   options.add_options()
     ("help", "shows this help")
     ("about", "shows information about this program")
     ("version,v", "shows version number of H-RayTracer")
     ("step,s", po::value<Hrt::number>(&step), "sets angle step for generated series [0.1]")
+    ("incident,i", po::value<Hrt::number>(&incidentAngle), "sets incident angle for generated series [30]")
     ("materials", "outputs only material names (line by line)");
   
   po::options_description hidden("hidden");
@@ -77,6 +79,7 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
 
   m_step = m_cmdArgs.count("steps") > 0 ? step : 0.1;
   m_materialsOnly = m_cmdArgs.count("materials") > 0;
+  m_incidentAngle = incidentAngle;
   return true;
 }
 
@@ -130,7 +133,7 @@ void BrdfGen::OutputData()
   std::cout << "# Signature: " << m_material->GetSignature() << std::endl;
   
   RayLight rayLight;
-  rayLight.Direction = -Vector3D::FromSpherical(0, Consts::Pi / 180 * 30);
+  rayLight.Direction = -Vector3D::FromSpherical(0, Consts::Pi / 180 * m_incidentAngle);
   rayLight.Radiance.SetOne();
   for(number angle=-90; angle<90.0; angle += m_step)
   {
@@ -158,7 +161,7 @@ void BrdfGen::OutputMaterialNames()
   auto materials = m_scene->GetAllMaterials();
   for(auto kv = materials.begin(); kv != materials.end(); kv++)
   {
-    std::cout << kv->second->GetName() << std::endl;
+    std::cout << kv->second->GetName() << "\t" << kv->second->GetSignature() << std::endl;
   }
 }
 
