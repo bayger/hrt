@@ -34,6 +34,8 @@
       this.browseSceneFile = new System.Windows.Forms.Button();
       this.label2 = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.getMaterials = new System.Windows.Forms.Button();
+      this.materials = new System.Windows.Forms.ComboBox();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.generate = new System.Windows.Forms.Button();
       this.label6 = new System.Windows.Forms.Label();
@@ -46,8 +48,6 @@
       this.constIncidence = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
       this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
-      this.materials = new System.Windows.Forms.ComboBox();
-      this.getMaterials = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       this.groupBox2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.reflectedAngle)).BeginInit();
@@ -72,7 +72,7 @@
       this.sceneFileName.Name = "sceneFileName";
       this.sceneFileName.Size = new System.Drawing.Size(447, 20);
       this.sceneFileName.TabIndex = 1;
-      this.sceneFileName.Text = "balls.ysf";
+      this.sceneFileName.Text = "ball.ysf";
       // 
       // browseSceneFile
       // 
@@ -83,6 +83,7 @@
       this.browseSceneFile.TabIndex = 2;
       this.browseSceneFile.Text = "Browse...";
       this.browseSceneFile.UseVisualStyleBackColor = true;
+      this.browseSceneFile.Click += new System.EventHandler(this.browseSceneFile_Click);
       // 
       // label2
       // 
@@ -110,6 +111,25 @@
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Input";
       // 
+      // getMaterials
+      // 
+      this.getMaterials.Location = new System.Drawing.Point(262, 51);
+      this.getMaterials.Name = "getMaterials";
+      this.getMaterials.Size = new System.Drawing.Size(100, 23);
+      this.getMaterials.TabIndex = 6;
+      this.getMaterials.Text = "Get Materials";
+      this.getMaterials.UseVisualStyleBackColor = true;
+      this.getMaterials.Click += new System.EventHandler(this.getMaterials_Click);
+      // 
+      // materials
+      // 
+      this.materials.FormattingEnabled = true;
+      this.materials.Location = new System.Drawing.Point(107, 53);
+      this.materials.Name = "materials";
+      this.materials.Size = new System.Drawing.Size(149, 21);
+      this.materials.TabIndex = 5;
+      this.materials.SelectedIndexChanged += new System.EventHandler(this.materials_SelectedIndexChanged);
+      // 
       // groupBox2
       // 
       this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -135,13 +155,13 @@
       // 
       // generate
       // 
-      this.generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.generate.Location = new System.Drawing.Point(515, 46);
+      this.generate.Location = new System.Drawing.Point(412, 20);
       this.generate.Name = "generate";
-      this.generate.Size = new System.Drawing.Size(120, 48);
+      this.generate.Size = new System.Drawing.Size(103, 23);
       this.generate.TabIndex = 10;
       this.generate.Text = "Generate";
       this.generate.UseVisualStyleBackColor = true;
+      this.generate.Click += new System.EventHandler(this.generate_Click);
       // 
       // label6
       // 
@@ -260,31 +280,16 @@
       this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.SlateGray;
       this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
+      this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
       this.angularPlotControl1.Data = null;
-      this.angularPlotControl1.ForeColor = System.Drawing.Color.Green;
+      this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
       this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
       this.angularPlotControl1.Name = "angularPlotControl1";
       this.angularPlotControl1.Size = new System.Drawing.Size(616, 310);
       this.angularPlotControl1.TabIndex = 11;
       this.angularPlotControl1.Text = "angularPlotControl1";
-      // 
-      // materials
-      // 
-      this.materials.FormattingEnabled = true;
-      this.materials.Location = new System.Drawing.Point(107, 53);
-      this.materials.Name = "materials";
-      this.materials.Size = new System.Drawing.Size(149, 21);
-      this.materials.TabIndex = 5;
-      // 
-      // getMaterials
-      // 
-      this.getMaterials.Location = new System.Drawing.Point(262, 51);
-      this.getMaterials.Name = "getMaterials";
-      this.getMaterials.Size = new System.Drawing.Size(100, 23);
-      this.getMaterials.TabIndex = 6;
-      this.getMaterials.Text = "Get Materials";
-      this.getMaterials.UseVisualStyleBackColor = true;
       // 
       // MainForm
       // 
