@@ -23,7 +23,8 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     ("help", "shows this help")
     ("about", "shows information about this program")
     ("version,v", "shows version number of H-RayTracer")
-    ("step,s", po::value<Hrt::number>(&step), "sets angle step for generated series [0.1]");
+    ("step,s", po::value<Hrt::number>(&step), "sets angle step for generated series [0.1]")
+    ("materials", "outputs only material names (line by line)");
   
   po::options_description hidden("hidden");
   hidden.add_options()
@@ -67,7 +68,7 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     return false;
   }
 
-  if (m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0 || !argsProcessed)
+  if (((m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0) && !m_materialsOnly) || !argsProcessed)
   {
     std::cout << "Invalid number of arguments. Use '--help' option to get detailed help."
       << std::endl;
@@ -75,6 +76,7 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
   }
 
   m_step = m_cmdArgs.count("steps") > 0 ? step : 0.1;
+  m_materialsOnly = m_cmdArgs.count("materials") > 0;
   return true;
 }
 
@@ -110,10 +112,16 @@ std::string BrdfGen::LoadScene()
 void BrdfGen::Run()
 {
   LoadScene();
-  std::string materialName = m_cmdArgs["material-name"].as<std::string>();
-  m_material = m_scene->GetMaterial(materialName);
-  if (m_material != NULL)
-    OutputData();
+
+  if (m_materialsOnly)
+    OutputMaterialNames();
+  else
+  {
+    std::string materialName = m_cmdArgs["material-name"].as<std::string>();
+    m_material = m_scene->GetMaterial(materialName);
+    if (m_material != NULL)
+      OutputData();
+  }
 }
 
 void BrdfGen::OutputData()
@@ -136,6 +144,16 @@ void BrdfGen::OutputData()
 
     Spectrum x = m_material->CalculateBsdf(rayLight, intersection);
     std::cout << angle << "\t" << x.GetAverage() << std::endl;
+  }
+}
+
+void BrdfGen::OutputMaterialNames()
+{
+  std::cout << "# Materials" << std::endl;
+  auto materials = m_scene->GetAllMaterials();
+  for(auto kv = materials.begin(); kv != materials.end(); kv++)
+  {
+    std::cout << kv->second->GetName() << std::endl;
   }
 }
 

@@ -12,7 +12,8 @@ private:
   Hrt::SceneOwnedPtr m_scene;
   Hrt::MaterialOwnedPtr m_material;
   Hrt::number m_step;
-
+  bool m_materialsOnly;
   std::string LoadScene();
   void OutputData();
+  void OutputMaterialNames();
 };

@@ -29,6 +29,10 @@ namespace Hrt
 	class Sampler;
 	class LightIntegrator;
 
+  typedef stdext::hash_map<std::string, LightOwnedPtr> NamedLightMap;
+  typedef stdext::hash_map<std::string, ShapeOwnedPtr> NamedShapeMap;
+  typedef stdext::hash_map<std::string, MaterialOwnedPtr> NamedMaterialMap;
+
 	class Scene : public enable_shared_from_this<Scene>,
 		public IYamlSerializable,
 		public ISupportsConcurrency
@@ -61,6 +65,8 @@ namespace Hrt
 
     MaterialPtr GetMaterial(const std::string& name);
 
+    NamedMaterialMap& GetAllMaterials();
+
 		void Prepare();
 
 
@@ -79,10 +85,6 @@ namespace Hrt
 		bool m_isRendering;
 		std::vector< LightOwnedPtr > m_lights;
 		std::vector< PrimitiveOwnedPtr > m_primitives;
-
-		typedef stdext::hash_map<std::string, LightOwnedPtr> NamedLightMap;
-		typedef stdext::hash_map<std::string, ShapeOwnedPtr> NamedShapeMap;
-		typedef stdext::hash_map<std::string, MaterialOwnedPtr> NamedMaterialMap;
 
 		NamedLightMap m_namedLights;
 		NamedShapeMap m_namedShapes;

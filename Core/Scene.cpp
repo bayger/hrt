@@ -283,5 +283,11 @@ namespace Hrt
     return m_namedMaterials[name];
   }
 
+  NamedMaterialMap& Scene::GetAllMaterials()
+  {
+    return m_namedMaterials;
+  }
+
+
 
 }
