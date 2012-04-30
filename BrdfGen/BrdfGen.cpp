@@ -146,7 +146,7 @@ void BrdfGen::OutputData()
       Math::Abs(angle) / 180 * Consts::Pi);
 
     Spectrum x = m_material->CalculateBsdf(rayLight, intersection);
-    std::cout << angle;
+    std::cout << m_incidentAngle << "\t" << angle;
     for(int i=0; i<Spectrum::LambdaCount; i++)
     {
       std::cout << "\t" << x[i];

@@ -72,20 +72,20 @@ namespace BrdfViewer
           continue;
 
         var split = line.Split('\t');
-        double angle, f;
-        var angleParsed = double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out angle);
+        double thetaR, thetaI, f;
+        var angleParsed = double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaR);
 
         if (angleParsed)
         {
           var cells = new List<double>();
-          for (int i = 1; i < split.Length; i++)
+          for (int i = 2; i < split.Length; i++)
           {
             if (double.TryParse(split[i], NumberStyles.Number, CultureInfo.InvariantCulture, out f))
               cells.Add(f);
             else
               cells.Add(0);
           }
-          data.Add(angle, cells);
+          data.Add(thetaR, cells);
         }
       }
       angularPlotControl1.Data = data;
@@ -101,6 +101,18 @@ namespace BrdfViewer
     private void savePlot_Click(object sender, EventArgs e)
     {
       angularPlotControl1.SaveToWmf("plot.wmf");
+    }
+
+    private void timer_Tick(object sender, EventArgs e)
+    {
+      timer.Stop();
+      generateData();
+    }
+
+    private void incidentAngle_ValueChanged(object sender, EventArgs e)
+    {
+      timer.Stop();
+      timer.Start();
     }
   }
 }

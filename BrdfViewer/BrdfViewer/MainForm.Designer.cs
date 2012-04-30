@@ -39,6 +39,7 @@
       this.materials = new System.Windows.Forms.ComboBox();
       this.materialsSource = new System.Windows.Forms.BindingSource(this.components);
       this.groupBox2 = new System.Windows.Forms.GroupBox();
+      this.savePlot = new System.Windows.Forms.Button();
       this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
       this.generate = new System.Windows.Forms.Button();
       this.label6 = new System.Windows.Forms.Label();
@@ -50,7 +51,7 @@
       this.constReflected = new System.Windows.Forms.RadioButton();
       this.constIncidence = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
-      this.savePlot = new System.Windows.Forms.Button();
+      this.timer = new System.Windows.Forms.Timer(this.components);
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
@@ -164,12 +165,22 @@
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "BRDF Data Generation";
       // 
+      // savePlot
+      // 
+      this.savePlot.Location = new System.Drawing.Point(521, 19);
+      this.savePlot.Name = "savePlot";
+      this.savePlot.Size = new System.Drawing.Size(103, 23);
+      this.savePlot.TabIndex = 12;
+      this.savePlot.Text = "Save plot...";
+      this.savePlot.UseVisualStyleBackColor = true;
+      this.savePlot.Click += new System.EventHandler(this.savePlot_Click);
+      // 
       // angularPlotControl1
       // 
       this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.SlateGray;
+      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.Silver;
       this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
       this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
       this.angularPlotControl1.ChartTitle = null;
@@ -266,6 +277,7 @@
             0,
             0,
             0});
+      this.incidentAngle.ValueChanged += new System.EventHandler(this.incidentAngle_ValueChanged);
       // 
       // angleStep
       // 
@@ -326,15 +338,10 @@
       this.label3.TabIndex = 0;
       this.label3.Text = "Generation type:";
       // 
-      // savePlot
+      // timer
       // 
-      this.savePlot.Location = new System.Drawing.Point(521, 19);
-      this.savePlot.Name = "savePlot";
-      this.savePlot.Size = new System.Drawing.Size(103, 23);
-      this.savePlot.TabIndex = 12;
-      this.savePlot.Text = "Save plot...";
-      this.savePlot.UseVisualStyleBackColor = true;
-      this.savePlot.Click += new System.EventHandler(this.savePlot_Click);
+      this.timer.Interval = 250;
+      this.timer.Tick += new System.EventHandler(this.timer_Tick);
       // 
       // MainForm
       // 
@@ -382,6 +389,7 @@
     private System.Windows.Forms.ComboBox materials;
     private System.Windows.Forms.BindingSource materialsSource;
     private System.Windows.Forms.Button savePlot;
+    private System.Windows.Forms.Timer timer;
   }
 }
 
