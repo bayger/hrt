@@ -52,6 +52,7 @@
       this.constIncidence = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
       this.timer = new System.Windows.Forms.Timer(this.components);
+      this.materialSignature = new System.Windows.Forms.Label();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
@@ -103,6 +104,7 @@
       // 
       this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBox1.Controls.Add(this.materialSignature);
       this.groupBox1.Controls.Add(this.getMaterials);
       this.groupBox1.Controls.Add(this.materials);
       this.groupBox1.Controls.Add(this.label1);
@@ -186,6 +188,7 @@
       this.angularPlotControl1.ChartTitle = null;
       this.angularPlotControl1.Data = null;
       this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+      this.angularPlotControl1.IncidentAngle = 0D;
       this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
       this.angularPlotControl1.Name = "angularPlotControl1";
       this.angularPlotControl1.Size = new System.Drawing.Size(884, 450);
@@ -344,6 +347,14 @@
       this.timer.Interval = 250;
       this.timer.Tick += new System.EventHandler(this.timer_Tick);
       // 
+      // materialSignature
+      // 
+      this.materialSignature.AutoSize = true;
+      this.materialSignature.Location = new System.Drawing.Point(368, 56);
+      this.materialSignature.Name = "materialSignature";
+      this.materialSignature.Size = new System.Drawing.Size(0, 13);
+      this.materialSignature.TabIndex = 7;
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -392,6 +403,7 @@
     private System.Windows.Forms.BindingSource materialsSource;
     private System.Windows.Forms.Button savePlot;
     private System.Windows.Forms.Timer timer;
+    private System.Windows.Forms.Label materialSignature;
   }
 }
 

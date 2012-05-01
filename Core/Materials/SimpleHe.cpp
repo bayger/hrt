@@ -156,7 +156,7 @@ namespace Hrt
             Vector3D k_p = oppositeVectors ? Vector3D::UnitX : k_r.Cross(k_i);
             
             number H = (Math::Square(s_r*k_i) + Math::Square(p_r*k_i)) * (Math::Square(s_i*k_r) + Math::Square(p_i*k_r));
-            if (H == 0) 
+            if (oppositeVectors) 
               H = 1;
             number G = (Math::Square(v.Dot(v)/v.Z) * (1/Math::Square(k_p.LengthSquared())) * H);
             // NOTE: G may be #INF for v.Z == 0 or |k_p| == 0

@@ -65,6 +65,8 @@ namespace BrdfViewer
       var args = sceneFileName.Text + " \"" + materials.Text 
         + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture) 
         + " -s "+angleStep.Value.ToString(CultureInfo.InvariantCulture);
+      var selectedMaterial = materials.SelectedItem as MaterialItem;
+      materialSignature.Text = selectedMaterial != null ? selectedMaterial.Signature : string.Empty;
       var process = generateBrdf(args);
       var reader = process.StandardOutput;
       var readHeader = false;
