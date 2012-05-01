@@ -20,7 +20,8 @@ namespace Hrt
 
 	number Math::Erfc(number x)
 	{
-		return num(gsl_sf_erfc(x));
+    int inf = gsl_isinf(x);
+		return inf == 0 ? num(gsl_sf_erfc(x)) : -(inf-1);
 	}
 
 	Hrt::number Math::Factorial( unsigned int i )

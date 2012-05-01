@@ -14,6 +14,7 @@ namespace BrdfViewer
     private Color _chartPlotColor = Color.Blue;
     private Color _chartAxisColor = Color.Gray;
     private string _chartTitle;
+    private double _incidentAngle;
 
     public Dictionary<double, List<double>> Data
     {
@@ -51,6 +52,16 @@ namespace BrdfViewer
       set
       {
         _chartAxisColor = value;
+        Invalidate();
+      }
+    }
+
+    public double IncidentAngle
+    {
+      get { return _incidentAngle; }
+      set
+      {
+        _incidentAngle = value;
         Invalidate();
       }
     }
@@ -117,7 +128,7 @@ namespace BrdfViewer
       {
         if (Data == null || !Data.Any())
         {
-          g.DrawString("No data loaded", Font, axisBrush, offsetX + 10, offsetY + 10);
+          g.DrawString("No data provided", Font, axisBrush, offsetX-16, offsetY);
 
           return;
         }
@@ -134,7 +145,7 @@ namespace BrdfViewer
         pens.Add(new Pen(Color.Green));
         pens.Add(new Pen(Color.Red));
 
-        using (var plotPen = new Pen(ChartPlotColor))
+        try
         {
           var maxF = new List<double>();
           for (int i = 0; i < valCount; i++)
@@ -144,25 +155,26 @@ namespace BrdfViewer
 
           for (int i = 0; i < valCount; i++)
           {
-            var px = (float) (offsetX + size);
-            var py = (float) (offsetY + size);
+            var points = new List<PointF>();
+            points.Add(new PointF(offsetX + size, offsetY + size));
             foreach (var item in angles)
             {
               var angle = item + 90.0f; // -90..90 --> 0..180
-              var radians = angle/180*Math.PI;
-              var normalizedF = (Data[item])[i]/normalizationFactor;
-              var ex = (float) (offsetX + size + Math.Cos(radians)*size*normalizedF);
-              var ey = (float) (offsetY + size - Math.Sin(radians)*size*normalizedF);
-              g.DrawLine(pens[i%pens.Count], px, py, ex, ey);
-
-              px = ex;
-              py = ey;
+              var radians = angle / 180 * Math.PI;
+              var normalizedF = (Data[item])[i] / normalizationFactor;
+              var ex = (float)(offsetX + size + Math.Cos(radians) * size * normalizedF);
+              var ey = (float)(offsetY + size - Math.Sin(radians) * size * normalizedF);
+              points.Add(new PointF(ex, ey));
             }
+
+            g.DrawPolygon(pens[i % pens.Count], points.ToArray());
           }
         }
-
-        foreach (var pen in pens)
-          pen.Dispose();
+        finally
+        {
+          foreach (var pen in pens)
+            pen.Dispose();
+        }
       }
     }
 
@@ -188,6 +200,18 @@ namespace BrdfViewer
           var label = (angle - 90).ToString("0°");
           var labelSize = g.MeasureString(label, Font);
           g.DrawString(label, Font, brush, angle <= 90 ? ex : ex - labelSize.Width, ey - labelSize.Height);
+        }
+
+        using (var pen = new Pen(Color.DarkViolet))
+        {
+          var inRadians = (IncidentAngle + 90)/180*Math.PI;
+          var ix = (float) (offsetX + size + Math.Cos(inRadians)*size);
+          var iy = (float) (offsetY + size - Math.Sin(inRadians)*size);
+          g.DrawLine(pen, ix, iy, offsetX + size, offsetY + size);
+          var reRadians = (-IncidentAngle + 90)/180*Math.PI;
+          var rx = (float) (offsetX + size + Math.Cos(reRadians)*size);
+          var ry = (float) (offsetY + size - Math.Sin(reRadians)*size);
+          g.DrawLine(pen, offsetX + size, offsetY + size, rx, ry);
         }
       }
     }

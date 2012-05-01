@@ -75,14 +75,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.sceneFileName.Location = new System.Drawing.Point(107, 22);
       this.sceneFileName.Name = "sceneFileName";
-      this.sceneFileName.Size = new System.Drawing.Size(447, 20);
+      this.sceneFileName.Size = new System.Drawing.Size(715, 20);
       this.sceneFileName.TabIndex = 1;
       this.sceneFileName.Text = "ball.ysf";
       // 
       // browseSceneFile
       // 
       this.browseSceneFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.browseSceneFile.Location = new System.Drawing.Point(560, 20);
+      this.browseSceneFile.Location = new System.Drawing.Point(828, 20);
       this.browseSceneFile.Name = "browseSceneFile";
       this.browseSceneFile.Size = new System.Drawing.Size(75, 23);
       this.browseSceneFile.TabIndex = 2;
@@ -111,7 +111,7 @@
       this.groupBox1.Controls.Add(this.label2);
       this.groupBox1.Location = new System.Drawing.Point(12, 12);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(652, 92);
+      this.groupBox1.Size = new System.Drawing.Size(920, 92);
       this.groupBox1.TabIndex = 5;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Input";
@@ -160,7 +160,7 @@
       this.groupBox2.Controls.Add(this.label3);
       this.groupBox2.Location = new System.Drawing.Point(12, 110);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(652, 438);
+      this.groupBox2.Size = new System.Drawing.Size(920, 578);
       this.groupBox2.TabIndex = 6;
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "BRDF Data Generation";
@@ -188,7 +188,7 @@
       this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
       this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
       this.angularPlotControl1.Name = "angularPlotControl1";
-      this.angularPlotControl1.Size = new System.Drawing.Size(616, 310);
+      this.angularPlotControl1.Size = new System.Drawing.Size(884, 450);
       this.angularPlotControl1.TabIndex = 11;
       this.angularPlotControl1.Text = "angularPlotControl1";
       // 
@@ -295,7 +295,8 @@
             1,
             0,
             0,
-            65536});
+            0});
+      this.angleStep.ValueChanged += new System.EventHandler(this.angleStep_ValueChanged);
       // 
       // label4
       // 
@@ -347,12 +348,13 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(676, 560);
+      this.ClientSize = new System.Drawing.Size(944, 700);
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.groupBox1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MinimumSize = new System.Drawing.Size(692, 600);
       this.Name = "MainForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "BRDF Viewer for H-RT";
       this.groupBox1.ResumeLayout(false);
       this.groupBox1.PerformLayout();

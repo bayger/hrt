@@ -53,6 +53,8 @@ namespace Hrt
     static inline number solve_xexpx(number y)
     {
       const int max_iterations = 10000;
+      if (Math::Abs(y) < epsilon)
+        return 0;
       
       // NOTE: seed is tweaked to avoid NaNs
       number x = y < 500 ? 1.0 : 100.0; 
@@ -97,10 +99,13 @@ namespace Hrt
             return result;
         }
         
-        Vector3D s_i = k_i.Cross(Vector3D::UnitZ).Normalize();
+        bool isParallelI = (1 - Math::Abs(k_i.Z)) < epsilon;
+        bool isParallelR = (1 - Math::Abs(k_r.Z)) < epsilon;
+
+        Vector3D s_i = isParallelI ? -Vector3D::UnitX : k_i.Cross(Vector3D::UnitZ).Normalize();
         Vector3D p_i = s_i.Cross(k_i);
         
-        Vector3D s_r = k_r.Cross(Vector3D::UnitZ).Normalize();
+        Vector3D s_r = isParallelR ? Vector3D::UnitX : k_r.Cross(Vector3D::UnitZ).Normalize();
         Vector3D p_r = s_r.Cross(k_r);
         
         // calc angles
@@ -109,8 +114,8 @@ namespace Hrt
 
 				number sigma2 = CalculateSigma(sigma, gamma, theta_i, theta_r);
         
-        number vh = (-intersection.RayDirection-incomingRay.Direction).Normalize()
-                .Dot(-intersection.RayDirection);
+        number vh = Math::Min(num(1), (-intersection.RayDirection-incomingRay.Direction).Normalize()
+                .Dot(-intersection.RayDirection));
         
         // check if in specular cone
         bool isInSpecularCone = (lightingType & LightingType::IdealSpecular) != 0;
@@ -147,11 +152,13 @@ namespace Hrt
             // (note the differences from the paper: v and v2 are different)
             Vector3D v = k_r - k_i;
             number v_xy = Math::Sqrt(v.X*v.X + v.Y*v.Y);
-            Vector3D k_p = k_r.Cross(k_i);
+            bool oppositeVectors = (k_r + k_i).Length() < epsilon;
+            Vector3D k_p = oppositeVectors ? Vector3D::UnitX : k_r.Cross(k_i);
             
-            number G = (Math::Square(v.Dot(v)/v.Z) * (1/Math::Square(k_p.LengthSquared()))
-                    * (Math::Square(s_r*k_i) + Math::Square(p_r*k_i))
-                    * (Math::Square(s_i*k_r) + Math::Square(p_i*k_r)));
+            number H = (Math::Square(s_r*k_i) + Math::Square(p_r*k_i)) * (Math::Square(s_i*k_r) + Math::Square(p_i*k_r));
+            if (H == 0) 
+              H = 1;
+            number G = (Math::Square(v.Dot(v)/v.Z) * (1/Math::Square(k_p.LengthSquared())) * H);
             // NOTE: G may be #INF for v.Z == 0 or |k_p| == 0
             
             // Fresnel for unpolarized light
@@ -163,7 +170,7 @@ namespace Hrt
             // Distribution function            
             number g = Math::Square( (Consts::TwoPi*sigma2 / lambda)
                     * (cos_theta_i + cos_theta_r) );
-            number exp_minus_g = 1/Math::Exp(g);
+            number exp_minus_g = Math::Exp(-g);
             number D = CalcDiffuseDistribution(v_xy, g, exp_minus_g, lambda,
                     cos_theta_r+cos_theta_i, lambdaIndex);
             

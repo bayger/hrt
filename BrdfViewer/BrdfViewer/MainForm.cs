@@ -62,20 +62,30 @@ namespace BrdfViewer
     private void generateData()
     {
       var data = new Dictionary<double, List<double>>();
-      var args = sceneFileName.Text + " \"" + materials.Text + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture);
+      var args = sceneFileName.Text + " \"" + materials.Text 
+        + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture) 
+        + " -s "+angleStep.Value.ToString(CultureInfo.InvariantCulture);
       var process = generateBrdf(args);
       var reader = process.StandardOutput;
+      var readHeader = false;
       while (!reader.EndOfStream)
       {
         var line = process.StandardOutput.ReadLine();
         if (line.StartsWith("#") || line.StartsWith("Input:") || line.StartsWith("Loading"))
           continue;
 
+        if (!readHeader)
+        {
+          readHeader = true;
+          continue;
+        }
+
         var split = line.Split('\t');
         double thetaR, thetaI, f;
-        var angleParsed = double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaR);
+        var parsedR = double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaR);
+        var parsedI = double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaI);
 
-        if (angleParsed)
+        if (parsedR && parsedI)
         {
           var cells = new List<double>();
           for (int i = 2; i < split.Length; i++)
@@ -89,6 +99,7 @@ namespace BrdfViewer
         }
       }
       angularPlotControl1.Data = data;
+      angularPlotControl1.IncidentAngle = (double) incidentAngle.Value;
       var item = materials.SelectedItem as MaterialItem;
       angularPlotControl1.ChartTitle = item != null ? item.Signature : string.Empty;
     }
@@ -110,6 +121,12 @@ namespace BrdfViewer
     }
 
     private void incidentAngle_ValueChanged(object sender, EventArgs e)
+    {
+      timer.Stop();
+      timer.Start();
+    }
+
+    private void angleStep_ValueChanged(object sender, EventArgs e)
     {
       timer.Stop();
       timer.Start();

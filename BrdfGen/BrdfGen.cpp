@@ -70,27 +70,31 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     return false;
   }
 
-  if (((m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0) && !m_materialsOnly) || !argsProcessed)
+  if (((m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0) && m_cmdArgs.count("materials") == 0) || !argsProcessed)
   {
-    std::cout << "Invalid number of arguments. Use '--help' option to get detailed help."
+    std::cerr << "Invalid number of arguments. Use '--help' option to get detailed help."
       << std::endl;
     return false;
   }
 
-  m_step = m_cmdArgs.count("steps") > 0 ? step : 0.1;
+  m_step = m_cmdArgs.count("step") > 0 ? step : 0.1;
   m_materialsOnly = m_cmdArgs.count("materials") > 0;
   m_incidentAngle = incidentAngle;
   return true;
 }
 
-std::string BrdfGen::LoadScene()
+void BrdfGen::LoadScene()
 {
   std::string brdfFileName = m_cmdArgs["scene-file"].as<std::string>();
-  std::cout << "Input: " << brdfFileName << std::endl;
   std::ifstream sceneFile(brdfFileName.c_str());
 
   sceneFile.seekg(0, std::ios_base::end);
   long int size = sceneFile.tellg();
+  if (size == -1)
+  {
+    std::cerr << "Scene file not found" << std::endl;
+    return;
+  }
   sceneFile.seekg(0, std::ios_base::beg);
   scoped_array<char> buffer(new char[size+1]);
   memset(buffer.get(), 0, sizeof(char)*(1+size));
@@ -106,15 +110,17 @@ std::string BrdfGen::LoadScene()
   }
   catch (SerializationException& e)
   {
-    std::cout << "Failed to read scene file." << std::endl
+    std::cerr << "Failed to read scene file." << std::endl
       << "Error: " << e.GetMessage() << std::endl;
-    return false;
+    m_scene.reset();
   }
 }
 
 void BrdfGen::Run()
 {
   LoadScene();
+  if (m_scene == NULL)
+    return;
 
   if (m_materialsOnly)
     OutputMaterialNames();
@@ -131,7 +137,13 @@ void BrdfGen::OutputData()
 {
   std::cout << "# Material: " << m_material->GetName() << std::endl;
   std::cout << "# Signature: " << m_material->GetSignature() << std::endl;
-  
+  std::cout << "AngleI\tAngleR";
+  for(int i=0; i<Spectrum::LambdaCount; i++)
+  {
+    std::cout << "\tF(lambda=" << Spectrum::IndexToLambda(i) << ")";
+  }
+  std::cout << std::endl;
+
   RayLight rayLight;
   rayLight.Direction = -Vector3D::FromSpherical(0, Consts::Pi / 180 * m_incidentAngle);
   rayLight.Radiance.SetOne();
@@ -144,6 +156,9 @@ void BrdfGen::OutputData()
     intersection.TangentV = Vector3D::UnitY;
     intersection.RayDirection = -Vector3D::FromSpherical(angle < 0 ? Consts::Pi : 0, 
       Math::Abs(angle) / 180 * Consts::Pi);
+
+    if (Math::Abs(angle - m_incidentAngle) < epsilon)
+      std::cout << "";
 
     Spectrum x = m_material->CalculateBsdf(rayLight, intersection);
     std::cout << m_incidentAngle << "\t" << angle;
