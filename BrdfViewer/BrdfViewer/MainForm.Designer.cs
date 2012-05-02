@@ -35,6 +35,7 @@
       this.browseSceneFile = new System.Windows.Forms.Button();
       this.label2 = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
+      this.materialSignature = new System.Windows.Forms.Label();
       this.getMaterials = new System.Windows.Forms.Button();
       this.materials = new System.Windows.Forms.ComboBox();
       this.materialsSource = new System.Windows.Forms.BindingSource(this.components);
@@ -52,7 +53,6 @@
       this.constIncidence = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
       this.timer = new System.Windows.Forms.Timer(this.components);
-      this.materialSignature = new System.Windows.Forms.Label();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
@@ -118,6 +118,14 @@
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Input";
       // 
+      // materialSignature
+      // 
+      this.materialSignature.AutoSize = true;
+      this.materialSignature.Location = new System.Drawing.Point(368, 56);
+      this.materialSignature.Name = "materialSignature";
+      this.materialSignature.Size = new System.Drawing.Size(0, 13);
+      this.materialSignature.TabIndex = 7;
+      // 
       // getMaterials
       // 
       this.getMaterials.Location = new System.Drawing.Point(262, 51);
@@ -182,9 +190,10 @@
       this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.Silver;
+      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.DimGray;
       this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
       this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
+      this.angularPlotControl1.ChartSecondaryAxisColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
       this.angularPlotControl1.ChartTitle = null;
       this.angularPlotControl1.Data = null;
       this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -298,7 +307,7 @@
             1,
             0,
             0,
-            0});
+            65536});
       this.angleStep.ValueChanged += new System.EventHandler(this.angleStep_ValueChanged);
       // 
       // label4
@@ -346,14 +355,6 @@
       // 
       this.timer.Interval = 250;
       this.timer.Tick += new System.EventHandler(this.timer_Tick);
-      // 
-      // materialSignature
-      // 
-      this.materialSignature.AutoSize = true;
-      this.materialSignature.Location = new System.Drawing.Point(368, 56);
-      this.materialSignature.Name = "materialSignature";
-      this.materialSignature.Size = new System.Drawing.Size(0, 13);
-      this.materialSignature.TabIndex = 7;
       // 
       // MainForm
       // 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -12,7 +13,8 @@ namespace BrdfViewer
     private Dictionary<double, List<double>> _data;
     private Color _chartBackColor = Color.White;
     private Color _chartPlotColor = Color.Blue;
-    private Color _chartAxisColor = Color.Gray;
+    private Color _chartAxisColor = Color.DarkGray;
+    private Color _chartSecondaryAxisColor = Color.LightGray;
     private string _chartTitle;
     private double _incidentAngle;
 
@@ -56,6 +58,16 @@ namespace BrdfViewer
       }
     }
 
+    public Color ChartSecondaryAxisColor
+    {
+      get { return _chartSecondaryAxisColor; }
+      set
+      {
+        _chartSecondaryAxisColor = value;
+        Invalidate();
+      }
+    }
+
     public double IncidentAngle
     {
       get { return _incidentAngle; }
@@ -90,13 +102,41 @@ namespace BrdfViewer
 
     public void SaveToWmf(string fileName)
     {
-      
+      using (var g = CreateGraphics())
+      {
+        var hdc = g.GetHdc();
+        var r = new Rectangle(0, 0, 884, 450);
+
+        try
+        {
+          using (var metaFile = new Metafile(fileName, hdc))
+          using (var gWmf = Graphics.FromImage(metaFile))
+          {
+            Draw(r, gWmf);
+          }
+        }
+        catch (Exception ex)
+        {
+          MessageBox.Show(this, "An error occured while trying to create Windows Meta File", "Error",
+                          MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        finally
+        {
+          g.ReleaseHdc(hdc);
+        }
+      }
     }
 
     protected override void OnPaint(PaintEventArgs pe)
     {
       var g = pe.Graphics;
       var r = ClientRectangle;
+
+      Draw(r, g);
+    }
+
+    private void Draw(Rectangle r, Graphics g)
+    {
       var w = r.Width - 2;
       var h = r.Height - 2;
       var size = w > h * 2 ? h : w / 2;
@@ -128,7 +168,7 @@ namespace BrdfViewer
       {
         if (Data == null || !Data.Any())
         {
-          g.DrawString("No data provided", Font, axisBrush, offsetX-16, offsetY);
+          g.DrawString("No data provided", Font, axisBrush, offsetX - 16, offsetY);
 
           return;
         }
@@ -181,18 +221,18 @@ namespace BrdfViewer
     private void DrawAngleTicks(Graphics g, Pen drawPen, int offsetX, int offsetY, int size)
     {
       using (var brush = new SolidBrush(ChartAxisColor))
-      using (var dottedPen = new Pen(ChartAxisColor))
+      using (var dottedPen = new Pen(ChartSecondaryAxisColor))
       {
-        dottedPen.DashStyle = DashStyle.Dash;
-        dottedPen.DashPattern = new float[] {3.0f, 3.0f};
+        //dottedPen.DashStyle = DashStyle.Dash;
+        //dottedPen.DashPattern = new float[] { 3.0f, 3.0f };
         const float tickSize = 10.0f;
         for (float angle = 0; angle <= 180; angle += 10)
         {
-          var radians = angle/180*Math.PI;
-          var ex = (float) (offsetX + size + Math.Cos(radians)*size);
-          var ey = (float) (offsetY + size - Math.Sin(radians)*size);
-          var sx = angle == 90.0f ? offsetX + size : (float) (ex - Math.Cos(radians)*tickSize);
-          var sy = angle == 90.0f ? offsetY + size : (float) (ey + Math.Sin(radians)*tickSize);
+          var radians = angle / 180 * Math.PI;
+          var ex = (float)(offsetX + size + Math.Cos(radians) * size);
+          var ey = (float)(offsetY + size - Math.Sin(radians) * size);
+          var sx = angle == 90.0f ? offsetX + size : (float)(ex - Math.Cos(radians) * tickSize);
+          var sy = angle == 90.0f ? offsetY + size : (float)(ey + Math.Sin(radians) * tickSize);
 
           g.DrawLine(dottedPen, sx, sy, offsetX + size, offsetY + size);
           g.DrawLine(drawPen, ex, ey, sx, sy);
@@ -204,13 +244,13 @@ namespace BrdfViewer
 
         using (var pen = new Pen(Color.DarkViolet))
         {
-          var inRadians = (IncidentAngle + 90)/180*Math.PI;
-          var ix = (float) (offsetX + size + Math.Cos(inRadians)*size);
-          var iy = (float) (offsetY + size - Math.Sin(inRadians)*size);
+          var inRadians = (IncidentAngle + 90) / 180 * Math.PI;
+          var ix = (float)(offsetX + size + Math.Cos(inRadians) * size);
+          var iy = (float)(offsetY + size - Math.Sin(inRadians) * size);
           g.DrawLine(pen, ix, iy, offsetX + size, offsetY + size);
-          var reRadians = (-IncidentAngle + 90)/180*Math.PI;
-          var rx = (float) (offsetX + size + Math.Cos(reRadians)*size);
-          var ry = (float) (offsetY + size - Math.Sin(reRadians)*size);
+          var reRadians = (-IncidentAngle + 90) / 180 * Math.PI;
+          var rx = (float)(offsetX + size + Math.Cos(reRadians) * size);
+          var ry = (float)(offsetY + size - Math.Sin(reRadians) * size);
           g.DrawLine(pen, offsetX + size, offsetY + size, rx, ry);
         }
       }

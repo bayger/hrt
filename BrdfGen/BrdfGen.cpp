@@ -157,10 +157,10 @@ void BrdfGen::OutputData()
     intersection.RayDirection = -Vector3D::FromSpherical(angle < 0 ? Consts::Pi : 0, 
       Math::Abs(angle) / 180 * Consts::Pi);
 
-    if (Math::Abs(angle - m_incidentAngle) < epsilon)
-      std::cout << "";
+    bool isInSpecularCone = Math::Abs(angle + m_incidentAngle) < epsilon;
 
-    Spectrum x = m_material->CalculateBsdf(rayLight, intersection);
+    Spectrum x = m_material->CalculateBsdf(rayLight, intersection, 
+      static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
     std::cout << m_incidentAngle << "\t" << angle;
     for(int i=0; i<Spectrum::LambdaCount; i++)
     {

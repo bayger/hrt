@@ -113,7 +113,12 @@ namespace BrdfViewer
 
     private void savePlot_Click(object sender, EventArgs e)
     {
-      angularPlotControl1.SaveToWmf("plot.wmf");
+      var item = materials.SelectedItem as MaterialItem;
+      if (item != null)
+      {
+        angularPlotControl1.SaveToWmf(item.Name + ",angle=" + incidentAngle.Value.ToString(CultureInfo.InvariantCulture) +
+                                      ".wmf");
+      }
     }
 
     private void timer_Tick(object sender, EventArgs e)

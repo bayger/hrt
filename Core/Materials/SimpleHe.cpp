@@ -175,9 +175,7 @@ namespace Hrt
         cos_theta_r+cos_theta_i, lambdaIndex);
 
       // Final components
-      number delta_func = isInSpecularCone ? 1 : 0;
-      number rho_s = F2 * exp_minus_g * S;
-      number rho_sp = rho_s * delta_func;
+      number rho_sp = isInSpecularCone ? F2 * exp_minus_g * S / cos_theta_i : 0;
       number rho_dd = (F2 / Consts::Pi) * ((G*S*D)/(cos_theta_r*cos_theta_i));
       number rho_ud = a[lambdaIndex] * cos_theta_i;
 
