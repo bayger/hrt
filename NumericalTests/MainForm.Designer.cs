@@ -59,6 +59,12 @@
       this.label10 = new System.Windows.Forms.Label();
       this.numZ = new System.Windows.Forms.TextBox();
       this.label8 = new System.Windows.Forms.Label();
+      this.groupBox3 = new System.Windows.Forms.GroupBox();
+      this.calcSum = new System.Windows.Forms.Button();
+      this.mpfrAnswer = new System.Windows.Forms.TextBox();
+      this.label11 = new System.Windows.Forms.Label();
+      this.textBox1 = new System.Windows.Forms.TextBox();
+      this.approxAnswer = new System.Windows.Forms.Label();
       ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numSigma0)).BeginInit();
@@ -71,6 +77,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaI)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).BeginInit();
+      this.groupBox3.SuspendLayout();
       this.SuspendLayout();
       // 
       // label1
@@ -266,9 +273,9 @@
       this.groupBox1.Controls.Add(this.label3);
       this.groupBox1.Controls.Add(this.verify);
       this.groupBox1.Controls.Add(this.result);
-      this.groupBox1.Location = new System.Drawing.Point(583, 297);
+      this.groupBox1.Location = new System.Drawing.Point(583, 288);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(251, 144);
+      this.groupBox1.Size = new System.Drawing.Size(251, 153);
       this.groupBox1.TabIndex = 17;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Basic x*exp(x) solver";
@@ -484,12 +491,71 @@
       this.label8.TabIndex = 14;
       this.label8.Text = "z=";
       // 
+      // groupBox3
+      // 
+      this.groupBox3.Controls.Add(this.textBox1);
+      this.groupBox3.Controls.Add(this.approxAnswer);
+      this.groupBox3.Controls.Add(this.mpfrAnswer);
+      this.groupBox3.Controls.Add(this.label11);
+      this.groupBox3.Controls.Add(this.calcSum);
+      this.groupBox3.Location = new System.Drawing.Point(14, 288);
+      this.groupBox3.Name = "groupBox3";
+      this.groupBox3.Size = new System.Drawing.Size(563, 153);
+      this.groupBox3.TabIndex = 19;
+      this.groupBox3.TabStop = false;
+      this.groupBox3.Text = "Sum calculation";
+      // 
+      // calcSum
+      // 
+      this.calcSum.Location = new System.Drawing.Point(455, 124);
+      this.calcSum.Name = "calcSum";
+      this.calcSum.Size = new System.Drawing.Size(102, 23);
+      this.calcSum.TabIndex = 0;
+      this.calcSum.Text = "Calculate";
+      this.calcSum.UseVisualStyleBackColor = true;
+      this.calcSum.Click += new System.EventHandler(this.calcSum_Click);
+      // 
+      // mpfrAnswer
+      // 
+      this.mpfrAnswer.Location = new System.Drawing.Point(397, 99);
+      this.mpfrAnswer.Name = "mpfrAnswer";
+      this.mpfrAnswer.ReadOnly = true;
+      this.mpfrAnswer.Size = new System.Drawing.Size(160, 19);
+      this.mpfrAnswer.TabIndex = 26;
+      // 
+      // label11
+      // 
+      this.label11.AutoSize = true;
+      this.label11.Location = new System.Drawing.Point(394, 83);
+      this.label11.Name = "label11";
+      this.label11.Size = new System.Drawing.Size(47, 13);
+      this.label11.TabIndex = 25;
+      this.label11.Text = "MPFR:";
+      // 
+      // textBox1
+      // 
+      this.textBox1.Location = new System.Drawing.Point(397, 58);
+      this.textBox1.Name = "textBox1";
+      this.textBox1.ReadOnly = true;
+      this.textBox1.Size = new System.Drawing.Size(160, 19);
+      this.textBox1.TabIndex = 28;
+      // 
+      // approxAnswer
+      // 
+      this.approxAnswer.AutoSize = true;
+      this.approxAnswer.Location = new System.Drawing.Point(394, 42);
+      this.approxAnswer.Name = "approxAnswer";
+      this.approxAnswer.Size = new System.Drawing.Size(119, 13);
+      this.approxAnswer.TabIndex = 27;
+      this.approxAnswer.Text = "Approximation:";
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.BackColor = System.Drawing.Color.White;
       this.ClientSize = new System.Drawing.Size(846, 453);
+      this.Controls.Add(this.groupBox3);
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.groupBox1);
       this.Font = new System.Drawing.Font("Lucida Console", 8.307693F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -511,6 +577,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaI)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).EndInit();
+      this.groupBox3.ResumeLayout(false);
+      this.groupBox3.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -548,6 +616,12 @@
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.Button genSigmaOfR;
     private System.Windows.Forms.Button genSigmaOfI;
+    private System.Windows.Forms.GroupBox groupBox3;
+    private System.Windows.Forms.TextBox textBox1;
+    private System.Windows.Forms.Label approxAnswer;
+    private System.Windows.Forms.TextBox mpfrAnswer;
+    private System.Windows.Forms.Label label11;
+    private System.Windows.Forms.Button calcSum;
   }
 }
 

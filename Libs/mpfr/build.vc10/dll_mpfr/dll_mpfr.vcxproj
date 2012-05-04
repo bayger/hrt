@@ -175,7 +175,7 @@
     <ClCompile>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>..\;..\..\;..\..\..\mpir\dll\$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WIN32;_WIN64;HAVE_CONFIG_H;__GMP_LIBGMP_DLL;__MPFR_WITHIN_MPFR;_GMP_IEEE_FLOATS;_CRT_SECURE_NO_WARNINGS;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WIN32;HAVE_CONFIG_H;__GMP_LIBGMP_DLL;__MPFR_WITHIN_MPFR;_GMP_IEEE_FLOATS;_CRT_SECURE_NO_WARNINGS;HAVE_STDINT_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -329,7 +329,6 @@
     <ClCompile Include="..\..\src\fits_ushort.c" />
     <ClCompile Include="..\..\src\fma.c" />
     <ClCompile Include="..\..\src\fms.c" />
-    <ClCompile Include="..\..\src\fpif.c" />
     <ClCompile Include="..\..\src\frac.c" />
     <ClCompile Include="..\..\src\free_cache.c" />
     <ClCompile Include="..\..\src\frexp.c" />

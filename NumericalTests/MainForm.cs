@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Gnu.MP;
 using MicrosoftResearch.Infer.Maths;
 
 namespace NumericalTests
@@ -172,6 +173,13 @@ namespace NumericalTests
         R = 0
       };
       var series = GenerateSigmaSeries((angle, ts) => ts.R = angle, thetas);
+    }
+
+    private void calcSum_Click(object sender, EventArgs e)
+    {
+      var val = new Real(1234.5678);
+
+      mpfrAnswer.Text = val.ToString(10);
     }
   }
 }

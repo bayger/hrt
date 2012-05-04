@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Gnu.MP">
+      <HintPath>..\Libs\gnumpnet\binary\win32\Gnu.MP.dll</HintPath>
+    </Reference>
     <Reference Include="Infer.Runtime">
       <HintPath>..\..\..\Program Files (x86)\Microsoft Research\Infer.NET 2.4 Beta\bin\Release\Infer.Runtime.dll</HintPath>
     </Reference>
