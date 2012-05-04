@@ -63,8 +63,12 @@
       this.calcSum = new System.Windows.Forms.Button();
       this.mpfrAnswer = new System.Windows.Forms.TextBox();
       this.label11 = new System.Windows.Forms.Label();
-      this.textBox1 = new System.Windows.Forms.TextBox();
+      this.approx = new System.Windows.Forms.TextBox();
       this.approxAnswer = new System.Windows.Forms.Label();
+      this.numLambda = new System.Windows.Forms.NumericUpDown();
+      this.label12 = new System.Windows.Forms.Label();
+      this.numVxy = new System.Windows.Forms.NumericUpDown();
+      this.label13 = new System.Windows.Forms.Label();
       ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numSigma0)).BeginInit();
@@ -78,6 +82,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.numThetaI)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).BeginInit();
       this.groupBox3.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.numVxy)).BeginInit();
       this.SuspendLayout();
       // 
       // label1
@@ -493,7 +499,11 @@
       // 
       // groupBox3
       // 
-      this.groupBox3.Controls.Add(this.textBox1);
+      this.groupBox3.Controls.Add(this.numVxy);
+      this.groupBox3.Controls.Add(this.label13);
+      this.groupBox3.Controls.Add(this.numLambda);
+      this.groupBox3.Controls.Add(this.label12);
+      this.groupBox3.Controls.Add(this.approx);
       this.groupBox3.Controls.Add(this.approxAnswer);
       this.groupBox3.Controls.Add(this.mpfrAnswer);
       this.groupBox3.Controls.Add(this.label11);
@@ -517,37 +527,111 @@
       // 
       // mpfrAnswer
       // 
-      this.mpfrAnswer.Location = new System.Drawing.Point(397, 99);
+      this.mpfrAnswer.Location = new System.Drawing.Point(12, 99);
       this.mpfrAnswer.Name = "mpfrAnswer";
       this.mpfrAnswer.ReadOnly = true;
-      this.mpfrAnswer.Size = new System.Drawing.Size(160, 19);
+      this.mpfrAnswer.Size = new System.Drawing.Size(545, 19);
       this.mpfrAnswer.TabIndex = 26;
       // 
       // label11
       // 
       this.label11.AutoSize = true;
-      this.label11.Location = new System.Drawing.Point(394, 83);
+      this.label11.Location = new System.Drawing.Point(9, 83);
       this.label11.Name = "label11";
       this.label11.Size = new System.Drawing.Size(47, 13);
       this.label11.TabIndex = 25;
       this.label11.Text = "MPFR:";
       // 
-      // textBox1
+      // approx
       // 
-      this.textBox1.Location = new System.Drawing.Point(397, 58);
-      this.textBox1.Name = "textBox1";
-      this.textBox1.ReadOnly = true;
-      this.textBox1.Size = new System.Drawing.Size(160, 19);
-      this.textBox1.TabIndex = 28;
+      this.approx.Location = new System.Drawing.Point(12, 60);
+      this.approx.Name = "approx";
+      this.approx.ReadOnly = true;
+      this.approx.Size = new System.Drawing.Size(275, 19);
+      this.approx.TabIndex = 28;
       // 
       // approxAnswer
       // 
       this.approxAnswer.AutoSize = true;
-      this.approxAnswer.Location = new System.Drawing.Point(394, 42);
+      this.approxAnswer.Location = new System.Drawing.Point(9, 44);
       this.approxAnswer.Name = "approxAnswer";
       this.approxAnswer.Size = new System.Drawing.Size(119, 13);
       this.approxAnswer.TabIndex = 27;
       this.approxAnswer.Text = "Approximation:";
+      // 
+      // numLambda
+      // 
+      this.numLambda.DecimalPlaces = 12;
+      this.numLambda.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            589824});
+      this.numLambda.Location = new System.Drawing.Point(37, 20);
+      this.numLambda.Maximum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            0});
+      this.numLambda.Minimum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            -2147483648});
+      this.numLambda.Name = "numLambda";
+      this.numLambda.Size = new System.Drawing.Size(160, 19);
+      this.numLambda.TabIndex = 29;
+      this.numLambda.Value = new decimal(new int[] {
+            451,
+            0,
+            0,
+            589824});
+      // 
+      // label12
+      // 
+      this.label12.AutoSize = true;
+      this.label12.Location = new System.Drawing.Point(9, 22);
+      this.label12.Name = "label12";
+      this.label12.Size = new System.Drawing.Size(23, 13);
+      this.label12.TabIndex = 30;
+      this.label12.Text = "λ=";
+      // 
+      // numVxy
+      // 
+      this.numVxy.DecimalPlaces = 12;
+      this.numVxy.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            589824});
+      this.numVxy.Location = new System.Drawing.Point(261, 20);
+      this.numVxy.Maximum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            0});
+      this.numVxy.Minimum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            -2147483648});
+      this.numVxy.Name = "numVxy";
+      this.numVxy.Size = new System.Drawing.Size(160, 19);
+      this.numVxy.TabIndex = 31;
+      this.numVxy.Value = new decimal(new int[] {
+            451,
+            0,
+            0,
+            589824});
+      // 
+      // label13
+      // 
+      this.label13.AutoSize = true;
+      this.label13.Location = new System.Drawing.Point(216, 22);
+      this.label13.Name = "label13";
+      this.label13.Size = new System.Drawing.Size(39, 13);
+      this.label13.TabIndex = 32;
+      this.label13.Text = "vxy=";
       // 
       // MainForm
       // 
@@ -579,6 +663,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).EndInit();
       this.groupBox3.ResumeLayout(false);
       this.groupBox3.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.numVxy)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -617,11 +703,15 @@
     private System.Windows.Forms.Button genSigmaOfR;
     private System.Windows.Forms.Button genSigmaOfI;
     private System.Windows.Forms.GroupBox groupBox3;
-    private System.Windows.Forms.TextBox textBox1;
+    private System.Windows.Forms.TextBox approx;
     private System.Windows.Forms.Label approxAnswer;
     private System.Windows.Forms.TextBox mpfrAnswer;
     private System.Windows.Forms.Label label11;
     private System.Windows.Forms.Button calcSum;
+    private System.Windows.Forms.NumericUpDown numLambda;
+    private System.Windows.Forms.Label label12;
+    private System.Windows.Forms.NumericUpDown numVxy;
+    private System.Windows.Forms.Label label13;
   }
 }
 

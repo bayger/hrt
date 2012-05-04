@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using Gnu.MP;
 using MicrosoftResearch.Infer.Maths;
@@ -104,7 +105,7 @@ namespace NumericalTests
       verifyZ.Text = string.Format("±{0:p8}", Math.Abs(d / right));
       textBoxK.Text = K.ToString();
 
-      var sigma = sigma0/Math.Sqrt(1 + x);
+      var sigma = calcedSigma = sigma0 / Math.Sqrt(1 + x);
       textBoxSigma.Text = sigma.ToString("0.000000000000");
     }
 
@@ -128,6 +129,8 @@ namespace NumericalTests
       public double R { get; set; }
       public double I { get; set; }
     }
+
+    private double calcedSigma;
 
     private Dictionary<double, double> GenerateSigmaSeries(Action<double, Thetas> thetasUpdater, Thetas thetas)
     {
@@ -175,11 +178,92 @@ namespace NumericalTests
       var series = GenerateSigmaSeries((angle, ts) => ts.R = angle, thetas);
     }
 
+    private static Real Exp(Real x)
+    {
+      var result = new Real(1);
+      var lastResult = new Real(1);
+      var xi = new Real(x);
+      var factorial = new Real(1);
+      for(int i=1; i<10000; i++)
+      {
+        lastResult = result;
+        factorial *= i;
+        result += xi/factorial;
+        xi *= x;
+
+        if (lastResult == result)
+          return result;
+      }
+
+      return result;
+    }
+
+    private Real calculateD(double tau, double lambda, double g, double vxy)
+    {
+      var exp_neg_g = Exp(-g);
+      var sum = new Real(0);
+      var gm = new Real(g);
+      var factorial = new Real(1);
+      var exp2 = new Real(-(vxy*vxy*tau*tau/4));
+      for(int m=1; m<100; m++)
+      {
+        factorial *= m;
+        var a = gm*exp_neg_g/(factorial*m)*Exp(exp2/m);
+        sum += a;
+        gm *= g;
+      }
+
+      return sum*(Math.PI*Math.PI*tau*tau/(4*lambda*lambda));
+    }
+
     private void calcSum_Click(object sender, EventArgs e)
     {
+      Real.DefaultPrecision = 256;
       var val = new Real(1234.5678);
 
-      mpfrAnswer.Text = val.ToString(10);
+      var g = (2*Math.PI*calcedSigma/(double) numLambda.Value)*
+              (Math.Cos((double) numThetaI.Value) + Math.Cos((double) numThetaK.Value));
+      g *= g;
+      var result = calculateD((double) numTau.Value, (double) numLambda.Value, g, (double) numVxy.Value);
+      mpfrAnswer.Text = result.ToString(50);
+
+      var a = CalcDiffuseDistribution((double) numTau.Value, (double) numVxy.Value, g, (double) numLambda.Value);
+      approx.Text = a.ToString("E18", CultureInfo.InvariantCulture);
     }
+
+
+
+
+
+  static double Htsg_sum(double g, double T)
+  {
+    // T = -v_xy^2*(PI*tau/lamda)^2
+    if (g < 15) {
+      double sum=0;
+      int m=1;
+      double term1=Math.Exp(-g);
+      for (;m<40;m++) {
+        double recm=(1.0/(double)m);
+        term1*=g*recm;
+        sum += term1*recm*Math.Exp(T*recm);
+      }
+      return sum;
+    }
+    double mx=g;
+    int i;
+    for (i=0;i<4;i++)
+      mx=g*Math.Exp(-1.5/mx-T/(mx*mx));
+    return Math.Sqrt(g)*Math.Exp(mx*Math.Log(g)-g-(mx+1.5)*Math.Log(mx)+mx+T/mx);
+  }
+
+
+  double CalcDiffuseDistribution(double tau, double vxy, double g, double lambda)
+  {
+    double pi_gamma_by_lambda = Math.PI*tau/lambda;
+    double T = -(vxy*vxy)*(pi_gamma_by_lambda*pi_gamma_by_lambda);
+
+    double x = Math.PI*tau/lambda/2;
+    return x*x*Htsg_sum(g, T);
+  }
   }
 }
