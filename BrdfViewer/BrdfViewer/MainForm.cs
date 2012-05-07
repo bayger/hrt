@@ -65,6 +65,8 @@ namespace BrdfViewer
       var args = sceneFileName.Text + " \"" + materials.Text 
         + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture) 
         + " -s "+angleStep.Value.ToString(CultureInfo.InvariantCulture);
+      if (pdfGen.Checked)
+        args += " -p";
       var selectedMaterial = materials.SelectedItem as MaterialItem;
       materialSignature.Text = selectedMaterial != null ? selectedMaterial.Signature : string.Empty;
       var process = generateBrdf(args);
@@ -127,16 +129,44 @@ namespace BrdfViewer
       generateData();
     }
 
-    private void incidentAngle_ValueChanged(object sender, EventArgs e)
+    private void triggerRefresh()
     {
       timer.Stop();
       timer.Start();
     }
 
+    private void incidentAngle_ValueChanged(object sender, EventArgs e)
+    {
+      triggerRefresh();
+    }
+
     private void angleStep_ValueChanged(object sender, EventArgs e)
     {
-      timer.Stop();
-      timer.Start();
+      triggerRefresh();
+    }
+
+    private void brdfGen_CheckedChanged(object sender, EventArgs e)
+    {
+      triggerRefresh();
+    }
+
+    private void pdfGen_CheckedChanged(object sender, EventArgs e)
+    {
+      triggerRefresh();
+    }
+
+    private void precalcAll_Click(object sender, EventArgs e)
+    {
+      var args = sceneFileName.Text + " --precalc-all";
+      var psi = new ProcessStartInfo
+      {
+        FileName = "brdfgen.exe",
+        Arguments = args,
+        CreateNoWindow = false,
+        UseShellExecute = false
+      };
+
+      Process.Start(psi);
     }
   }
 }

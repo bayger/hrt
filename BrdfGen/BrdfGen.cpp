@@ -26,6 +26,8 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     ("version,v", "shows version number of H-RayTracer")
     ("step,s", po::value<Hrt::number>(&step), "sets angle step for generated series [0.1]")
     ("incident,i", po::value<Hrt::number>(&incidentAngle), "sets incident angle for generated series [30]")
+    ("pdf,p", "outputs PDF instead of BRDF")
+    ("precalc-all", "precalculates all materials in the scene")
     ("materials", "outputs only material names (line by line)");
   
   po::options_description hidden("hidden");
@@ -70,7 +72,8 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
     return false;
   }
 
-  if (((m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0) && m_cmdArgs.count("materials") == 0) || !argsProcessed)
+  if (((m_cmdArgs.count("scene-file") == 0 || m_cmdArgs.count("material-name") == 0) 
+    && m_cmdArgs.count("materials") == 0 && m_cmdArgs.count("precalc-all") == 0) || !argsProcessed)
   {
     std::cerr << "Invalid number of arguments. Use '--help' option to get detailed help."
       << std::endl;
@@ -79,6 +82,8 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
 
   m_step = m_cmdArgs.count("step") > 0 ? step : 0.1;
   m_materialsOnly = m_cmdArgs.count("materials") > 0;
+  m_outputPdf = m_cmdArgs.count("pdf") > 0;
+  m_precalcAll = m_cmdArgs.count("precalc-all") > 0;
   m_incidentAngle = incidentAngle;
   return true;
 }
@@ -126,6 +131,8 @@ void BrdfGen::Run()
     OutputMaterialNames();
   else
   {
+    if (m_precalcAll)
+      PrecalcAllMaterials();
     std::string materialName = m_cmdArgs["material-name"].as<std::string>();
     m_material = m_scene->GetMaterial(materialName);
     if (m_material != NULL)
@@ -135,6 +142,8 @@ void BrdfGen::Run()
 
 void BrdfGen::OutputData()
 {
+  m_material->Initialize();
+
   std::cout << "# Material: " << m_material->GetName() << std::endl;
   std::cout << "# Signature: " << m_material->GetSignature() << std::endl;
   std::cout << "AngleI\tAngleR";
@@ -159,12 +168,21 @@ void BrdfGen::OutputData()
 
     bool isInSpecularCone = Math::Abs(angle + m_incidentAngle) < epsilon;
 
-    Spectrum x = m_material->CalculateBsdf(rayLight, intersection, 
-      static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
     std::cout << m_incidentAngle << "\t" << angle;
-    for(int i=0; i<Spectrum::LambdaCount; i++)
+
+    if (m_outputPdf)
     {
-      std::cout << "\t" << x[i];
+      Hrt::number pdf = m_material->CalculatePdf(-rayLight.Direction, intersection.TangentU, intersection.TangentV, intersection.Normal, intersection.RayDirection);
+      std::cout << "\t" << pdf;
+    }
+    else
+    {
+      Spectrum x = m_material->CalculateBsdf(rayLight, intersection, 
+        static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
+      for(int i=0; i<Spectrum::LambdaCount; i++)
+      {
+        std::cout << "\t" << x[i];
+      }
     }
     std::cout << std::endl;
   }
@@ -178,6 +196,12 @@ void BrdfGen::OutputMaterialNames()
   {
     std::cout << kv->second->GetName() << "\t" << kv->second->GetSignature() << std::endl;
   }
+}
+
+void BrdfGen::PrecalcAllMaterials()
+{
+  for(auto it = m_scene->GetAllMaterials().begin(); it != m_scene->GetAllMaterials().end(); it++)
+    it->second->Initialize();
 }
 
 int _tmain(int argc, _TCHAR* argv[])

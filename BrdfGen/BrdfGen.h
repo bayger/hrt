@@ -13,8 +13,11 @@ private:
   Hrt::MaterialOwnedPtr m_material;
   Hrt::number m_step;
   bool m_materialsOnly;
+  bool m_outputPdf;
+  bool m_precalcAll;
   Hrt::number m_incidentAngle;
   void LoadScene();
   void OutputData();
   void OutputMaterialNames();
+  void PrecalcAllMaterials();
 };

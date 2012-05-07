@@ -224,6 +224,8 @@ namespace NumericalTests
       var g = (2*Math.PI*calcedSigma/(double) numLambda.Value)*
               (Math.Cos((double) numThetaI.Value) + Math.Cos((double) numThetaK.Value));
       g *= g;
+
+      numG.Text = g.ToString("E18", CultureInfo.InvariantCulture);
       var result = calculateD((double) numTau.Value, (double) numLambda.Value, g, (double) numVxy.Value);
       mpfrAnswer.Text = result.ToString(50);
 

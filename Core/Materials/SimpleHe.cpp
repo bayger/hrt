@@ -22,12 +22,12 @@ namespace Hrt
 {
 
   SimpleHe::SimpleHe(number gamma, number sigma, const Spectrum& a)
-    : gamma(gamma), sigma(sigma), a(a), isPrecalcDirty(true), importanceSampler(new PrecomputedImportanceSampler)
+    : gamma(gamma), sigma(sigma), a(a), isPrecalcDirty(true), importanceSampler(new PrecomputedImportanceSampler), useCosineLobeIS(false)
   {
   }
 
   SimpleHe::SimpleHe()
-    : gamma(0.38e-6), sigma(2e-6), a(0), isPrecalcDirty(true), importanceSampler(new PrecomputedImportanceSampler)
+    : gamma(0.38e-6), sigma(2e-6), a(0), isPrecalcDirty(true), importanceSampler(new PrecomputedImportanceSampler), useCosineLobeIS(false)
   {
   }
 
@@ -256,6 +256,13 @@ namespace Hrt
       m_refractionIm = SerializationHelper::ReadSpectrum(parser);
     else if (scalarValue == "a")
       a = SerializationHelper::ReadSpectrum(parser);
+    else if (scalarValue == "importance-sampling")
+    {
+      std::string isMode;
+      parser.ReadScalar(isMode);
+      if (isMode == "cosine-lobe")
+        useCosineLobeIS = true;
+    }
     else
       return NamedObject::ProcessYamlScalar(parser, context);
 
@@ -270,8 +277,10 @@ namespace Hrt
 
   Hrt::Vector3D SimpleHe::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
   {
-    //return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
-    return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+    if (useCosineLobeIS)
+      return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+    else
+      return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
   }
 
   const std::string SimpleHe::GetSignature()
@@ -281,8 +290,10 @@ namespace Hrt
 
   Hrt::number SimpleHe::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)
   {
-    //return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
-    return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+    if (useCosineLobeIS)
+      return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+    else
+      return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
   }
 
 }

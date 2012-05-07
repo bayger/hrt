@@ -69,6 +69,8 @@
       this.label12 = new System.Windows.Forms.Label();
       this.numVxy = new System.Windows.Forms.NumericUpDown();
       this.label13 = new System.Windows.Forms.Label();
+      this.numG = new System.Windows.Forms.TextBox();
+      this.label14 = new System.Windows.Forms.Label();
       ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numSigma0)).BeginInit();
@@ -499,6 +501,8 @@
       // 
       // groupBox3
       // 
+      this.groupBox3.Controls.Add(this.numG);
+      this.groupBox3.Controls.Add(this.label14);
       this.groupBox3.Controls.Add(this.numVxy);
       this.groupBox3.Controls.Add(this.label13);
       this.groupBox3.Controls.Add(this.numLambda);
@@ -547,7 +551,7 @@
       this.approx.Location = new System.Drawing.Point(12, 60);
       this.approx.Name = "approx";
       this.approx.ReadOnly = true;
-      this.approx.Size = new System.Drawing.Size(275, 19);
+      this.approx.Size = new System.Drawing.Size(185, 19);
       this.approx.TabIndex = 28;
       // 
       // approxAnswer
@@ -633,6 +637,23 @@
       this.label13.TabIndex = 32;
       this.label13.Text = "vxy=";
       // 
+      // numG
+      // 
+      this.numG.Location = new System.Drawing.Point(261, 60);
+      this.numG.Name = "numG";
+      this.numG.ReadOnly = true;
+      this.numG.Size = new System.Drawing.Size(185, 19);
+      this.numG.TabIndex = 34;
+      // 
+      // label14
+      // 
+      this.label14.AutoSize = true;
+      this.label14.Location = new System.Drawing.Point(232, 63);
+      this.label14.Name = "label14";
+      this.label14.Size = new System.Drawing.Size(23, 13);
+      this.label14.TabIndex = 33;
+      this.label14.Text = "g=";
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -712,6 +733,8 @@
     private System.Windows.Forms.Label label12;
     private System.Windows.Forms.NumericUpDown numVxy;
     private System.Windows.Forms.Label label13;
+    private System.Windows.Forms.TextBox numG;
+    private System.Windows.Forms.Label label14;
   }
 }
 

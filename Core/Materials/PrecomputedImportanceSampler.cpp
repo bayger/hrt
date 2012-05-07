@@ -238,9 +238,6 @@ namespace Hrt
 	{
 		number outElevation = acos(outgoingDirection.Dot(n));
 
-		if (abs(outgoingDirection.X) < 0.01)
-			std::cout << "";
-
 		Vector3D sv, su;
 		if (outgoingDirection.Dot(n) < 1-epsilon)
 		{
@@ -270,6 +267,6 @@ namespace Hrt
 		int inAzimuthIndex = (int)(inAzimuth / inAzimuthStep);
 		int outElevationIndex = (int)(outElevation / outElevationStep);
 
-		return angleCdfs[outElevationIndex]->Values[inElevationIndex*inAzimuthSteps + inAzimuthIndex];
+		return angleCdfs[Math::Min(outElevationSteps-1, outElevationIndex)]->Values[inElevationIndex*inAzimuthSteps + inAzimuthIndex];
 	}
 }

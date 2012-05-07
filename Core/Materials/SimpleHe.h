@@ -58,7 +58,11 @@ namespace Hrt
         { this->a = a; }
 
 				virtual const std::string GetSignature();
-        virtual void Initialize() { importanceSampler->Precompute(shared_from_this()); }
+        virtual void Initialize() 
+        { 
+          if (!useCosineLobeIS)
+            importanceSampler->Precompute(shared_from_this()); 
+        }
         
         // IYamlSerializable Implementation
         virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
@@ -75,6 +79,7 @@ namespace Hrt
         boost::scoped_array<Spectrum> dPartPrecalc;
         bool isPrecalcDirty;
 				shared_ptr<PrecomputedImportanceSampler> importanceSampler;
+        bool useCosineLobeIS;
         
         number CalcZ0(number theta_i, number theta_r);
         number CalcShadowing(number theta_i, number theta_r);

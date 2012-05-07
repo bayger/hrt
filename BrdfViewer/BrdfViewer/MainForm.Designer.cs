@@ -35,28 +35,26 @@
       this.browseSceneFile = new System.Windows.Forms.Button();
       this.label2 = new System.Windows.Forms.Label();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
-      this.materialSignature = new System.Windows.Forms.Label();
+      this.precalcAll = new System.Windows.Forms.Button();
       this.getMaterials = new System.Windows.Forms.Button();
       this.materials = new System.Windows.Forms.ComboBox();
       this.materialsSource = new System.Windows.Forms.BindingSource(this.components);
+      this.materialSignature = new System.Windows.Forms.Label();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.savePlot = new System.Windows.Forms.Button();
       this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
       this.generate = new System.Windows.Forms.Button();
-      this.label6 = new System.Windows.Forms.Label();
-      this.reflectedAngle = new System.Windows.Forms.NumericUpDown();
       this.label5 = new System.Windows.Forms.Label();
       this.incidentAngle = new System.Windows.Forms.NumericUpDown();
       this.angleStep = new System.Windows.Forms.NumericUpDown();
       this.label4 = new System.Windows.Forms.Label();
-      this.constReflected = new System.Windows.Forms.RadioButton();
-      this.constIncidence = new System.Windows.Forms.RadioButton();
+      this.pdfGen = new System.Windows.Forms.RadioButton();
+      this.brdfGen = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
       this.timer = new System.Windows.Forms.Timer(this.components);
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.reflectedAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).BeginInit();
       this.SuspendLayout();
@@ -104,7 +102,7 @@
       // 
       this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBox1.Controls.Add(this.materialSignature);
+      this.groupBox1.Controls.Add(this.precalcAll);
       this.groupBox1.Controls.Add(this.getMaterials);
       this.groupBox1.Controls.Add(this.materials);
       this.groupBox1.Controls.Add(this.label1);
@@ -118,13 +116,15 @@
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Input";
       // 
-      // materialSignature
+      // precalcAll
       // 
-      this.materialSignature.AutoSize = true;
-      this.materialSignature.Location = new System.Drawing.Point(368, 56);
-      this.materialSignature.Name = "materialSignature";
-      this.materialSignature.Size = new System.Drawing.Size(0, 13);
-      this.materialSignature.TabIndex = 7;
+      this.precalcAll.Location = new System.Drawing.Point(371, 51);
+      this.precalcAll.Name = "precalcAll";
+      this.precalcAll.Size = new System.Drawing.Size(140, 23);
+      this.precalcAll.TabIndex = 8;
+      this.precalcAll.Text = "Precalculate Materials";
+      this.precalcAll.UseVisualStyleBackColor = true;
+      this.precalcAll.Click += new System.EventHandler(this.precalcAll_Click);
       // 
       // getMaterials
       // 
@@ -151,22 +151,29 @@
       // 
       this.materialsSource.DataSource = typeof(BrdfViewer.MaterialItem);
       // 
+      // materialSignature
+      // 
+      this.materialSignature.Location = new System.Drawing.Point(262, 79);
+      this.materialSignature.Name = "materialSignature";
+      this.materialSignature.Size = new System.Drawing.Size(641, 13);
+      this.materialSignature.TabIndex = 7;
+      this.materialSignature.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+      // 
       // groupBox2
       // 
       this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
       this.groupBox2.Controls.Add(this.savePlot);
+      this.groupBox2.Controls.Add(this.materialSignature);
       this.groupBox2.Controls.Add(this.angularPlotControl1);
       this.groupBox2.Controls.Add(this.generate);
-      this.groupBox2.Controls.Add(this.label6);
-      this.groupBox2.Controls.Add(this.reflectedAngle);
       this.groupBox2.Controls.Add(this.label5);
       this.groupBox2.Controls.Add(this.incidentAngle);
       this.groupBox2.Controls.Add(this.angleStep);
       this.groupBox2.Controls.Add(this.label4);
-      this.groupBox2.Controls.Add(this.constReflected);
-      this.groupBox2.Controls.Add(this.constIncidence);
+      this.groupBox2.Controls.Add(this.pdfGen);
+      this.groupBox2.Controls.Add(this.brdfGen);
       this.groupBox2.Controls.Add(this.label3);
       this.groupBox2.Location = new System.Drawing.Point(12, 110);
       this.groupBox2.Name = "groupBox2";
@@ -177,7 +184,7 @@
       // 
       // savePlot
       // 
-      this.savePlot.Location = new System.Drawing.Point(521, 19);
+      this.savePlot.Location = new System.Drawing.Point(371, 22);
       this.savePlot.Name = "savePlot";
       this.savePlot.Size = new System.Drawing.Size(103, 23);
       this.savePlot.TabIndex = 12;
@@ -206,52 +213,13 @@
       // 
       // generate
       // 
-      this.generate.Location = new System.Drawing.Point(412, 20);
+      this.generate.Location = new System.Drawing.Point(262, 20);
       this.generate.Name = "generate";
       this.generate.Size = new System.Drawing.Size(103, 23);
       this.generate.TabIndex = 10;
       this.generate.Text = "Generate";
       this.generate.UseVisualStyleBackColor = true;
       this.generate.Click += new System.EventHandler(this.generate_Click);
-      // 
-      // label6
-      // 
-      this.label6.AutoSize = true;
-      this.label6.Enabled = false;
-      this.label6.Location = new System.Drawing.Point(260, 76);
-      this.label6.Name = "label6";
-      this.label6.Size = new System.Drawing.Size(85, 13);
-      this.label6.TabIndex = 8;
-      this.label6.Text = "Reflected angle:";
-      // 
-      // reflectedAngle
-      // 
-      this.reflectedAngle.DecimalPlaces = 2;
-      this.reflectedAngle.Enabled = false;
-      this.reflectedAngle.Increment = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-      this.reflectedAngle.Location = new System.Drawing.Point(351, 74);
-      this.reflectedAngle.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
-      this.reflectedAngle.Minimum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            -2147483648});
-      this.reflectedAngle.Name = "reflectedAngle";
-      this.reflectedAngle.Size = new System.Drawing.Size(120, 20);
-      this.reflectedAngle.TabIndex = 7;
-      this.reflectedAngle.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
       // 
       // label5
       // 
@@ -319,28 +287,29 @@
       this.label4.TabIndex = 3;
       this.label4.Text = "Angle step:";
       // 
-      // constReflected
+      // pdfGen
       // 
-      this.constReflected.AutoSize = true;
-      this.constReflected.Enabled = false;
-      this.constReflected.Location = new System.Drawing.Point(262, 23);
-      this.constReflected.Name = "constReflected";
-      this.constReflected.Size = new System.Drawing.Size(144, 17);
-      this.constReflected.TabIndex = 2;
-      this.constReflected.Text = "Constant reflected vector";
-      this.constReflected.UseVisualStyleBackColor = true;
+      this.pdfGen.AutoSize = true;
+      this.pdfGen.Location = new System.Drawing.Point(181, 22);
+      this.pdfGen.Name = "pdfGen";
+      this.pdfGen.Size = new System.Drawing.Size(46, 17);
+      this.pdfGen.TabIndex = 2;
+      this.pdfGen.Text = "PDF";
+      this.pdfGen.UseVisualStyleBackColor = true;
+      this.pdfGen.CheckedChanged += new System.EventHandler(this.pdfGen_CheckedChanged);
       // 
-      // constIncidence
+      // brdfGen
       // 
-      this.constIncidence.AutoSize = true;
-      this.constIncidence.Checked = true;
-      this.constIncidence.Location = new System.Drawing.Point(107, 23);
-      this.constIncidence.Name = "constIncidence";
-      this.constIncidence.Size = new System.Drawing.Size(149, 17);
-      this.constIncidence.TabIndex = 1;
-      this.constIncidence.TabStop = true;
-      this.constIncidence.Text = "Constant incidence vector";
-      this.constIncidence.UseVisualStyleBackColor = true;
+      this.brdfGen.AutoSize = true;
+      this.brdfGen.Checked = true;
+      this.brdfGen.Location = new System.Drawing.Point(107, 23);
+      this.brdfGen.Name = "brdfGen";
+      this.brdfGen.Size = new System.Drawing.Size(54, 17);
+      this.brdfGen.TabIndex = 1;
+      this.brdfGen.TabStop = true;
+      this.brdfGen.Text = "BRDF";
+      this.brdfGen.UseVisualStyleBackColor = true;
+      this.brdfGen.CheckedChanged += new System.EventHandler(this.brdfGen_CheckedChanged);
       // 
       // label3
       // 
@@ -373,7 +342,6 @@
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).EndInit();
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.reflectedAngle)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).EndInit();
       this.ResumeLayout(false);
@@ -388,14 +356,12 @@
     private System.Windows.Forms.Label label2;
     private System.Windows.Forms.GroupBox groupBox1;
     private System.Windows.Forms.GroupBox groupBox2;
-    private System.Windows.Forms.Label label6;
-    private System.Windows.Forms.NumericUpDown reflectedAngle;
     private System.Windows.Forms.Label label5;
     private System.Windows.Forms.NumericUpDown incidentAngle;
     private System.Windows.Forms.NumericUpDown angleStep;
     private System.Windows.Forms.Label label4;
-    private System.Windows.Forms.RadioButton constReflected;
-    private System.Windows.Forms.RadioButton constIncidence;
+    private System.Windows.Forms.RadioButton pdfGen;
+    private System.Windows.Forms.RadioButton brdfGen;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button generate;
     private AngularPlotControl angularPlotControl1;
@@ -405,6 +371,7 @@
     private System.Windows.Forms.Button savePlot;
     private System.Windows.Forms.Timer timer;
     private System.Windows.Forms.Label materialSignature;
+    private System.Windows.Forms.Button precalcAll;
   }
 }
 

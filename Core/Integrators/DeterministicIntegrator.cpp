@@ -108,7 +108,7 @@ namespace Hrt
         RayLight reflectedSpecular;
         material->CalculateReflectedRay(fromReflection, intersection,
           reflectedSpecular, true);
-        reflectedSpecular.Radiance *= phi/Consts::TwoPi;//* phi / distance2 * (1/Consts::TwoPi);
+        reflectedSpecular.Radiance *= phi * phi / distance2 * (1/Consts::TwoPi);
 
         result = result + reflectedSpecular;
       }
