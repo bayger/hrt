@@ -36,12 +36,12 @@
       this.removeJobsButton = new System.Windows.Forms.Button();
       this.stopButton = new System.Windows.Forms.Button();
       this.queueStatusLabel = new System.Windows.Forms.Label();
+      this.jobItems = new System.Windows.Forms.BindingSource(this.components);
       this.sceneFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.outputFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.raysPerPixelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.maxRayDepthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.statusTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.jobItems = new System.Windows.Forms.BindingSource(this.components);
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.jobsGrid)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.jobItems)).BeginInit();
@@ -83,7 +83,6 @@
       this.jobsGrid.DataSource = this.jobItems;
       this.jobsGrid.Location = new System.Drawing.Point(6, 19);
       this.jobsGrid.Name = "jobsGrid";
-      this.jobsGrid.ReadOnly = true;
       this.jobsGrid.RowHeadersWidth = 24;
       this.jobsGrid.Size = new System.Drawing.Size(753, 439);
       this.jobsGrid.TabIndex = 0;
@@ -97,6 +96,7 @@
       this.addJobButton.TabIndex = 1;
       this.addJobButton.Text = "Add...";
       this.addJobButton.UseVisualStyleBackColor = true;
+      this.addJobButton.Click += new System.EventHandler(this.addJobButton_Click);
       // 
       // startButton
       // 
@@ -139,6 +139,10 @@
       this.queueStatusLabel.Text = "Idle";
       this.queueStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
+      // jobItems
+      // 
+      this.jobItems.DataSource = typeof(HrtQueue.JobItem);
+      // 
       // sceneFilenameDataGridViewTextBoxColumn
       // 
       this.sceneFilenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -153,21 +157,18 @@
       this.outputFilenameDataGridViewTextBoxColumn.DataPropertyName = "OutputFilename";
       this.outputFilenameDataGridViewTextBoxColumn.HeaderText = "Render Filename";
       this.outputFilenameDataGridViewTextBoxColumn.Name = "outputFilenameDataGridViewTextBoxColumn";
-      this.outputFilenameDataGridViewTextBoxColumn.ReadOnly = true;
       // 
       // raysPerPixelDataGridViewTextBoxColumn
       // 
       this.raysPerPixelDataGridViewTextBoxColumn.DataPropertyName = "RaysPerPixel";
       this.raysPerPixelDataGridViewTextBoxColumn.HeaderText = "Rays/Pixel";
       this.raysPerPixelDataGridViewTextBoxColumn.Name = "raysPerPixelDataGridViewTextBoxColumn";
-      this.raysPerPixelDataGridViewTextBoxColumn.ReadOnly = true;
       // 
       // maxRayDepthDataGridViewTextBoxColumn
       // 
       this.maxRayDepthDataGridViewTextBoxColumn.DataPropertyName = "MaxRayDepth";
       this.maxRayDepthDataGridViewTextBoxColumn.HeaderText = "Ray Depth";
       this.maxRayDepthDataGridViewTextBoxColumn.Name = "maxRayDepthDataGridViewTextBoxColumn";
-      this.maxRayDepthDataGridViewTextBoxColumn.ReadOnly = true;
       // 
       // statusTextDataGridViewTextBoxColumn
       // 
@@ -176,10 +177,6 @@
       this.statusTextDataGridViewTextBoxColumn.Name = "statusTextDataGridViewTextBoxColumn";
       this.statusTextDataGridViewTextBoxColumn.ReadOnly = true;
       // 
-      // jobItems
-      // 
-      this.jobItems.DataSource = typeof(HrtQueue.JobItem);
-      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,6 +184,7 @@
       this.ClientSize = new System.Drawing.Size(789, 517);
       this.Controls.Add(this.groupBox1);
       this.Name = "MainForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "H-RT Queue";
       this.groupBox1.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.jobsGrid)).EndInit();
@@ -204,12 +202,12 @@
     private System.Windows.Forms.Button stopButton;
     private System.Windows.Forms.Button removeJobsButton;
     private System.Windows.Forms.Button startButton;
+    private System.Windows.Forms.Label queueStatusLabel;
     private System.Windows.Forms.DataGridViewTextBoxColumn sceneFilenameDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn outputFilenameDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn raysPerPixelDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn maxRayDepthDataGridViewTextBoxColumn;
     private System.Windows.Forms.DataGridViewTextBoxColumn statusTextDataGridViewTextBoxColumn;
-    private System.Windows.Forms.Label queueStatusLabel;
   }
 }
 
