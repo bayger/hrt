@@ -76,7 +76,7 @@
       this.sceneFileName.Name = "sceneFileName";
       this.sceneFileName.Size = new System.Drawing.Size(715, 20);
       this.sceneFileName.TabIndex = 1;
-      this.sceneFileName.Text = "ball.ysf";
+      this.sceneFileName.Text = "experimental.ysf";
       // 
       // browseSceneFile
       // 
