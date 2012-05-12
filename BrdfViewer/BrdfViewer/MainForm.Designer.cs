@@ -52,11 +52,14 @@
       this.brdfGen = new System.Windows.Forms.RadioButton();
       this.label3 = new System.Windows.Forms.Label();
       this.timer = new System.Windows.Forms.Timer(this.components);
+      this.pictureBox1 = new System.Windows.Forms.PictureBox();
+      this.panel1 = new System.Windows.Forms.Panel();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
       // 
       // label1
@@ -74,14 +77,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.sceneFileName.Location = new System.Drawing.Point(107, 22);
       this.sceneFileName.Name = "sceneFileName";
-      this.sceneFileName.Size = new System.Drawing.Size(715, 20);
+      this.sceneFileName.Size = new System.Drawing.Size(569, 20);
       this.sceneFileName.TabIndex = 1;
       this.sceneFileName.Text = "experimental.ysf";
       // 
       // browseSceneFile
       // 
       this.browseSceneFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.browseSceneFile.Location = new System.Drawing.Point(828, 20);
+      this.browseSceneFile.Location = new System.Drawing.Point(682, 20);
       this.browseSceneFile.Name = "browseSceneFile";
       this.browseSceneFile.Size = new System.Drawing.Size(75, 23);
       this.browseSceneFile.TabIndex = 2;
@@ -109,9 +112,9 @@
       this.groupBox1.Controls.Add(this.browseSceneFile);
       this.groupBox1.Controls.Add(this.sceneFileName);
       this.groupBox1.Controls.Add(this.label2);
-      this.groupBox1.Location = new System.Drawing.Point(12, 12);
+      this.groupBox1.Location = new System.Drawing.Point(12, 86);
       this.groupBox1.Name = "groupBox1";
-      this.groupBox1.Size = new System.Drawing.Size(920, 92);
+      this.groupBox1.Size = new System.Drawing.Size(774, 92);
       this.groupBox1.TabIndex = 5;
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Input";
@@ -175,16 +178,16 @@
       this.groupBox2.Controls.Add(this.pdfGen);
       this.groupBox2.Controls.Add(this.brdfGen);
       this.groupBox2.Controls.Add(this.label3);
-      this.groupBox2.Location = new System.Drawing.Point(12, 110);
+      this.groupBox2.Location = new System.Drawing.Point(12, 184);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(920, 578);
+      this.groupBox2.Size = new System.Drawing.Size(774, 490);
       this.groupBox2.TabIndex = 6;
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "BRDF Data Generation";
       // 
       // savePlot
       // 
-      this.savePlot.Location = new System.Drawing.Point(371, 22);
+      this.savePlot.Location = new System.Drawing.Point(371, 20);
       this.savePlot.Name = "savePlot";
       this.savePlot.Size = new System.Drawing.Size(103, 23);
       this.savePlot.TabIndex = 12;
@@ -207,7 +210,7 @@
       this.angularPlotControl1.IncidentAngle = 0D;
       this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
       this.angularPlotControl1.Name = "angularPlotControl1";
-      this.angularPlotControl1.Size = new System.Drawing.Size(884, 450);
+      this.angularPlotControl1.Size = new System.Drawing.Size(738, 362);
       this.angularPlotControl1.TabIndex = 11;
       this.angularPlotControl1.Text = "angularPlotControl1";
       // 
@@ -325,11 +328,32 @@
       this.timer.Interval = 250;
       this.timer.Tick += new System.EventHandler(this.timer_Tick);
       // 
+      // pictureBox1
+      // 
+      this.pictureBox1.Image = global::BrdfViewer.Properties.Resources.Banner;
+      this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+      this.pictureBox1.Name = "pictureBox1";
+      this.pictureBox1.Size = new System.Drawing.Size(800, 73);
+      this.pictureBox1.TabIndex = 7;
+      this.pictureBox1.TabStop = false;
+      // 
+      // panel1
+      // 
+      this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(78)))), ((int)(((byte)(81)))), ((int)(((byte)(75)))));
+      this.panel1.Location = new System.Drawing.Point(800, 0);
+      this.panel1.Name = "panel1";
+      this.panel1.Size = new System.Drawing.Size(2, 73);
+      this.panel1.TabIndex = 8;
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(944, 700);
+      this.ClientSize = new System.Drawing.Size(798, 686);
+      this.Controls.Add(this.panel1);
+      this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.groupBox1);
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -344,6 +368,7 @@
       this.groupBox2.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -372,6 +397,8 @@
     private System.Windows.Forms.Timer timer;
     private System.Windows.Forms.Label materialSignature;
     private System.Windows.Forms.Button precalcAll;
+    private System.Windows.Forms.PictureBox pictureBox1;
+    private System.Windows.Forms.Panel panel1;
   }
 }
 
