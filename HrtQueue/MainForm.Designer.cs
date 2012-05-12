@@ -29,6 +29,7 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
+      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
       this.threadsNum = new System.Windows.Forms.NumericUpDown();
       this.label1 = new System.Windows.Forms.Label();
       this.stopButton = new System.Windows.Forms.Button();
@@ -45,14 +46,14 @@
       this.removeJobsButton = new System.Windows.Forms.Button();
       this.addJobButton = new System.Windows.Forms.Button();
       this.jobsGrid = new System.Windows.Forms.DataGridView();
-      this.SigmaFilter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.statusLabel = new System.Windows.Forms.Label();
       this.sceneFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.outputFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.raysPerPixelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.maxRayDepthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.SigmaFilter = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.statusTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       this.jobItems = new System.Windows.Forms.BindingSource(this.components);
+      this.statusLabel = new System.Windows.Forms.Label();
       ((System.ComponentModel.ISupportInitialize)(this.threadsNum)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.jobsGrid)).BeginInit();
@@ -249,22 +250,6 @@
       this.jobsGrid.Size = new System.Drawing.Size(760, 340);
       this.jobsGrid.TabIndex = 10;
       // 
-      // SigmaFilter
-      // 
-      this.SigmaFilter.DataPropertyName = "SigmaFilter";
-      this.SigmaFilter.HeaderText = "Sigma Filter";
-      this.SigmaFilter.Name = "SigmaFilter";
-      this.SigmaFilter.Width = 70;
-      // 
-      // statusLabel
-      // 
-      this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-      this.statusLabel.Location = new System.Drawing.Point(289, 475);
-      this.statusLabel.Name = "statusLabel";
-      this.statusLabel.Size = new System.Drawing.Size(161, 23);
-      this.statusLabel.TabIndex = 19;
-      this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-      // 
       // sceneFilenameDataGridViewTextBoxColumn
       // 
       this.sceneFilenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -294,6 +279,13 @@
       this.maxRayDepthDataGridViewTextBoxColumn.Name = "maxRayDepthDataGridViewTextBoxColumn";
       this.maxRayDepthDataGridViewTextBoxColumn.Width = 70;
       // 
+      // SigmaFilter
+      // 
+      this.SigmaFilter.DataPropertyName = "SigmaFilter";
+      this.SigmaFilter.HeaderText = "Sigma Filter";
+      this.SigmaFilter.Name = "SigmaFilter";
+      this.SigmaFilter.Width = 70;
+      // 
       // statusTextDataGridViewTextBoxColumn
       // 
       this.statusTextDataGridViewTextBoxColumn.DataPropertyName = "StatusText";
@@ -305,6 +297,15 @@
       // 
       this.jobItems.DataSource = typeof(HrtQueue.JobItem);
       this.jobItems.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.jobItems_ListChanged);
+      // 
+      // statusLabel
+      // 
+      this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+      this.statusLabel.Location = new System.Drawing.Point(289, 475);
+      this.statusLabel.Name = "statusLabel";
+      this.statusLabel.Size = new System.Drawing.Size(161, 23);
+      this.statusLabel.TabIndex = 19;
+      this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
       // 
       // MainForm
       // 
@@ -328,6 +329,7 @@
       this.Controls.Add(this.threadsNum);
       this.Controls.Add(this.startButton);
       this.Controls.Add(this.label1);
+      this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.MinimumSize = new System.Drawing.Size(800, 550);
       this.Name = "MainForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
