@@ -39,6 +39,7 @@ private:
 	bool saveVariance;
 	bool dontUseAdaptiveRR;
   bool whittedStyle;
+  bool onlyPercentage;
   Hrt::number varianceFilter;
   unsigned int maxPasses;
 

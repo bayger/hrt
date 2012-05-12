@@ -66,6 +66,9 @@ namespace Hrt
 
 	static void RenderThread(RenderContext context, NotifyFinishFunc notifyFinishFunc, RayFetchFunc rayFetchFunc, SavePathsFunc savePathsFunc)
 	{
+#ifdef _WIN32
+    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_LOWEST);
+#endif
 		Ray ray;
 		number x, y;
 		int64 rejections = 0, paths = 0;

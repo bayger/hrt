@@ -80,7 +80,8 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
     ("variance-max-passes", po::value<unsigned int>(&maxPasses), "max passes for variance filtering [16]")
 		("dump-paths", po::value<std::string>(&pathDumpFileName), "dumps all paths to a file [disabled]")
 		("save-variance", "saves also per-pixel path variance [disabled]")
-    ("whitted,w", "switches to simple Whitted-style raytracing");
+    ("whitted,w", "switches to simple Whitted-style raytracing")
+    ("percentage", "displays only percentage line-by-line");
 
 	po::options_description hidden("hidden");
 	hidden.add_options()
@@ -150,6 +151,7 @@ bool Program::ProcessCmdArgs( int argc, _TCHAR* * argv )
 	this->pathDumpFileName = pathDumpFileName;
 	this->saveVariance = m_cmdArgs.count("save-variance") > 0;
   this->whittedStyle = m_cmdArgs.count("whitted") > 0;
+  this->onlyPercentage = m_cmdArgs.count("percentage") > 0;
   this->varianceFilter = varianceFilter;
   this->maxPasses = maxPasses;
 	return true;
@@ -239,7 +241,7 @@ void Program::RenderScene()
 	{
 		boost::xtime xt;
 		boost::xtime_get(&xt, boost::TIME_UTC);
-		xt.nsec += 100000000;
+		xt.nsec += 1000000000;
 		boost::thread::sleep(xt);
 
 		progress = renderer.GetProgress();
@@ -248,14 +250,22 @@ void Program::RenderScene()
 		std::string caption = str( format("Rendering %|1$.2f|%% complete - pass: %2%") % (100.*progress) % (renderer.GetCurrentPass()+1) );
 		SDL_WM_SetCaption(caption.c_str(), NULL);
 
-		std::cout << "Rendering" << " [" << std::fixed << std::setprecision(2)
-			<< (100.*progress)
-			<< "% complete]... " << spinner[i % 4] << " Elapsed: "; 
+    if (onlyPercentage)
+    {
+      std::cout << "Completed: " << std::fixed << std::setprecision(2)
+        << (100.*progress) << std::endl;
+    }
+    else
+    {
+		  std::cout << "Rendering" << " [" << std::fixed << std::setprecision(2)
+			  << (100.*progress)
+			  << "% complete]... " << spinner[i % 4] << " Elapsed: "; 
 
-		write_time(seconds);
-		std::cout << "  Estimated: ";
-		write_time(seconds/progress);
-		std::cout << "     \r";
+		  write_time(seconds);
+		  std::cout << "  Estimated: ";
+		  write_time(seconds/progress);
+		  std::cout << "     \r";
+    }
 
 		i++;
 

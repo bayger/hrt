@@ -70,5 +70,8 @@ struct hash<std::string> {
 //#include <gmpxx.h>
 #include <yaml.h>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
 
 //#include "../lib/mpfr/Win32/Release/mpfr.h"
