@@ -26,12 +26,12 @@ namespace Hrt
 	public:
 		SincFilter()
 			: Filter(1,1),
-			m_hasEnvelope(false),
-			m_xEnvelope(1),
-			m_yEnvelope(1)
+			m_hasEnvelope(true),
+			m_xEnvelope(Consts::HalfPi),
+			m_yEnvelope(Consts::HalfPi)
 		{ }
 
-		SincFilter(int width, int height, bool withEnvelope)
+		SincFilter(number width, number height, bool withEnvelope)
 			: Filter(width, height),
 			m_hasEnvelope(withEnvelope),
 			m_xEnvelope(Consts::HalfPi/width),
@@ -41,6 +41,8 @@ namespace Hrt
 		virtual number Calculate(number x, number y);
 
 		virtual const std::string& YamlType();
+
+    virtual void FinishDeserialization();
 
 	private:
 		bool m_hasEnvelope;

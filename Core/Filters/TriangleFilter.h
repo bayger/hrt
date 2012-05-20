@@ -23,7 +23,7 @@ namespace Hrt
 	class TriangleFilter : public Filter
 	{
 	public:
-		TriangleFilter(int width=1, int height=1);
+		TriangleFilter(number width=num(0.5), number height=num(0.5));
 
 		virtual number Calculate(number x, number y);
 

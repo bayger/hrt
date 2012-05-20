@@ -38,4 +38,11 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+
+  void SincFilter::FinishDeserialization()
+  {
+    m_xEnvelope = Consts::HalfPi / m_width;
+    m_yEnvelope = Consts::HalfPi / m_height;
+  }
+
 }

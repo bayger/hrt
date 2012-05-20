@@ -21,7 +21,7 @@ GNU General Public License for more details.
 namespace Hrt
 {
 
-	TriangleFilter::TriangleFilter(int width/* =1 */, int height/* =1 */)
+	TriangleFilter::TriangleFilter(number width, number height)
 		: Filter(width, height)
 	{
 	}

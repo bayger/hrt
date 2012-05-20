@@ -24,7 +24,7 @@ namespace Hrt
 		: public IYamlSerializable
 	{
 	public:
-		Filter(int width, int height);
+		Filter(number width, number height);
 		virtual ~Filter();
 
 		/// Gets the horizontal range of a filter.
@@ -42,8 +42,8 @@ namespace Hrt
 		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
 
 	protected:
-		int m_width;
-		int m_height;
+		number m_width;
+		number m_height;
 	};
 
 	/// Reference to const shared-pointer of Filter (used as params and returns)

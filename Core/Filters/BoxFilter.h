@@ -24,7 +24,7 @@ namespace Hrt
 	class BoxFilter : public Filter
 	{
 	public:
-		BoxFilter(int boxSize = 1);
+		BoxFilter(number boxSize = num(0.5));
 
 		virtual number Calculate(number x, number y);
 

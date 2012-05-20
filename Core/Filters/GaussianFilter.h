@@ -22,11 +22,13 @@ namespace Hrt
 	class GaussianFilter : public Filter
 	{
 	public:
-		GaussianFilter(int width = 1, int height = 1, number alpha = 1);
+		GaussianFilter(number width = num(0.5), number height = num(0.5), number alpha = 1);
 
 		virtual number Calculate(number x, number y);
 
 		virtual const std::string& YamlType();
+
+    virtual void FinishDeserialization();
 
 	private:
 		number m_alpha;

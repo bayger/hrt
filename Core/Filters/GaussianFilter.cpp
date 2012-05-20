@@ -21,7 +21,7 @@ GNU General Public License for more details.
 namespace Hrt
 {
 
-	GaussianFilter::GaussianFilter(int width, int height, number alpha)
+	GaussianFilter::GaussianFilter(number width, number height, number alpha)
 		: Filter(width, height),
 		m_alpha(alpha),
 		m_expX( Math::Exp( -m_alpha * m_width * m_width ) ),
@@ -45,4 +45,11 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+
+  void GaussianFilter::FinishDeserialization()
+  {
+    m_expX = Math::Exp(-m_alpha * m_width * m_width);
+    m_expY = Math::Exp(-m_alpha * m_height * m_height);
+  }
+
 }

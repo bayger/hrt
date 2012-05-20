@@ -83,10 +83,10 @@ namespace Hrt
 		{
 
 			// calc filter range
-			int startX = (int)Math::Ceiling(canvasX-m_filter->GetWidth());
-			int endX = (int)Math::Floor(canvasX+m_filter->GetWidth());
-			int startY = (int)Math::Ceiling(canvasY-m_filter->GetHeight());
-			int endY = (int)Math::Floor(canvasY+m_filter->GetHeight());
+			int startX = (int)Math::Floor(canvasX-m_filter->GetWidth());
+			int endX = (int)Math::Ceiling(canvasX+m_filter->GetWidth());
+			int startY = (int)Math::Floor(canvasY-m_filter->GetHeight());
+			int endY = (int)Math::Ceiling(canvasY+m_filter->GetHeight());
 
 			if (startX < 0) startX = 0;
 			if (endX >= (int)m_width) endX = m_width-1;
@@ -100,6 +100,10 @@ namespace Hrt
 				{
 					int offset = y*m_width+x;
 					number weight = m_filter->Calculate((number)x-canvasX, (number)y-canvasY);
+          //if (weight == 0)
+          //{
+          //  std::cout << (number)x-canvasX << " " << (number)y-canvasY << " " << m_filter->YamlType() << std::endl;
+          //}
 					CieXyz xyz = radiance.ToCieXyz();
 					m_image[offset] += (xyz * weight);
 					m_weights[offset] += weight;

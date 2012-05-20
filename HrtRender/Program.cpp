@@ -241,7 +241,7 @@ void Program::RenderScene()
 	{
 		boost::xtime xt;
 		boost::xtime_get(&xt, boost::TIME_UTC);
-		xt.nsec += 1000000000;
+		xt.nsec += 100000000;
 		boost::thread::sleep(xt);
 
 		progress = renderer.GetProgress();

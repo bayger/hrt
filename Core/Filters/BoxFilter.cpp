@@ -20,19 +20,19 @@ Implementation of the box-filter.
 #include "stdafx.h"
 
 #include "BoxFilter.h"
+#include "..\Math.h"
 
 namespace Hrt
 {
 
-	BoxFilter::BoxFilter(int boxSize)
+	BoxFilter::BoxFilter(number boxSize)
 		: Filter(boxSize, boxSize)
 	{
 	}
 
 	number BoxFilter::Calculate(number x, number y)
 	{
-		return (number)(x > -m_width && x < m_width 
-			&& y > -m_height && y < m_height ? 1 : 0);
+		return (number)(Math::Abs(x) < m_width && Math::Abs(y) < m_height ? 1 : 0);
 	}
 
 	std::string yamlType("box-filter");

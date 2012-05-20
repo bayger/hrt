@@ -18,7 +18,7 @@ GNU General Public License for more details.
 namespace Hrt
 {
 
-	Filter::Filter(int width, int height) : 
+	Filter::Filter(number width, number height) : 
 		m_width(width), 
 		m_height(height) 
 	{

@@ -33,8 +33,8 @@ namespace HrtQueue
              + " -d " + _job.MaxRayDepth.ToString(CultureInfo.InvariantCulture)
              + " -t " + _threads.ToString(CultureInfo.InvariantCulture)
              + (_job.SigmaFilter > 0 ? " --sigma-filter " + _job.SigmaFilter.ToString(CultureInfo.InvariantCulture) : "")
-             + " " + _job.SceneFilename
-             + (!string.IsNullOrEmpty(_job.OutputFilename) ? " " + _job.OutputFilename : "")
+             + " \"" + _job.SceneFilename + "\""
+             + (!string.IsNullOrEmpty(_job.OutputFilename) ? " \"" + _job.OutputFilename + "\"" : "")
              + " --percentage";
     }
 
