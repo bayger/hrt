@@ -42,8 +42,7 @@ namespace Hrt
 		Vector3D h = (v+l).Normalize();
 
 		// check if in specular cone
-		bool isInSpecularCone = (lightingType & LightingType::IdealSpecular) != 0 ||
-			n.Dot(h) > 1-epsilon;
+		bool isInSpecularCone = (lightingType & LightingType::IdealSpecular) != 0;
 
 		number delta = Math::Arcos(h.Dot(n));
 		Vector3D h_nuv = h.Transform(intersection.TangentU,
@@ -106,8 +105,8 @@ namespace Hrt
 		return str(format("%1%:s=%2%,d=%3%,ax=%4%,ay=%5%") % yamlType % m_specular % m_diffuse % m_alphaX % m_alphaY);
 	}
 
-	Hrt::Vector3D Ward::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
+	Hrt::Vector3D Ward::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
 	{
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
 	}
 }

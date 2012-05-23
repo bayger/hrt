@@ -25,9 +25,9 @@ namespace Hrt
 
     void Precompute(MaterialPtr material);
 		Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, number& pdf);
+			const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
 		number GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, 
-			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n);
+			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType);
 
 	private:
     bool m_isPrepared;

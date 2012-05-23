@@ -275,12 +275,12 @@ namespace Hrt
     return yamlType;
   }
 
-  Hrt::Vector3D SimpleHe::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
+  Hrt::Vector3D SimpleHe::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
   {
     if (useCosineLobeIS)
-      return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+      return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
     else
-      return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+      return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
   }
 
   const std::string SimpleHe::GetSignature()
@@ -288,12 +288,12 @@ namespace Hrt
     return str(format("%1%:s=%2%,t=%3%,rr=%4%,ri=%5%,a=%6%") % yamlType % sigma % gamma % m_refractionRe.ToString() % m_refractionIm.ToString() % a.ToString());
   }
 
-  Hrt::number SimpleHe::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)
+  Hrt::number SimpleHe::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
   {
     if (useCosineLobeIS)
-      return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+      return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
     else
-      return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+      return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
   }
 
 }

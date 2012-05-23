@@ -175,14 +175,13 @@ namespace Hrt
 		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % yamlType % m_specular % m_diffuse % m_rms % m_gaussianC);
 	}
 
-	Hrt::Vector3D CookTorrance::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
+	Hrt::Vector3D CookTorrance::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
 	{
-		//return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
 	}
 
-	Hrt::number CookTorrance::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)
+	Hrt::number CookTorrance::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
 	{
-		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
 	}
 }

@@ -54,8 +54,10 @@ namespace Hrt
 
 	Vector3D PrecomputedImportanceSampler::SampleVector(number* sample, const Vector3D& outgoingDirection, 
 		const Vector3D& tangentU, const Vector3D& tangentV, 
-		const Vector3D& n, number& pdf)
+		const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
 	{
+    lightingType = LightingType::AllReflection;
+
 		// NOTE: this is actually much better than: m_random.RandomEndOpen(0, 1) for non-RandomSampler level samplers of course
 		number v = (sample[0]+sample[1])/2;
 
@@ -234,7 +236,7 @@ namespace Hrt
 		}		
 	}
 
-	Hrt::number PrecomputedImportanceSampler::GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n)
+	Hrt::number PrecomputedImportanceSampler::GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType)
 	{
 		number outElevation = acos(outgoingDirection.Dot(n));
 

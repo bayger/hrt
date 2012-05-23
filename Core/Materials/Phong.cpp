@@ -65,15 +65,13 @@ namespace Hrt
 		return str(format("%1%:sp=%2%,d=%3%,s=%4%") % yamlType % m_powerSpecular % m_diffuse.ToString() % m_specular.ToString());
 	}
 
-	Hrt::Vector3D Phong::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf)
+	Hrt::Vector3D Phong::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
 	{
-		//return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf);
+		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
 	}
 
-	Hrt::number Phong::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection)
+	Hrt::number Phong::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
 	{
-		//return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
-		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n);
+		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
 	}
 }

@@ -90,8 +90,9 @@ namespace Hrt
 			MaterialPtr material = intersection.HitPrimitive->GetMaterial();
 
 			number materialPdf;
+      LightingType::Enum lightingType;
 			Vector3D materialSampledVector = material->SampleVector(samples, -incoming.Direction, 
-				intersection.TangentU, intersection.TangentV, intersection.Normal, materialPdf);
+				intersection.TangentU, intersection.TangentV, intersection.Normal, materialPdf, lightingType);
 
 			// 2. direct lighting (by all lights)
 			for (uint i=0; i<scene.GetLightCount(); i++)
@@ -123,7 +124,8 @@ namespace Hrt
 							
 							// convert material pdf to light area coordinates
 							number mPdf = material->CalculatePdf(-incoming.Direction, intersection.TangentU, intersection.TangentV,
-								intersection.Normal, incident.Direction) * Math::Abs(incident.Direction.Dot(incident.LightNormal))
+								intersection.Normal, incident.Direction, lightingType) 
+                * Math::Abs(incident.Direction.Dot(incident.LightNormal))
 								/ (intersection.Position-incident.Position).LengthSquared();
 							number wl = WeightByPowerHeuristic(lightPdf, mPdf);
 

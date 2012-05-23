@@ -50,11 +50,13 @@ namespace Hrt
 			LightingType::Enum lightingType)=0;
 
 		/// Sample reflected vector using importance sampling
-		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf);
+		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, 
+      const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, 
+      number& pdf, LightingType::Enum& lightingType);
 
 		/// Returns Pdf for given incoming ray and intersection
 		virtual number CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, const Vector3D& incomingDirection);
+			const Vector3D& n, const Vector3D& incomingDirectio, const LightingType::Enum lightingType);
 
 		/// Calculates light ray reflected by the surface.
 		virtual void CalculateReflectedRay( const RayLight& incomingRay, 

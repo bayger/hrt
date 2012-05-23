@@ -172,7 +172,7 @@ void BrdfGen::OutputData()
 
     if (m_outputPdf)
     {
-      Hrt::number pdf = m_material->CalculatePdf(-rayLight.Direction, intersection.TangentU, intersection.TangentV, intersection.Normal, intersection.RayDirection);
+      Hrt::number pdf = m_material->CalculatePdf(-rayLight.Direction, intersection.TangentU, intersection.TangentV, intersection.Normal, intersection.RayDirection, static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
       std::cout << "\t" << pdf;
     }
     else

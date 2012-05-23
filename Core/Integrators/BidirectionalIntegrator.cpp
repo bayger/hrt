@@ -76,8 +76,9 @@ namespace Hrt
 			if (material == 0) // we hit luminaire
 				break;
 
+      LightingType::Enum lightingType;
 			Vector3D direction = material->SampleVector(&rc.GetLevelSamples()[2*s], -r.Direction, is.TangentU, is.TangentV, 
-				is.Normal, pdf);
+				is.Normal, pdf, lightingType);
 			
 			rl.Direction = -direction;
 			rl.Radiance = 1;
@@ -115,8 +116,9 @@ namespace Hrt
 			if (material == 0) // we hit luminaire
 				break;
 
+      LightingType::Enum lightingType;
 			Vector3D direction = material->SampleVector(&rc.GetLevelSamples()[2*s], -r.Direction, is.TangentU, is.TangentV, 
-				is.Normal, pdf);
+				is.Normal, pdf, lightingType);
 
 			rl.Direction = -direction;
 			rl.Radiance = 1;

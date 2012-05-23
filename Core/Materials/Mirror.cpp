@@ -37,16 +37,17 @@ namespace Hrt
 	}
 
 	Hrt::Vector3D Mirror::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-		const Vector3D& n, number& pdf)
+		const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
 	{
 		pdf = 1;
+    lightingType = LightingType::IdealSpecular;
 		return outgoingDirection.Reflect(n);
 	}
 
 	Hrt::number Mirror::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, 
-		const Vector3D& incomingDirection)
+		const Vector3D& incomingDirection, const LightingType::Enum lightingType)
 	{
-		return !incomingDirection.AlmostEqualTo(outgoingDirection.Reflect(n)) ? 0 : 1;
+		return !incomingDirection.AlmostEqualTo(outgoingDirection.Reflect(n)) && lightingType == LightingType::IdealSpecular ? 0 : 1;
 	}
 
 	static std::string yamlType("mirror");
