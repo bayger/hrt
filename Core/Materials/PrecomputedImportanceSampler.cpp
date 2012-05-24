@@ -25,7 +25,7 @@ namespace Hrt
 
 	int elevationSteps = 180;
 	int azimuthSteps = 181;
-  const char fileHeader[] = "BCF2";
+  const char fileHeader[] = "!BCF";
 
   struct BrdfFileHeader
   {
@@ -38,7 +38,7 @@ namespace Hrt
 
     BrdfFileHeader() 
     {
-      std::fill(&Reserved[0], &Reserved[15], 0);
+      std::fill(&Reserved[0], &Reserved[16], 0);
       std::copy(&fileHeader[0], &fileHeader[3], &IDTag[0]);
       MajorVersion = 0x02;
       MinorVersion = 0x01;
@@ -50,7 +50,7 @@ namespace Hrt
     {
       return MajorVersion == other.MajorVersion
         && MinorVersion == other.MinorVersion
-        && std::equal(&IDTag[0], &IDTag[3], &other.IDTag[0])
+        && std::equal(&IDTag[0], &IDTag[4], &other.IDTag[0])
         && ElevationSteps == other.ElevationSteps
         && AzimuthSteps == other.AzimuthSteps;
     }
