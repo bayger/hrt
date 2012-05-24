@@ -39,7 +39,7 @@ namespace Hrt
     BrdfFileHeader() 
     {
       std::fill(&Reserved[0], &Reserved[16], 0);
-      std::copy(&fileHeader[0], &fileHeader[3], &IDTag[0]);
+      std::copy(&fileHeader[0], &fileHeader[4], &IDTag[0]);
       MajorVersion = 0x02;
       MinorVersion = 0x01;
       ElevationSteps = elevationSteps;
