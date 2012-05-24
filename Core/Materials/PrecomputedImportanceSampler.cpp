@@ -27,6 +27,41 @@ namespace Hrt
 	int azimuthSteps = 181;
   const char fileHeader[] = "BCF2";
 
+  struct BrdfFileHeader
+  {
+    char IDTag[4];
+    short int MajorVersion;
+    short int MinorVersion;
+    int ElevationSteps;
+    int AzimuthSteps;
+    char Reserved[16];
+
+    BrdfFileHeader() 
+    {
+      std::fill(&Reserved[0], &Reserved[15], 0);
+      std::copy(&fileHeader[0], &fileHeader[3], &IDTag[0]);
+      MajorVersion = 0x02;
+      MinorVersion = 0x01;
+      ElevationSteps = elevationSteps;
+      AzimuthSteps = azimuthSteps;
+    }
+
+    bool operator ==(const BrdfFileHeader& other) const
+    {
+      return MajorVersion == other.MajorVersion
+        && MinorVersion == other.MinorVersion
+        && std::equal(&IDTag[0], &IDTag[3], &other.IDTag[0])
+        && ElevationSteps == other.ElevationSteps
+        && AzimuthSteps == other.AzimuthSteps;
+    }
+
+    bool operator !=(const BrdfFileHeader& other) const
+    {
+      return !(*this == other);
+    }
+  };
+
+  BrdfFileHeader CorrectHeader;
 	const number elevationStep = Consts::HalfPi / elevationSteps;
 	const number azimuthStep = Consts::TwoPi / azimuthSteps;
 
@@ -216,20 +251,13 @@ namespace Hrt
 		try
 		{
 			std::string fileName = SignatureToFilename(materialSignature, ".brdf");
-      char header[4] = {0};
 			std::ifstream inFile(fileName.c_str(), std::ifstream::binary);
 			size_t tableSize = azimuthSteps*elevationSteps;
 
       // read and check header
-      inFile.read(header, 4);
-      for(int i=0; i<4; i++)
-        if (header[i] != fileHeader[i])
-          return false;
-      int val = 0;
-      inFile.read(reinterpret_cast<char*>(&val), sizeof(val));
-      if (val != elevationSteps) return false;
-      inFile.read(reinterpret_cast<char*>(&val), sizeof(val));
-      if (val != azimuthSteps) return false;
+      BrdfFileHeader header;
+      inFile.read(reinterpret_cast<char*>(&header), sizeof(header));
+      if (inFile.fail() || header != CorrectHeader) return false;
 
 			std::cout << "Loading importance sampling for " << materialSignature << "... ";
 
@@ -270,9 +298,7 @@ namespace Hrt
 		size_t tableSize = azimuthSteps*elevationSteps;
 
     // write header
-    outFile.write(fileHeader, 4);
-    outFile.write(reinterpret_cast<char*>(&elevationSteps), sizeof(elevationSteps));
-    outFile.write(reinterpret_cast<char*>(&azimuthSteps), sizeof(azimuthSteps));
+    outFile.write(reinterpret_cast<char*>(&CorrectHeader), sizeof(CorrectHeader));
 
 		for(size_t i = 0; i<elevationSteps; i++)
 		{
