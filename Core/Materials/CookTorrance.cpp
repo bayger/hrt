@@ -86,7 +86,7 @@ namespace Hrt
         m_refractionIm[lambdaIndex], Math::Arcos(vh), F_s, F_p);
 
 			number fresnel = (F_s+F_p) / Consts::TwoPi;
-			number D = isInSpecularCone ? 1 : CalculateD(nh, tan_alpha);
+			number D = CalculateD(nh, tan_alpha);
 
 			result[lambdaIndex] = incomingRay.Radiance[lambdaIndex] 
 				* ( m_specular * (fresnel * CalculateG(nh, nl, nv, vh) * D / (nl*nv)) 

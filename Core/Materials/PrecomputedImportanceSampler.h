@@ -35,6 +35,7 @@ namespace Hrt
 		{
 			std::vector<number> Values;
 			std::vector<number> Cdf;
+      number IdealSpecularValue;
 		};
 
 		std::vector<shared_ptr<AnglePrecalc>> angleCdfs;

@@ -176,8 +176,12 @@ namespace Hrt
 
       // Final components
       number rho_sp = isInSpecularCone ? F2 * exp_minus_g * S / cos_theta_i : 0;
-      number rho_dd = (F2 / Consts::Pi) * ((G*S*D)/(cos_theta_r*cos_theta_i));
-      number rho_ud = a[lambdaIndex] * cos_theta_i;
+      number rho_dd = lightingType & LightingType::SpecularOnly != 0 
+        ? (F2 / Consts::Pi) * ((G*S*D)/(cos_theta_r*cos_theta_i))
+        : 0;
+      number rho_ud = lightingType & LightingType::DiffuseOnly != 0 
+        ? a[lambdaIndex] * cos_theta_i
+        : 0;
 
       result.Values[lambdaIndex] = (rho_sp + rho_dd + rho_ud)
         * incomingRay.Radiance.Values[lambdaIndex];

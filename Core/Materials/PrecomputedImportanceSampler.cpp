@@ -23,13 +23,12 @@ namespace Hrt
 	typedef std::tr1::unordered_map<std::string, weak_ptr<PrecomputedImportanceSampler>> sampling_cache;
 	sampling_cache s_samplingCache;
 
-	const int outElevationSteps = 180;
-	const int inElevationSteps = 180;
-	const int inAzimuthSteps = 180;
+	int elevationSteps = 180;
+	int azimuthSteps = 181;
+  const char fileHeader[] = "BCF2";
 
-	const number outElevationStep = Consts::HalfPi / outElevationSteps;
-	const number inElevationStep = Consts::HalfPi / inElevationSteps;
-	const number inAzimuthStep = Consts::TwoPi / inAzimuthSteps;
+	const number elevationStep = Consts::HalfPi / elevationSteps;
+	const number azimuthStep = Consts::TwoPi / azimuthSteps;
 
 	static std::string SignatureToFilename(const std::string& signature, const std::string& ext)
 	{
@@ -62,18 +61,29 @@ namespace Hrt
 		number v = (sample[0]+sample[1])/2;
 
 		number elevation = Math::Arcos(outgoingDirection.Dot(n));
-		size_t index = (size_t)Math::Floor(elevation / outElevationStep);
+		size_t index = (size_t)Math::Floor(elevation / elevationStep);
 
 		std::vector<number>::iterator match = std::lower_bound(angleCdfs[index]->Cdf.begin(), angleCdfs[index]->Cdf.end(), v);
 		size_t matchIndex = match - angleCdfs[index]->Cdf.begin();
 
-		size_t elevationIndex = matchIndex / inAzimuthSteps;
-		size_t azimuthIndex = matchIndex % inAzimuthSteps;
+		size_t elevationIndex = matchIndex / azimuthSteps;
+		size_t azimuthIndex = matchIndex % azimuthSteps;
+    pdf = angleCdfs[index]->Values[matchIndex];
 
-		number inElevation = num(elevationIndex + sample[0]) * inElevationStep;
-		number inAzimuth = num(azimuthIndex + sample[1]) * inAzimuthStep;
+    if (elevationIndex == index)
+    {
+      number ratio = angleCdfs[index]->IdealSpecularValue / pdf;
+      if (v < ratio)
+      {
+        lightingType = static_cast<LightingType::Enum>(lightingType | LightingType::IdealSpecular);
+        return outgoingDirection.Reflect(n);
+      }
+      else
+        pdf -= angleCdfs[index]->IdealSpecularValue;
+    }
 
-		pdf = angleCdfs[index]->Values[matchIndex];
+		number inElevation = num(elevationIndex + sample[0]) * elevationStep;
+		number inAzimuth = num(azimuthIndex + sample[1]) * azimuthStep;
 
 		// transform to a proper space
 		if (outgoingDirection.Dot(n) < 1-epsilon)
@@ -118,27 +128,27 @@ namespace Hrt
 		intersection.TangentU = Vector3D::UnitX;
 		intersection.TangentV = Vector3D::UnitY;
 
-		number hf = (inAzimuthSteps*inElevationSteps)/Consts::TwoPi;
+		number hf = (azimuthSteps*elevationSteps)/Consts::TwoPi;
 
 		std::cout << "Precomputing importance sampling for " << material->GetName() << std::endl;
-		for(size_t i = 0; i < outElevationSteps; i++)
+		for(size_t i = 0; i < elevationSteps; i++)
 		{
-			std::cout << (int)(100*(i+1)/num(outElevationSteps)) << "%  \r";
+			std::cout << (int)(100*(i+1)/num(elevationSteps)) << "%  \r";
 			number cdf = 0;
 
-			number outElevation = num(i + 0.5) * outElevationStep;
+			number outElevation = num(i + 0.5) * elevationStep;
 			intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
 			shared_ptr<AnglePrecalc> precalc(new AnglePrecalc);
-			for(size_t j = 0; j < inElevationSteps; j++)
+			for(size_t j = 0; j < elevationSteps; j++)
 			{
-				number inElevation = num(j + 0.5) * inElevationStep;
+				number inElevation = num(j + 0.5) * elevationStep;
 				number inElevationCos = Math::Cos(inElevation);
 				number inElevationSin = Math::Sin(inElevation);
 
-				for(size_t k = 0; k < inAzimuthSteps; k++)
+				for(size_t k = 0; k < azimuthSteps; k++)
 				{
-					number inAzimuth = (k + 0.5) * inAzimuthStep;
+					number inAzimuth = (k + 0.5) * azimuthStep;
 					number inAzimuthCos = Math::Cos(inAzimuth);
 					number inAzimuthSin = Math::Sin(inAzimuth);
 
@@ -148,18 +158,33 @@ namespace Hrt
 						-inElevationCos);
 					incomingRay.Radiance.SetOne();
 
-					number v = (material->CalculateBsdf(incomingRay, intersection) 
+          bool isIdealReflection = i == j && inAzimuth == Consts::Pi;
+
+          LightingType::Enum lightingType = static_cast<LightingType::Enum>(isIdealReflection 
+            ? LightingType::AllReflection | LightingType::IdealSpecular 
+            : LightingType::AllReflection);
+					number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
 						* Math::Abs(incomingRay.Direction.Z)).GetAverage();
 					cdf += v;
+
+          if (isIdealReflection)
+          {
+            precalc->IdealSpecularValue = v - (material->CalculateBsdf(incomingRay, intersection, LightingType::AllReflection)
+              * Math::Abs(incomingRay.Direction.Z)).GetAverage();
+
+            std::cout << precalc->IdealSpecularValue << " / " << v;
+          }
 
 					precalc->Values.push_back(v);
 					precalc->Cdf.push_back(cdf);
 				}
 			}
 
+      std::cout << " / " << cdf << std::endl;
+
 			if (cdf == 0)
 			{
-				number spread = inAzimuthSteps*inElevationSteps;
+				number spread = azimuthSteps*elevationSteps;
 				for(std::vector<number>::iterator it = precalc->Cdf.begin(); it != precalc->Cdf.end(); it++)
 					(*it) = 1;
 
@@ -173,6 +198,8 @@ namespace Hrt
 
 				for(std::vector<number>::iterator it = precalc->Values.begin(); it != precalc->Values.end(); it++)
 					*it /= (cdf/hf);
+
+        precalc->IdealSpecularValue /= (cdf/hf); // to be comparable to PDF values
 			}
 
 			angleCdfs.push_back(precalc);
@@ -189,13 +216,24 @@ namespace Hrt
 		try
 		{
 			std::string fileName = SignatureToFilename(materialSignature, ".brdf");
-			
+      char header[4] = {0};
 			std::ifstream inFile(fileName.c_str(), std::ifstream::binary);
-			size_t tableSize = inAzimuthSteps*inElevationSteps;
+			size_t tableSize = azimuthSteps*elevationSteps;
+
+      // read and check header
+      inFile.read(header, 4);
+      for(int i=0; i<4; i++)
+        if (header[i] != fileHeader[i])
+          return false;
+      int val = 0;
+      inFile.read(reinterpret_cast<char*>(&val), sizeof(val));
+      if (val != elevationSteps) return false;
+      inFile.read(reinterpret_cast<char*>(&val), sizeof(val));
+      if (val != azimuthSteps) return false;
 
 			std::cout << "Loading importance sampling for " << materialSignature << "... ";
 
-			for(size_t i = 0; i<outElevationSteps; i++)
+			for(size_t i = 0; i<elevationSteps; i++)
 			{
 				shared_ptr<AnglePrecalc> precalc(new AnglePrecalc);
 				precalc->Values.resize(tableSize);
@@ -207,6 +245,9 @@ namespace Hrt
 				inFile.read(reinterpret_cast<char*>(&precalc->Cdf[0]), tableSize*sizeof(number));
 				if (inFile.fail())
 					throw 1;
+        inFile.read(reinterpret_cast<char*>(&precalc->IdealSpecularValue), sizeof(number));
+        if (inFile.fail())
+          throw 1;
 
 				angleCdfs.push_back(precalc);
 			}
@@ -226,13 +267,19 @@ namespace Hrt
 		std::string fileName = SignatureToFilename(materialSignature, ".brdf");
 
 		std::ofstream outFile(fileName.c_str(), std::ofstream::binary);
-		size_t tableSize = inAzimuthSteps*inElevationSteps;
+		size_t tableSize = azimuthSteps*elevationSteps;
 
-		for(size_t i = 0; i<outElevationSteps; i++)
+    // write header
+    outFile.write(fileHeader, 4);
+    outFile.write(reinterpret_cast<char*>(&elevationSteps), sizeof(elevationSteps));
+    outFile.write(reinterpret_cast<char*>(&azimuthSteps), sizeof(azimuthSteps));
+
+		for(size_t i = 0; i<elevationSteps; i++)
 		{
 			shared_ptr<AnglePrecalc> precalc = angleCdfs[i];
 			outFile.write(reinterpret_cast<char*>(&precalc->Values[0]), tableSize*sizeof(number));
 			outFile.write(reinterpret_cast<char*>(&precalc->Cdf[0]), tableSize*sizeof(number));
+      outFile.write(reinterpret_cast<char*>(&precalc->IdealSpecularValue), sizeof(number));
 		}		
 	}
 
@@ -265,10 +312,10 @@ namespace Hrt
 		if (inAzimuth < 0)
 			inAzimuth += Consts::TwoPi;
 
-		int inElevationIndex = (int)(inElevation / inElevationStep);
-		int inAzimuthIndex = (int)(inAzimuth / inAzimuthStep);
-		int outElevationIndex = (int)(outElevation / outElevationStep);
+		int inElevationIndex = (int)(inElevation / elevationStep);
+		int inAzimuthIndex = (int)(inAzimuth / azimuthStep);
+		int outElevationIndex = (int)(outElevation / elevationStep);
 
-		return angleCdfs[Math::Min(outElevationSteps-1, outElevationIndex)]->Values[inElevationIndex*inAzimuthSteps + inAzimuthIndex];
+		return angleCdfs[Math::Min(elevationSteps-1, outElevationIndex)]->Values[inElevationIndex*azimuthSteps + inAzimuthIndex];
 	}
 }
