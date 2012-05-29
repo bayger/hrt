@@ -22,7 +22,7 @@ namespace Hrt
 	
 	uint LibraryInfo::GetVersion()
 	{
-		return VERSION(0,2,2);
+		return VERSION(0,2,3);
 	}
 
 	std::string LibraryInfo::GetFullName()

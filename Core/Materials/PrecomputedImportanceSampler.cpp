@@ -165,10 +165,10 @@ namespace Hrt
 
 		number hf = (azimuthSteps*elevationSteps)/Consts::TwoPi;
 
-		std::cout << "Precomputing importance sampling for " << material->GetName() << std::endl;
+		std::cout << "Precomputing importance sampling for " << material->GetSignature() << std::endl;
 		for(size_t i = 0; i < elevationSteps; i++)
 		{
-			std::cout << (int)(100*(i+1)/num(elevationSteps)) << "%  \r";
+			// std::cout << (int)(100*(i+1)/num(elevationSteps)) << "%  \r";
 			number cdf = 0;
 
 			number outElevation = num(i + 0.5) * elevationStep;
@@ -207,7 +207,7 @@ namespace Hrt
             precalc->IdealSpecularValue = v - (material->CalculateBsdf(incomingRay, intersection, LightingType::AllReflection)
               * Math::Abs(incomingRay.Direction.Z)).GetAverage();
 
-            std::cout << precalc->IdealSpecularValue << " / " << v;
+            // std::cout << precalc->IdealSpecularValue << " / " << v;
           }
 
 					precalc->Values.push_back(v);
@@ -215,7 +215,7 @@ namespace Hrt
 				}
 			}
 
-      std::cout << " / " << cdf << std::endl;
+      // std::cout << " / " << cdf << std::endl;
 
 			if (cdf == 0)
 			{
@@ -259,7 +259,7 @@ namespace Hrt
       inFile.read(reinterpret_cast<char*>(&header), sizeof(header));
       if (inFile.fail() || header != CorrectHeader) return false;
 
-			std::cout << "Loading importance sampling for " << materialSignature << "... ";
+			// std::cout << "Loading importance sampling for " << materialSignature << "... ";
 
 			for(size_t i = 0; i<elevationSteps; i++)
 			{
@@ -280,12 +280,13 @@ namespace Hrt
 				angleCdfs.push_back(precalc);
 			}
 
-			std::cout << "done" << std::endl;
+			// std::cout << "done" << std::endl;
 			return true;
 		}
 		catch(...)
 		{
-			std::cout << "failed" << std::endl;
+			// std::cout << "failed" << std::endl;
+      std::cerr << "Failed to load importance sampling for " << materialSignature << std::endl;
 			return false;
 		}
 	}
