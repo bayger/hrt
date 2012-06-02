@@ -41,7 +41,7 @@ namespace Hrt
       std::fill(&Reserved[0], &Reserved[16], 0);
       std::copy(&fileHeader[0], &fileHeader[4], &IDTag[0]);
       MajorVersion = 0x02;
-      MinorVersion = 0x01;
+      MinorVersion = 0x04;
       ElevationSteps = elevationSteps;
       AzimuthSteps = azimuthSteps;
     }
@@ -95,8 +95,7 @@ namespace Hrt
 		// NOTE: this is actually much better than: m_random.RandomEndOpen(0, 1) for non-RandomSampler level samplers of course
 		number v = (sample[0]+sample[1])/2;
 
-		number elevation = Math::Arcos(outgoingDirection.Dot(n));
-		size_t index = (size_t)Math::Floor(elevation / elevationStep);
+		size_t index = (size_t)Math::Floor(outgoingDirection.Dot(n) * elevationSteps);
 
 		std::vector<number>::iterator match = std::lower_bound(angleCdfs[index]->Cdf.begin(), angleCdfs[index]->Cdf.end(), v);
 		size_t matchIndex = match - angleCdfs[index]->Cdf.begin();
@@ -117,7 +116,7 @@ namespace Hrt
         pdf -= angleCdfs[index]->IdealSpecularValue;
     }
 
-		number inElevation = num(elevationIndex + sample[0]) * elevationStep;
+		number inElevation = Math::Arcos(num(elevationIndex + sample[0]) / elevationSteps);
 		number inAzimuth = num(azimuthIndex + sample[1]) * azimuthStep;
 
 		// transform to a proper space
@@ -171,13 +170,13 @@ namespace Hrt
 			// std::cout << (int)(100*(i+1)/num(elevationSteps)) << "%  \r";
 			number cdf = 0;
 
-			number outElevation = num(i + 0.5) * elevationStep;
+			number outElevation = Math::Arcos(num(i + 0.5) / elevationSteps);
 			intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
 			shared_ptr<AnglePrecalc> precalc(new AnglePrecalc);
 			for(size_t j = 0; j < elevationSteps; j++)
 			{
-				number inElevation = num(j + 0.5) * elevationStep;
+				number inElevation = Math::Arcos(num(j + 0.5) / elevationSteps);
 				number inElevationCos = Math::Cos(inElevation);
 				number inElevationSin = Math::Sin(inElevation);
 
