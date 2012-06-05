@@ -54,7 +54,9 @@ namespace Hrt
         LightingType::Enum lightingType = LightingType::AllReflection;
         number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
           * Math::Abs(incomingRay.Direction.Z)).GetAverage();
-        values.push_back(v);
+
+        // NOTE: for now we are ignoring NaNs and put zeros instead
+        values.push_back(Math::IsNan(v) ? 0 : v);
       }
     }
   }
@@ -112,6 +114,28 @@ namespace Hrt
     }
   }
 
+  static number CalculatePdf(std::vector<number>& values, number inElevation, number inAzimuth)
+  {
+    number e = inElevation / ELEVATION_STEP;
+    size_t el = (size_t)Math::Floor(e);
+    size_t eh = (size_t)Math::Ceiling(e);
+    number de = e - el;
+    number a = inAzimuth / AZIMUTH_STEP;
+    size_t al = (size_t)Math::Floor(a);
+    size_t ah = (size_t)Math::Ceiling(a);
+    number da = a - al;
+
+    number pdfElAl = values[el*(AZIMUTH_COUNT+1) + al];
+    number pdfElAh = values[el*(AZIMUTH_COUNT+1) + ah];
+    number pdfEhAl = values[eh*(AZIMUTH_COUNT+1) + al];
+    number pdfEhAh = values[eh*(AZIMUTH_COUNT+1) + ah];
+
+    number vl = pdfElAl * (1 - da) + pdfElAh * da;
+    number vh = pdfEhAl * (1 - da) + pdfEhAh * da;
+
+    return vl * (1 - de) + vh * de;
+  }
+
   void Lipis::Precompute(MaterialPtr material)
   {
     std::cout << "Precomputing importance sampling for " << material->GetSignature() << std::endl;
@@ -137,6 +161,87 @@ namespace Hrt
       ComputeBrdfForFields(values, fieldValues);
       number cumulatedValue = ComputeCdfForFields(fieldValues, fieldCdfs);
       NormalizeTables(values, fieldCdfs, cumulatedValue);
+
+      shared_ptr<LipisAngleData> data(new LipisAngleData);
+      data->OutgoingAngle = outElevation;
+      std::copy(values.begin(), values.end(), data->PdfValues.begin());
+      std::copy(fieldCdfs.begin(), fieldCdfs.end(), data->CdfValues.begin());
+      angleData.push_back(data);
     }
   }
+
+  Hrt::Vector3D Lipis::SampleVector(number* sample, 
+    const Vector3D& outgoingDirection, 
+    const Vector3D& tangentU, 
+    const Vector3D& tangentV, 
+    const Vector3D& n, 
+    number& pdf, 
+    LightingType::Enum& lightingType)
+  {
+    lightingType = LightingType::AllReflection;
+
+    // NOTE: this is actually much better than: m_random.RandomEndOpen(0, 1) for non-RandomSampler level samplers of course
+    number v = (sample[0]+sample[1])/2;
+
+    size_t index = (size_t)Math::Floor(Math::Arcos(outgoingDirection.Dot(n)) / ELEVATION_STEP);
+
+    std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
+      angleData[index]->CdfValues.end(), 
+      v);
+    size_t matchIndex = match - angleData[index]->CdfValues.begin();
+
+    size_t elevationIndex = matchIndex / AZIMUTH_COUNT;
+    size_t azimuthIndex = matchIndex % AZIMUTH_COUNT;
+
+    number inElevation = Math::Arcos(num(elevationIndex + sample[0]) / ELEVATION_COUNT);
+    number inAzimuth = num(azimuthIndex + sample[1]) * AZIMUTH_COUNT;
+    pdf = CalculatePdf(angleData[index]->PdfValues, inElevation, inAzimuth);
+
+    // transform to a proper space
+    if (outgoingDirection.Dot(n) < 1-epsilon)
+    {
+      Vector3D sv = n.Cross(outgoingDirection).Normalize();
+      Vector3D su = sv.Cross(n).Normalize();
+      return Vector3D::FromSpherical(inAzimuth, inElevation, su, sv, n);
+    }
+    else
+    {
+      return Vector3D::FromSpherical(inAzimuth, inElevation, tangentU, tangentV, n);
+    }
+  }
+
+  Hrt::number Lipis::GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType)
+  {
+    number outElevation = Math::Arcos(outgoingDirection.Dot(n));
+
+    Vector3D sv, su;
+    if (outgoingDirection.Dot(n) < 1-epsilon)
+    {
+      sv = n.Cross(outgoingDirection).Normalize();
+      su = sv.Cross(n).Normalize();
+    }
+    else
+    {
+      su = tangentU;
+      sv = tangentV;
+    }
+
+    number z = n.Dot(-incomingDirection);
+    if (z < 0)
+      return 0;
+
+    number x = su.Dot(-incomingDirection);
+    number y = sv.Dot(-incomingDirection);
+
+    number inElevation = Math::Arcos(z);
+    number inAzimuth = Math::Atan(x, y);
+
+    if (inAzimuth < 0)
+      inAzimuth += Consts::TwoPi;
+
+    size_t outElevationIndex = (size_t)Math::Floor(outElevation / ELEVATION_STEP);
+
+    return CalculatePdf(angleData[outElevationIndex]->PdfValues, inElevation, inAzimuth);
+  }
+
 }

@@ -24,6 +24,19 @@ namespace Hrt
     Lipis(void);
 
     void Precompute(MaterialPtr material);
-  };
+    Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
+      const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
+    number GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, 
+      const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType);
 
+  private:
+    struct LipisAngleData
+    {
+      number OutgoingAngle;
+      std::vector<number> PdfValues;
+      std::vector<number> CdfValues;
+    };
+
+    std::vector<shared_ptr<LipisAngleData>> angleData;
+  };
 }
