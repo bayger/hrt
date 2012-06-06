@@ -22,14 +22,17 @@ namespace Hrt
 	CookTorrance::CookTorrance()
 		: m_diffuse(num(0.5)), m_specular(num(0.5)), m_rms(0.6), 
 			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1),
-			m_importanceSampler(new PrecomputedImportanceSampler)
+			m_importanceSampler(new Lipis)
+      //m_importanceSampler(new PrecomputedImportanceSampler)
 	{
 	}
 
 	CookTorrance::CookTorrance( number diffuse, number specular, number rms, 
 		SlopeDistribution::Enum distribution)
 		: m_rms(rms), m_distribution(distribution),
-		m_gaussianC(1), m_importanceSampler(new PrecomputedImportanceSampler)
+		m_gaussianC(1), 
+    m_importanceSampler(new Lipis)
+    //m_importanceSampler(new PrecomputedImportanceSampler)
 	{
 		SetDiffuse(diffuse);
 		SetSpecular(specular);

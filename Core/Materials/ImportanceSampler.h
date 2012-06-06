@@ -13,41 +13,30 @@
  * GNU General Public License for more details.
  */
 #pragma once
-#include "..\Material.h"
-#include "ImportanceSampler.h"
+#include "../Material.h"
 
 namespace Hrt
 {
-  /// Linearly interpolated precomputed importance sampling
-  class Lipis : public ImportanceSampler, public enable_shared_from_this<Lipis>
+  class ImportanceSampler
   {
   public:
-    Lipis(void);
+    virtual ~ImportanceSampler() {}
 
-    virtual void Precompute(MaterialPtr material);
+    virtual void Precompute(MaterialPtr material)=0;
+
     virtual Vector3D SampleVector(number* sample, 
       const Vector3D& outgoingDirection, 
       const Vector3D& tangentU, 
       const Vector3D& tangentV, 
       const Vector3D& n, 
       number& pdf, 
-      LightingType::Enum& lightingType);
+      LightingType::Enum& lightingType)=0;
+
     virtual number GetPdf(const Vector3D& incomingDirection, 
       const Vector3D& outgoingDirection, 
       const Vector3D& tangentU, 
       const Vector3D& tangentV, 
       const Vector3D& n, 
-      const LightingType::Enum lightingType);
-
-  private:
-    struct LipisAngleData
-    {
-      number OutgoingAngle;
-      std::vector<number> PdfValues;
-      std::vector<number> CdfValues;
-    };
-
-    bool isPrecomputed;
-    std::vector<shared_ptr<LipisAngleData>> angleData;
+      const LightingType::Enum lightingType)=0;
   };
 }

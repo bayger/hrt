@@ -212,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lights\AreaLight.h" />
+    <ClInclude Include="Materials\ImportanceSampler.h" />
     <ClInclude Include="Materials\Lipis.h" />
     <ClInclude Include="Materials\ASPhong.h" />
     <ClInclude Include="Integrators\BidirectionalIntegrator.h" />

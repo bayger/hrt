@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include "stdafx.h"
 #include "ASPhong.h" 
 #include "../Serialization/SerializationHelper.h"
+#include "Lipis.h"
 
 namespace Hrt 
 {
@@ -26,7 +27,8 @@ namespace Hrt
 		m_diffuseFactor((number)0.9),
 		m_specular(Spectrum(1)), 
 		m_diffuse(Spectrum(1)),
-		m_importanceSampler(new PrecomputedImportanceSampler)
+    //m_importanceSampler(new PrecomputedImportanceSampler)
+		m_importanceSampler(new Lipis)
 	{
 	}
 
@@ -40,7 +42,8 @@ namespace Hrt
 		m_diffuseFactor(diffuseFactor),
 		m_specular(Spectrum(1)), 
 		m_diffuse(Spectrum(1)),
-		m_importanceSampler(new PrecomputedImportanceSampler)
+		//m_importanceSampler(new PrecomputedImportanceSampler)
+    m_importanceSampler(new Lipis)
 	{
 	}
 

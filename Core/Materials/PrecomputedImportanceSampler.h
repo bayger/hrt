@@ -14,20 +14,30 @@
  */
 #pragma once
 #include "..\Material.h"
+#include "ImportanceSampler.h"
 
 namespace Hrt
 {
 
-	class PrecomputedImportanceSampler : public enable_shared_from_this<PrecomputedImportanceSampler>
+	class PrecomputedImportanceSampler : public ImportanceSampler, public enable_shared_from_this<PrecomputedImportanceSampler>
 	{
 	public:
 		PrecomputedImportanceSampler();
 
-    void Precompute(MaterialPtr material);
-		Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
-		number GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, 
-			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType);
+    virtual void Precompute(MaterialPtr material);
+		virtual Vector3D SampleVector(number* sample, 
+      const Vector3D& outgoingDirection, 
+      const Vector3D& tangentU, 
+      const Vector3D& tangentV, 
+			const Vector3D& n, 
+      number& pdf, 
+      LightingType::Enum& lightingType);
+		virtual number GetPdf(const Vector3D& incomingDirection, 
+      const Vector3D& outgoingDirection, 
+			const Vector3D& tangentU, 
+      const Vector3D& tangentV, 
+      const Vector3D& n, 
+      const LightingType::Enum lightingType);
 
 	private:
     bool m_isPrepared;

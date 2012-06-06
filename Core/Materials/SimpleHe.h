@@ -15,7 +15,7 @@
 #pragma once
 #include "../Common.h"
 #include "../Material.h"
-#include "PrecomputedImportanceSampler.h"
+#include "ImportanceSampler.h"
 
 namespace Hrt
 {
@@ -78,7 +78,7 @@ namespace Hrt
         boost::scoped_array<number> z0Precalc;
         boost::scoped_array<Spectrum> dPartPrecalc;
         bool isPrecalcDirty;
-				shared_ptr<PrecomputedImportanceSampler> importanceSampler;
+				shared_ptr<ImportanceSampler> importanceSampler;
         bool useCosineLobeIS;
         
         number CalcZ0(number theta_i, number theta_r);

@@ -18,11 +18,12 @@
 namespace Hrt
 {
   const size_t ELEVATION_COUNT = 180;
-  const size_t AZIMUTH_COUNT = 180;
+  const size_t AZIMUTH_COUNT = 181;
   const number ELEVATION_STEP = Consts::HalfPi / ELEVATION_COUNT;
-  const number AZIMUTH_STEP = Consts::Pi / AZIMUTH_COUNT;
+  const number AZIMUTH_STEP = Consts::TwoPi / AZIMUTH_COUNT;
 
   Lipis::Lipis(void)
+    : isPrecomputed(false)
   {
   }
 
@@ -33,7 +34,7 @@ namespace Hrt
     for(size_t ie = 0; ie <= ELEVATION_COUNT; ie++)
     {
       // incoming elevation angle is cos^-1(0->1) due to the need of constant density
-      number inElevation = Math::Arcos(ie / ELEVATION_COUNT);
+      number inElevation = Math::Arcos(num(ie) / ELEVATION_COUNT);
       number inElevationCos = Math::Cos(inElevation);
       number inElevationSin = Math::Sin(inElevation);
 
@@ -95,28 +96,18 @@ namespace Hrt
 
   static void NormalizeTables(std::vector<number>& values, std::vector<number>& fieldCdfs, number cumulatedValue)
   {
-    // make values PDF normalized
-    for(size_t ie = 0; ie <= ELEVATION_COUNT; ie++)
-    {
-      for(size_t az = 0; az <= AZIMUTH_COUNT; az++)
-      {
-        values[ie*(AZIMUTH_COUNT+1) + az] /= cumulatedValue;
-      }
-    }
+    number hf = (AZIMUTH_COUNT*ELEVATION_COUNT)/Consts::TwoPi;
 
-    // normalize CDFs (all must sum to 1)
-    for(size_t ie = 0; ie < ELEVATION_COUNT; ie++)
-    {
-      for(size_t az = 0; az < AZIMUTH_COUNT; az++)
-      {
-        fieldCdfs[ie*AZIMUTH_COUNT + az] /= cumulatedValue;
-      }
-    }
+    for(std::vector<number>::iterator it = fieldCdfs.begin(); it != fieldCdfs.end(); it++)
+      *it /= cumulatedValue;
+
+    for(std::vector<number>::iterator it = values.begin(); it != values.end(); it++)
+      *it /= cumulatedValue/hf;
   }
 
   static number CalculatePdf(std::vector<number>& values, number inElevation, number inAzimuth)
   {
-    number e = inElevation / ELEVATION_STEP;
+    number e = Math::Cos(inElevation) * ELEVATION_COUNT;// / ELEVATION_STEP;
     size_t el = (size_t)Math::Floor(e);
     size_t eh = (size_t)Math::Ceiling(e);
     number de = e - el;
@@ -125,6 +116,7 @@ namespace Hrt
     size_t ah = (size_t)Math::Ceiling(a);
     number da = a - al;
 
+    // std::cout << " (" << el << "," << eh << "|" << al << "," << ah << ")";
     number pdfElAl = values[el*(AZIMUTH_COUNT+1) + al];
     number pdfElAh = values[el*(AZIMUTH_COUNT+1) + ah];
     number pdfEhAl = values[eh*(AZIMUTH_COUNT+1) + al];
@@ -134,10 +126,14 @@ namespace Hrt
     number vh = pdfEhAl * (1 - da) + pdfEhAh * da;
 
     return vl * (1 - de) + vh * de;
+    //(pdfElAl+pdfElAh+pdfEhAl+pdfEhAh)/4;
   }
 
   void Lipis::Precompute(MaterialPtr material)
   {
+    if (isPrecomputed)
+      return;
+
     std::cout << "Precomputing importance sampling for " << material->GetSignature() << std::endl;
 
     Intersection intersection;
@@ -153,6 +149,8 @@ namespace Hrt
 
     for(size_t oe = 0; oe < ELEVATION_COUNT; oe++)
     {
+      std::cout << oe+1 << "/" << ELEVATION_COUNT << std::endl;
+
       // outgoing elevation angle is spread uniformly
       number outElevation = oe * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
@@ -164,10 +162,14 @@ namespace Hrt
 
       shared_ptr<LipisAngleData> data(new LipisAngleData);
       data->OutgoingAngle = outElevation;
+      data->PdfValues.resize(values.size());
       std::copy(values.begin(), values.end(), data->PdfValues.begin());
+      data->CdfValues.resize(fieldCdfs.size());
       std::copy(fieldCdfs.begin(), fieldCdfs.end(), data->CdfValues.begin());
       angleData.push_back(data);
     }
+
+    isPrecomputed = true;
   }
 
   Hrt::Vector3D Lipis::SampleVector(number* sample, 
@@ -184,17 +186,14 @@ namespace Hrt
     number v = (sample[0]+sample[1])/2;
 
     size_t index = (size_t)Math::Floor(Math::Arcos(outgoingDirection.Dot(n)) / ELEVATION_STEP);
-
     std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
       angleData[index]->CdfValues.end(), 
       v);
     size_t matchIndex = match - angleData[index]->CdfValues.begin();
-
-    size_t elevationIndex = matchIndex / AZIMUTH_COUNT;
-    size_t azimuthIndex = matchIndex % AZIMUTH_COUNT;
-
+    size_t elevationIndex = matchIndex / (AZIMUTH_COUNT);
+    size_t azimuthIndex = matchIndex % (AZIMUTH_COUNT);
     number inElevation = Math::Arcos(num(elevationIndex + sample[0]) / ELEVATION_COUNT);
-    number inAzimuth = num(azimuthIndex + sample[1]) * AZIMUTH_COUNT;
+    number inAzimuth = num(azimuthIndex + sample[1]) * AZIMUTH_STEP;
     pdf = CalculatePdf(angleData[index]->PdfValues, inElevation, inAzimuth);
 
     // transform to a proper space

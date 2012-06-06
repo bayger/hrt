@@ -84,7 +84,7 @@ namespace Hrt
 		number m_diffuseFactor;
 		Spectrum m_specular;
 		Spectrum m_diffuse;
-		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
+		shared_ptr<ImportanceSampler> m_importanceSampler;
 	};
 
 }

@@ -15,6 +15,7 @@ GNU General Public License for more details.
 #pragma once
 #include "../Common.h"
 #include "../Material.h"
+#include "Lipis.h"
 #include "PrecomputedImportanceSampler.h"
 
 namespace Hrt
@@ -96,7 +97,8 @@ namespace Hrt
 		SlopeDistribution::Enum m_distribution;
 		number m_gaussianC;
 
-		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
+		shared_ptr<ImportanceSampler> m_importanceSampler;
+    //shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
 
 		number CalculateG(number nh, number nl, number nv, number vh);
 		number CalculateD(number nh, number tan_alpha);
