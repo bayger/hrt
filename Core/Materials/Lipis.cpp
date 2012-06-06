@@ -17,16 +17,16 @@
 
 namespace Hrt
 {
-  const size_t ELEVATION_COUNT = 180;
-  const size_t AZIMUTH_COUNT = 181;
+  const size_t ELEVATION_COUNT = 255;
+  const size_t AZIMUTH_COUNT = 255;
   const number ELEVATION_STEP = Consts::HalfPi / ELEVATION_COUNT;
   const number AZIMUTH_STEP = Consts::TwoPi / AZIMUTH_COUNT;
 
-  Lipis::Lipis(void)
-    : isPrecomputed(false)
-  {
-  }
+  //
+  // NON-MEMBER FUNCTIONS
+  //
 
+  /// Computes BRDF values for all nodes on the hemisphere for given intersection data (outgoing vector)
   static void ComputeBrdfForNodes(MaterialPtr material, std::vector<number>& values, Intersection& intersection)
   {
     values.clear();
@@ -62,6 +62,7 @@ namespace Hrt
     }
   }
 
+  /// Calculates average values of BRDF for each fields on the hemisphere
   static void ComputeBrdfForFields(std::vector<number>& values, std::vector<number>& fieldValues) 
   {
     fieldValues.clear();
@@ -78,6 +79,7 @@ namespace Hrt
     }
   }
 
+  /// This one computes unnormalized CDF values and returns the cumulated BRDF sum (for the hemisphere)
   static number ComputeCdfForFields(std::vector<number>& fieldValues, std::vector<number>& fieldCdfs) 
   {
     fieldCdfs.clear();
@@ -94,8 +96,10 @@ namespace Hrt
     return cdf;
   }
 
+  /// Normalizes PDF and CDF tables using cumulated BRDF sum for whole hemisphere
   static void NormalizeTables(std::vector<number>& values, std::vector<number>& fieldCdfs, number cumulatedValue)
   {
+    // this is an additional normalization factor for PDF (hemisphere chunk)
     number hf = (AZIMUTH_COUNT*ELEVATION_COUNT)/Consts::TwoPi;
 
     for(std::vector<number>::iterator it = fieldCdfs.begin(); it != fieldCdfs.end(); it++)
@@ -105,9 +109,10 @@ namespace Hrt
       *it /= cumulatedValue/hf;
   }
 
+  /// This function does linear interpolation of PDF for given PDF table and incoming angles
   static number CalculatePdf(std::vector<number>& values, number inElevation, number inAzimuth)
   {
-    number e = Math::Cos(inElevation) * ELEVATION_COUNT;// / ELEVATION_STEP;
+    number e = Math::Cos(inElevation) * ELEVATION_COUNT;
     size_t el = (size_t)Math::Floor(e);
     size_t eh = (size_t)Math::Ceiling(e);
     number de = e - el;
@@ -116,7 +121,6 @@ namespace Hrt
     size_t ah = (size_t)Math::Ceiling(a);
     number da = a - al;
 
-    // std::cout << " (" << el << "," << eh << "|" << al << "," << ah << ")";
     number pdfElAl = values[el*(AZIMUTH_COUNT+1) + al];
     number pdfElAh = values[el*(AZIMUTH_COUNT+1) + ah];
     number pdfEhAl = values[eh*(AZIMUTH_COUNT+1) + al];
@@ -126,7 +130,15 @@ namespace Hrt
     number vh = pdfEhAl * (1 - da) + pdfEhAh * da;
 
     return vl * (1 - de) + vh * de;
-    //(pdfElAl+pdfElAh+pdfEhAl+pdfEhAh)/4;
+  }
+
+  //
+  // CLASS MEMBERS
+  //
+
+  Lipis::Lipis(void)
+    : isPrecomputed(false)
+  {
   }
 
   void Lipis::Precompute(MaterialPtr material)
@@ -152,7 +164,7 @@ namespace Hrt
       std::cout << oe+1 << "/" << ELEVATION_COUNT << std::endl;
 
       // outgoing elevation angle is spread uniformly
-      number outElevation = oe * ELEVATION_STEP;
+      number outElevation = (oe + num(0.5)) * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
       ComputeBrdfForNodes(material, values, intersection);
