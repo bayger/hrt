@@ -17,10 +17,12 @@
 
 namespace Hrt
 {
-  const size_t ELEVATION_COUNT = 255;
-  const size_t AZIMUTH_COUNT = 255;
+  const size_t ELEVATION_COUNT = 90*3;
+  const size_t AZIMUTH_COUNT = 180;
   const number ELEVATION_STEP = Consts::HalfPi / ELEVATION_COUNT;
   const number AZIMUTH_STEP = Consts::TwoPi / AZIMUTH_COUNT;
+  // this is an additional normalization factor for PDF (hemisphere chunk)
+  const number hf = (AZIMUTH_COUNT*ELEVATION_COUNT)/Consts::TwoPi;
 
   //
   // NON-MEMBER FUNCTIONS
@@ -80,10 +82,10 @@ namespace Hrt
   }
 
   /// This one computes unnormalized CDF values and returns the cumulated BRDF sum (for the hemisphere)
-  static number ComputeCdfForFields(std::vector<number>& fieldValues, std::vector<number>& fieldCdfs) 
+  static number ComputeCdfForFields(std::vector<number>& fieldValues, std::vector<number>& fieldCdfs, number idealReflection) 
   {
     fieldCdfs.clear();
-    number cdf = 0;
+    number cdf = idealReflection;
     for(size_t ie = 0; ie < ELEVATION_COUNT; ie++)
     {
       for(size_t az = 0; az < AZIMUTH_COUNT; az++)
@@ -99,9 +101,6 @@ namespace Hrt
   /// Normalizes PDF and CDF tables using cumulated BRDF sum for whole hemisphere
   static void NormalizeTables(std::vector<number>& values, std::vector<number>& fieldCdfs, number cumulatedValue)
   {
-    // this is an additional normalization factor for PDF (hemisphere chunk)
-    number hf = (AZIMUTH_COUNT*ELEVATION_COUNT)/Consts::TwoPi;
-
     for(std::vector<number>::iterator it = fieldCdfs.begin(); it != fieldCdfs.end(); it++)
       *it /= cumulatedValue;
 
@@ -130,6 +129,21 @@ namespace Hrt
     number vh = pdfEhAl * (1 - da) + pdfEhAh * da;
 
     return vl * (1 - de) + vh * de;
+  }
+
+  /// Computes ideal reflection (glossy, duffuse + specular)
+  static number ComputeIdealReflection(MaterialPtr material, Intersection& intersection)
+  {
+    RayLight incomingRay;
+    incomingRay.Direction = intersection.RayDirection.Reflect(intersection.Normal);
+    incomingRay.Radiance.SetOne();
+
+    // BRDF computation goes here
+    LightingType::Enum lightingType = static_cast<LightingType::Enum>(LightingType::AllReflection | LightingType::IdealSpecular);
+    number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
+      * Math::Abs(incomingRay.Direction.Z)).GetAverage();
+
+    return v;
   }
 
   //
@@ -161,19 +175,23 @@ namespace Hrt
 
     for(size_t oe = 0; oe < ELEVATION_COUNT; oe++)
     {
-      std::cout << oe+1 << "/" << ELEVATION_COUNT << std::endl;
-
       // outgoing elevation angle is spread uniformly
       number outElevation = (oe + num(0.5)) * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
+      std::cout << "outElevation: " << outElevation/Consts::HalfPi*90;
+
+      number idealReflection = ComputeIdealReflection(material, intersection);
       ComputeBrdfForNodes(material, values, intersection);
       ComputeBrdfForFields(values, fieldValues);
-      number cumulatedValue = ComputeCdfForFields(fieldValues, fieldCdfs);
+      number cumulatedValue = ComputeCdfForFields(fieldValues, fieldCdfs, idealReflection);
+      std::cout << ", sum: " << cumulatedValue << ", ideal: " << idealReflection << std::endl;
       NormalizeTables(values, fieldCdfs, cumulatedValue);
 
       shared_ptr<LipisAngleData> data(new LipisAngleData);
       data->OutgoingAngle = outElevation;
+      data->IdealReflectionCdf = idealReflection / cumulatedValue;
+      data->IdealReflectionPdf = idealReflection / (cumulatedValue/hf);
       data->PdfValues.resize(values.size());
       std::copy(values.begin(), values.end(), data->PdfValues.begin());
       data->CdfValues.resize(fieldCdfs.size());
@@ -198,6 +216,15 @@ namespace Hrt
     number v = (sample[0]+sample[1])/2;
 
     size_t index = (size_t)Math::Floor(Math::Arcos(outgoingDirection.Dot(n)) / ELEVATION_STEP);
+
+    // first check for ideal reflection case
+    if (v < angleData[index]->IdealReflectionCdf)
+    {
+      lightingType = static_cast<LightingType::Enum>(lightingType | LightingType::IdealSpecular);
+      pdf = angleData[index]->IdealReflectionPdf;
+      return outgoingDirection.Reflect(n);
+    }
+
     std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
       angleData[index]->CdfValues.end(), 
       v);
@@ -224,6 +251,11 @@ namespace Hrt
   Hrt::number Lipis::GetPdf(const Vector3D& incomingDirection, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const LightingType::Enum lightingType)
   {
     number outElevation = Math::Arcos(outgoingDirection.Dot(n));
+    size_t outElevationIndex = (size_t)Math::Floor(outElevation / ELEVATION_STEP);
+
+    // first check for ideal reflection case
+    if (lightingType == static_cast<LightingType::Enum>(LightingType::AllReflection | LightingType::IdealSpecular))
+      return angleData[outElevationIndex]->IdealReflectionPdf;
 
     Vector3D sv, su;
     if (outgoingDirection.Dot(n) < 1-epsilon)
@@ -249,8 +281,6 @@ namespace Hrt
 
     if (inAzimuth < 0)
       inAzimuth += Consts::TwoPi;
-
-    size_t outElevationIndex = (size_t)Math::Floor(outElevation / ELEVATION_STEP);
 
     return CalculatePdf(angleData[outElevationIndex]->PdfValues, inElevation, inAzimuth);
   }

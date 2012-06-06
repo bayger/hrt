@@ -43,6 +43,8 @@ namespace Hrt
     struct LipisAngleData
     {
       number OutgoingAngle;
+      number IdealReflectionPdf;
+      number IdealReflectionCdf;
       std::vector<number> PdfValues;
       std::vector<number> CdfValues;
     };
