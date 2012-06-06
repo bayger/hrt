@@ -324,7 +324,7 @@ void Program::RenderScene()
 }
 
 
-void DrawImage(SDL_Surface* screen, FIBITMAP* bitmap, int w, int h, int render_y)
+void DrawImage(SDL_Surface* screen, FIBITMAP* bitmap, int w, int h, int ch, int render_y)
 {
 	if ( SDL_MUSTLOCK(screen) ) 
 	{
@@ -339,10 +339,10 @@ void DrawImage(SDL_Surface* screen, FIBITMAP* bitmap, int w, int h, int render_y
 		unsigned char* scanline = (unsigned char*)FreeImage_GetScanLine(bitmap, y);
 		for(int x=0; x<w; x++)
 		{
-			unsigned color = (render_y+1 != y) 
+			unsigned color = (h-1 != y) 
 				? ((*((unsigned*)&scanline[x*3])) & 0xffffff) 
 				: 0xffffff;
-			bufp = (unsigned*)screen->pixels + (h-y-1)*screen->pitch/4 + x;
+			bufp = (unsigned*)screen->pixels + (ch-y-1)*screen->pitch/4 + x;
 			*bufp = color;
 		}
 	}
@@ -350,7 +350,7 @@ void DrawImage(SDL_Surface* screen, FIBITMAP* bitmap, int w, int h, int render_y
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);
 	}
-	SDL_UpdateRect(screen, 0, 0, w, h);
+	SDL_UpdateRect(screen, 0, 0, w, ch);
 }
 
 
@@ -361,10 +361,10 @@ void Program::ShowRendering(SDL_Surface* surface, int cx, int cy)
 	ImageOwnedPtr image = canvas->GenerateImage();
 
 	CieXyz* pixels = image->GetPixels();
-
-	FIBITMAP* bitmap = FreeImage_AllocateT(FIT_RGBF, image->GetWidth(), image->GetHeight());
+  uint h = cy;
+	FIBITMAP* bitmap = FreeImage_AllocateT(FIT_RGBF, image->GetWidth(), h);
 	int i = 0;
-	for(uint y=0; y<image->GetHeight(); y++)
+	for(uint y=0; y<h; y++)
 	{
 		float* scanline = (float*)FreeImage_GetScanLine(bitmap, y);
 		for(uint x=0; x<image->GetWidth(); x++)
@@ -382,7 +382,7 @@ void Program::ShowRendering(SDL_Surface* surface, int cx, int cy)
 
 	FIBITMAP* trueColorBitmap = FreeImage_ToneMapping(bitmap, FITMO_REINHARD05);
 
-	DrawImage(surface, trueColorBitmap, image->GetWidth(), image->GetHeight(), cy);
+	DrawImage(surface, trueColorBitmap, image->GetWidth(), h, image->GetHeight(), cy);
 
 	FreeImage_Unload(trueColorBitmap);
 	FreeImage_Unload(bitmap);

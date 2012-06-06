@@ -24,13 +24,13 @@ namespace Hrt
 
   SimpleHe::SimpleHe(number gamma, number sigma, const Spectrum& a)
     : gamma(gamma), sigma(sigma), a(a), isPrecalcDirty(true), useCosineLobeIS(false),
-    importanceSampler(new PrecomputedImportanceSampler)
+    importanceSampler(new Lipis)
   {
   }
 
   SimpleHe::SimpleHe()
     : gamma(0.38e-6), sigma(2e-6), a(0), isPrecalcDirty(true), useCosineLobeIS(false),
-    importanceSampler(new PrecomputedImportanceSampler)
+    importanceSampler(new Lipis)
   {
   }
 
