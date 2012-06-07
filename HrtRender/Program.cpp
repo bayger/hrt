@@ -298,9 +298,10 @@ void Program::RenderScene()
 		boost::posix_time::ptime>::local_time());
 
 	std::string outputFileName = m_cmdArgs["output-file"].empty() 
-		? m_cmdArgs["scene-file"].as<std::string>() + 
-			str(format(".%1%%2%%3%_%|4$02d|%|5$02d|") % now.date().year() % now.date().month()
+		? m_cmdArgs["scene-file"].as<std::string>()
+			+ str(format(".%|1$04d|%|2$02d|%|3$02d|_%|4$02d|%|5$02d|") % now.date().year() % now.date().month()
 			% now.date().day() % now.time_of_day().hours() % now.time_of_day().minutes())
+      + BuildParamNamePart()
 		: m_cmdArgs["output-file"].as<std::string>();
 
 	{
@@ -477,4 +478,15 @@ void Program::ShowSettings()
 		std::cout << "adaptive" << std::endl;
 	std::cout << "     Sigma filter: " << std::setprecision(2) << sigmaFilter << std::endl;
 	std::cout << "Rendering threads: " << cpus << std::endl << std::endl;
+}
+
+std::string Program::BuildParamNamePart()
+{
+  std::string paramPart = str(format("_r%1%_d%2%") % rays % depth);
+  if (sigmaFilter > 0)
+    paramPart += str(format("_sf%1%") % sigmaFilter);
+  if (varianceFilter > 0)
+    paramPart += str(format("_vf%1%_vc%2%") % sigmaFilter % maxPasses);
+
+  return paramPart;
 }

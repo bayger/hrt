@@ -50,6 +50,6 @@ private:
 	void ShowRendering(SDL_Surface* surface, int x, int y);
 	bool ProcessPixelSampler(std::string& pixelSampler, unsigned rays);
 	void ShowSettings();
-
+  std::string BuildParamNamePart();
 	void ProcessKeyboard();
 };
