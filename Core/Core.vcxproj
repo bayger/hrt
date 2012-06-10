@@ -224,6 +224,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Samplers\ConstSampler.h" />
     <ClInclude Include="Materials\CookTorrance.h" />
+    <ClInclude Include="Serialization\LipisSerializer.h" />
     <ClInclude Include="Shapes\Cylinder.h" />
     <ClInclude Include="Integrators\DeterministicIntegrator.h" />
     <ClInclude Include="Shapes\Disc.h" />

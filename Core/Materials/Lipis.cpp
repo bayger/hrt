@@ -173,10 +173,10 @@ namespace Hrt
     std::vector<number> fieldCdfs;
     fieldCdfs.reserve(AZIMUTH_COUNT*ELEVATION_COUNT);
 
-    for(size_t oe = 0; oe < ELEVATION_COUNT; oe++)
+    for(size_t oe = 0; oe <= ELEVATION_COUNT; oe++)
     {
       // outgoing elevation angle is spread uniformly
-      number outElevation = (oe + num(0.5)) * ELEVATION_STEP;
+      number outElevation = (oe) * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
       std::cout << "outElevation: " << outElevation/Consts::HalfPi*90;
@@ -215,25 +215,26 @@ namespace Hrt
     // NOTE: this is actually much better than: m_random.RandomEndOpen(0, 1) for non-RandomSampler level samplers of course
     number v = (sample[0]+sample[1])/2;
 
-    size_t index = (size_t)Math::Floor(Math::Arcos(outgoingDirection.Dot(n)) / ELEVATION_STEP);
+    number stepIndex = Math::Arcos(outgoingDirection.Dot(n)) / ELEVATION_STEP;
+    size_t indexLo = (size_t)Math::Floor(stepIndex);
+    size_t indexHi = (size_t)Math::Ceiling(stepIndex);
+
+    number loPart = indexHi - stepIndex;
+    number hiPart = stepIndex - indexLo;
+    if (loPart == 0 && hiPart == 0) 
+      loPart = 1;
 
     // first check for ideal reflection case
-    if (v < angleData[index]->IdealReflectionCdf)
-    {
-      lightingType = static_cast<LightingType::Enum>(lightingType | LightingType::IdealSpecular);
-      pdf = angleData[index]->IdealReflectionPdf;
-      return outgoingDirection.Reflect(n);
-    }
+    number inAzimuthLo, inElevationLo, pdfLo;
+    LightingType::Enum lightingTypeLo = LightingType::AllReflection;
+    GetReflectionForIndex(v, indexLo, lightingTypeLo, inElevationLo, inAzimuthLo, pdfLo, outgoingDirection, n, sample);
+    number inAzimuthHi, inElevationHi, pdfHi;
+    LightingType::Enum lightingTypeHi = LightingType::AllReflection;
+    GetReflectionForIndex(v, indexHi, lightingTypeHi, inElevationHi, inAzimuthHi, pdfHi, outgoingDirection, n, sample);
 
-    std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
-      angleData[index]->CdfValues.end(), 
-      v);
-    size_t matchIndex = match - angleData[index]->CdfValues.begin();
-    size_t elevationIndex = matchIndex / (AZIMUTH_COUNT);
-    size_t azimuthIndex = matchIndex % (AZIMUTH_COUNT);
-    number inElevation = Math::Arcos(num(elevationIndex + sample[0]) / ELEVATION_COUNT);
-    number inAzimuth = num(azimuthIndex + sample[1]) * AZIMUTH_STEP;
-    pdf = CalculatePdf(angleData[index]->PdfValues, inElevation, inAzimuth);
+    pdf = loPart*pdfLo + hiPart*pdfHi;
+    number inElevation = loPart*inElevationLo + hiPart*inElevationHi;
+    number inAzimuth = loPart*inAzimuthLo + hiPart*inAzimuthHi;
 
     // transform to a proper space
     if (outgoingDirection.Dot(n) < 1-epsilon)
@@ -283,6 +284,34 @@ namespace Hrt
       inAzimuth += Consts::TwoPi;
 
     return CalculatePdf(angleData[outElevationIndex]->PdfValues, inElevation, inAzimuth);
+  }
+
+  Hrt::Vector3D Lipis::GetReflectionForIndex(number v, 
+    size_t index, 
+    LightingType::Enum& lightingType, 
+    number& inElevation,
+    number& inAzimuth,
+    number &pdf, 
+    const Vector3D &outgoingDirection, 
+    const Vector3D& n, 
+    number* sample)
+  {
+    if (v < angleData[index]->IdealReflectionCdf)
+    {
+      lightingType = static_cast<LightingType::Enum>(lightingType | LightingType::IdealSpecular);
+      pdf = angleData[index]->IdealReflectionPdf;
+      return outgoingDirection.Reflect(n);
+    }
+
+    std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
+      angleData[index]->CdfValues.end(), 
+      v);
+    size_t matchIndex = match - angleData[index]->CdfValues.begin();
+    size_t elevationIndex = matchIndex / (AZIMUTH_COUNT);
+    size_t azimuthIndex = matchIndex % (AZIMUTH_COUNT);
+    inElevation = Math::Arcos(num(elevationIndex + sample[0]) / ELEVATION_COUNT);
+    inAzimuth = num(azimuthIndex + sample[1]) * AZIMUTH_STEP;
+    pdf = CalculatePdf(angleData[index]->PdfValues, inElevation, inAzimuth);
   }
 
 }
