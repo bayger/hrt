@@ -18,7 +18,7 @@
 namespace Hrt
 {
   const size_t ELEVATION_COUNT = 90*3;
-  const size_t AZIMUTH_COUNT = 180;
+  const size_t AZIMUTH_COUNT = 360;
   const number ELEVATION_STEP = Consts::HalfPi / ELEVATION_COUNT;
   const number AZIMUTH_STEP = Consts::TwoPi / AZIMUTH_COUNT;
   // this is an additional normalization factor for PDF (hemisphere chunk)
@@ -82,10 +82,10 @@ namespace Hrt
   }
 
   /// This one computes unnormalized CDF values and returns the cumulated BRDF sum (for the hemisphere)
-  static number ComputeCdfForFields(std::vector<number>& fieldValues, std::vector<number>& fieldCdfs, number idealReflection) 
+  static number ComputeCdfForFields(std::vector<number>& fieldValues, std::vector<number>& fieldCdfs) 
   {
     fieldCdfs.clear();
-    number cdf = idealReflection;
+    number cdf = 0;
     for(size_t ie = 0; ie < ELEVATION_COUNT; ie++)
     {
       for(size_t az = 0; az < AZIMUTH_COUNT; az++)
@@ -179,13 +179,12 @@ namespace Hrt
       number outElevation = (oe) * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
-      std::cout << "outElevation: " << outElevation/Consts::HalfPi*90;
+      std::cout << oe*100/ELEVATION_COUNT << "%" << std::endl;
 
       number idealReflection = ComputeIdealReflection(material, intersection);
       ComputeBrdfForNodes(material, values, intersection);
       ComputeBrdfForFields(values, fieldValues);
-      number cumulatedValue = ComputeCdfForFields(fieldValues, fieldCdfs, idealReflection);
-      std::cout << ", sum: " << cumulatedValue << ", ideal: " << idealReflection << std::endl;
+      number cumulatedValue = ComputeCdfForFields(fieldValues, fieldCdfs);
       NormalizeTables(values, fieldCdfs, cumulatedValue);
 
       shared_ptr<LipisAngleData> data(new LipisAngleData);
@@ -224,17 +223,18 @@ namespace Hrt
     if (loPart == 0 && hiPart == 0) 
       loPart = 1;
 
-    // first check for ideal reflection case
-    number inAzimuthLo, inElevationLo, pdfLo;
-    LightingType::Enum lightingTypeLo = LightingType::AllReflection;
-    GetReflectionForIndex(v, indexLo, lightingTypeLo, inElevationLo, inAzimuthLo, pdfLo, outgoingDirection, n, sample);
-    number inAzimuthHi, inElevationHi, pdfHi;
-    LightingType::Enum lightingTypeHi = LightingType::AllReflection;
-    GetReflectionForIndex(v, indexHi, lightingTypeHi, inElevationHi, inAzimuthHi, pdfHi, outgoingDirection, n, sample);
+    bool useLo = (v < loPart);
+    number inAzimuth, inElevation;
 
-    pdf = loPart*pdfLo + hiPart*pdfHi;
-    number inElevation = loPart*inElevationLo + hiPart*inElevationHi;
-    number inAzimuth = loPart*inAzimuthLo + hiPart*inAzimuthHi;
+    // first check for ideal reflection case
+    if (useLo)
+    {
+      GetReflectionForIndex(v, indexLo, lightingType, inElevation, inAzimuth, pdf, outgoingDirection, n, sample);
+    }
+    else
+    {
+      GetReflectionForIndex(v, indexHi, lightingType, inElevation, inAzimuth, pdf, outgoingDirection, n, sample);
+    }
 
     // transform to a proper space
     if (outgoingDirection.Dot(n) < 1-epsilon)
@@ -286,7 +286,7 @@ namespace Hrt
     return CalculatePdf(angleData[outElevationIndex]->PdfValues, inElevation, inAzimuth);
   }
 
-  Hrt::Vector3D Lipis::GetReflectionForIndex(number v, 
+  void Lipis::GetReflectionForIndex(number v, 
     size_t index, 
     LightingType::Enum& lightingType, 
     number& inElevation,
@@ -296,13 +296,6 @@ namespace Hrt
     const Vector3D& n, 
     number* sample)
   {
-    if (v < angleData[index]->IdealReflectionCdf)
-    {
-      lightingType = static_cast<LightingType::Enum>(lightingType | LightingType::IdealSpecular);
-      pdf = angleData[index]->IdealReflectionPdf;
-      return outgoingDirection.Reflect(n);
-    }
-
     std::vector<number>::iterator match = std::lower_bound(angleData[index]->CdfValues.begin(), 
       angleData[index]->CdfValues.end(), 
       v);

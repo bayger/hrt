@@ -33,16 +33,6 @@ namespace Hrt
       number& pdf, 
       LightingType::Enum& lightingType);
 
-    Vector3D GetReflectionForIndex(number v, 
-      size_t indexLo, 
-      LightingType::Enum& lightingType, 
-      number& inElevation,
-      number& inAzimuth,
-      number& pdf, 
-      const Vector3D& outgoingDirection, 
-      const Vector3D& n, 
-      number* sample);
-
     virtual number GetPdf(const Vector3D& incomingDirection, 
       const Vector3D& outgoingDirection, 
       const Vector3D& tangentU, 
@@ -62,5 +52,15 @@ namespace Hrt
 
     bool isPrecomputed;
     std::vector<shared_ptr<LipisAngleData>> angleData;
+
+    void GetReflectionForIndex(number v, 
+      size_t indexLo, 
+      LightingType::Enum& lightingType, 
+      number& inElevation,
+      number& inAzimuth,
+      number& pdf, 
+      const Vector3D& outgoingDirection, 
+      const Vector3D& n, 
+      number* sample);
   };
 }
