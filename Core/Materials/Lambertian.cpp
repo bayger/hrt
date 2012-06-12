@@ -21,12 +21,11 @@ GNU General Public License for more details.
 namespace Hrt
 {
   Lambertian::Lambertian()
-    : m_reflectance(Spectrum(1)),
-    m_importanceSampler(new Lipis())
+    : m_reflectance(Spectrum(1))
   {
   }
 
-  static std::string yamlType("as-phong");
+  static std::string yamlType("lambertian");
   const std::string& Lambertian::YamlType()
   {
     return yamlType;
@@ -54,21 +53,5 @@ namespace Hrt
     number nk2 = intersection.Normal.Dot(k2);
 
     return m_reflectance / Consts::Pi * incomingRay.Radiance * nk2;
-  }
-
-  
-  Hrt::Vector3D Lambertian::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-  {
-    //return SamplingHelper::SampleHemisphere(sample, tangentU, tangentV, n, pdf);
-    return SamplingHelper::SampleHemisphereCosineLobe(sample, tangentU, tangentV, n, pdf);
-    //return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-  }
-
-  Hrt::number Lambertian::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-  {
-    //return SamplingHelper::GetPdfHemisphere(n, outgoingDirection);
-    return SamplingHelper::GetPdfHemisphereCosineLobe(n, outgoingDirection);
-    //return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
-  }
-  
+  }  
 }

@@ -24,14 +24,14 @@ namespace Hrt
 	Vector3D SamplingHelper::SampleHemisphere(number* sample, number& pdfResult)
 	{
 		pdfResult = 1 / Consts::TwoPi;
-		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], Consts::HalfPi*sample[1]);
+		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], Consts::HalfPi*Math::Arcos(sample[1]));
 	}
 
 	Vector3D SamplingHelper::SampleHemisphere(number* sample, const Vector3D& xAxis, 
 		const Vector3D& yAxis, const Vector3D& zAxis, number& pdfResult)
 	{
 		pdfResult = 1 / Consts::TwoPi;
-		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], Consts::HalfPi*sample[1],
+		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], Consts::HalfPi*Math::Arcos(sample[1]),
 			xAxis, yAxis, zAxis);
 	}
 
