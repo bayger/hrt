@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Lights\AreaLight.cpp" />
+    <ClCompile Include="Materials\Lambertian.cpp" />
     <ClCompile Include="Materials\Lipis.cpp" />
     <ClCompile Include="Materials\ASPhong.cpp" />
     <ClCompile Include="Integrators\BidirectionalIntegrator.cpp" />
@@ -213,6 +214,7 @@
   <ItemGroup>
     <ClInclude Include="Lights\AreaLight.h" />
     <ClInclude Include="Materials\ImportanceSampler.h" />
+    <ClInclude Include="Materials\Lambertian.h" />
     <ClInclude Include="Materials\Lipis.h" />
     <ClInclude Include="Materials\ASPhong.h" />
     <ClInclude Include="Integrators\BidirectionalIntegrator.h" />

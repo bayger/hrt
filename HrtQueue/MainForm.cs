@@ -25,6 +25,7 @@ namespace HrtQueue
     {
       InitializeComponent();
       IsRunning = false;
+      threadsNum.Value = Environment.ProcessorCount;
     }
 
     private void addJobButton_Click(object sender, EventArgs e)
@@ -40,9 +41,11 @@ namespace HrtQueue
                       {
                         Status = JobStatus.Queued,
                         MaxRayDepth = 12,
-                        RaysPerPixel = 16,
+                        RaysPerPixel = 64,
                         SceneFilename = file,
-                        SigmaFilter = 3.0f
+                        SigmaFilter = 5.0f,
+                        VarianceFilter = 3.0f,
+                        MaxPasses = 16
                       };
           jobItems.Add(job);
         }

@@ -46,14 +46,15 @@
       this.removeJobsButton = new System.Windows.Forms.Button();
       this.addJobButton = new System.Windows.Forms.Button();
       this.jobsGrid = new System.Windows.Forms.DataGridView();
-      this.sceneFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.outputFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.raysPerPixelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.maxRayDepthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.SigmaFilter = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.statusTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-      this.jobItems = new System.Windows.Forms.BindingSource(this.components);
       this.statusLabel = new System.Windows.Forms.Label();
+      this.jobItems = new System.Windows.Forms.BindingSource(this.components);
+      this.sceneFilenameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.raysPerPixelDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.VarianceFilter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.SigmaFilter = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.MaxPasses = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.maxRayDepthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+      this.statusTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
       ((System.ComponentModel.ISupportInitialize)(this.threadsNum)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.jobsGrid)).BeginInit();
@@ -237,10 +238,11 @@
       this.jobsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.jobsGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.sceneFilenameDataGridViewTextBoxColumn,
-            this.outputFilenameDataGridViewTextBoxColumn,
             this.raysPerPixelDataGridViewTextBoxColumn,
-            this.maxRayDepthDataGridViewTextBoxColumn,
+            this.VarianceFilter,
             this.SigmaFilter,
+            this.MaxPasses,
+            this.maxRayDepthDataGridViewTextBoxColumn,
             this.statusTextDataGridViewTextBoxColumn});
       this.jobsGrid.DataSource = this.jobItems;
       this.jobsGrid.Location = new System.Drawing.Point(12, 120);
@@ -250,54 +252,6 @@
       this.jobsGrid.Size = new System.Drawing.Size(760, 340);
       this.jobsGrid.TabIndex = 10;
       // 
-      // sceneFilenameDataGridViewTextBoxColumn
-      // 
-      this.sceneFilenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-      this.sceneFilenameDataGridViewTextBoxColumn.DataPropertyName = "SceneFilename";
-      this.sceneFilenameDataGridViewTextBoxColumn.HeaderText = "Scene Filename";
-      this.sceneFilenameDataGridViewTextBoxColumn.Name = "sceneFilenameDataGridViewTextBoxColumn";
-      this.sceneFilenameDataGridViewTextBoxColumn.ReadOnly = true;
-      // 
-      // outputFilenameDataGridViewTextBoxColumn
-      // 
-      this.outputFilenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-      this.outputFilenameDataGridViewTextBoxColumn.DataPropertyName = "OutputFilename";
-      this.outputFilenameDataGridViewTextBoxColumn.HeaderText = "Render Filename";
-      this.outputFilenameDataGridViewTextBoxColumn.Name = "outputFilenameDataGridViewTextBoxColumn";
-      // 
-      // raysPerPixelDataGridViewTextBoxColumn
-      // 
-      this.raysPerPixelDataGridViewTextBoxColumn.DataPropertyName = "RaysPerPixel";
-      this.raysPerPixelDataGridViewTextBoxColumn.HeaderText = "Rays per Pixel";
-      this.raysPerPixelDataGridViewTextBoxColumn.Name = "raysPerPixelDataGridViewTextBoxColumn";
-      this.raysPerPixelDataGridViewTextBoxColumn.Width = 70;
-      // 
-      // maxRayDepthDataGridViewTextBoxColumn
-      // 
-      this.maxRayDepthDataGridViewTextBoxColumn.DataPropertyName = "MaxRayDepth";
-      this.maxRayDepthDataGridViewTextBoxColumn.HeaderText = "Ray Depth";
-      this.maxRayDepthDataGridViewTextBoxColumn.Name = "maxRayDepthDataGridViewTextBoxColumn";
-      this.maxRayDepthDataGridViewTextBoxColumn.Width = 70;
-      // 
-      // SigmaFilter
-      // 
-      this.SigmaFilter.DataPropertyName = "SigmaFilter";
-      this.SigmaFilter.HeaderText = "Sigma Filter";
-      this.SigmaFilter.Name = "SigmaFilter";
-      this.SigmaFilter.Width = 70;
-      // 
-      // statusTextDataGridViewTextBoxColumn
-      // 
-      this.statusTextDataGridViewTextBoxColumn.DataPropertyName = "StatusText";
-      this.statusTextDataGridViewTextBoxColumn.HeaderText = "Status";
-      this.statusTextDataGridViewTextBoxColumn.Name = "statusTextDataGridViewTextBoxColumn";
-      this.statusTextDataGridViewTextBoxColumn.ReadOnly = true;
-      // 
-      // jobItems
-      // 
-      this.jobItems.DataSource = typeof(HrtQueue.JobItem);
-      this.jobItems.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.jobItems_ListChanged);
-      // 
       // statusLabel
       // 
       this.statusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -306,6 +260,59 @@
       this.statusLabel.Size = new System.Drawing.Size(161, 23);
       this.statusLabel.TabIndex = 19;
       this.statusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+      // 
+      // jobItems
+      // 
+      this.jobItems.DataSource = typeof(HrtQueue.JobItem);
+      this.jobItems.ListChanged += new System.ComponentModel.ListChangedEventHandler(this.jobItems_ListChanged);
+      // 
+      // sceneFilenameDataGridViewTextBoxColumn
+      // 
+      this.sceneFilenameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+      this.sceneFilenameDataGridViewTextBoxColumn.DataPropertyName = "SceneFilename";
+      this.sceneFilenameDataGridViewTextBoxColumn.HeaderText = "Scene Filename";
+      this.sceneFilenameDataGridViewTextBoxColumn.Name = "sceneFilenameDataGridViewTextBoxColumn";
+      this.sceneFilenameDataGridViewTextBoxColumn.ReadOnly = true;
+      // 
+      // raysPerPixelDataGridViewTextBoxColumn
+      // 
+      this.raysPerPixelDataGridViewTextBoxColumn.DataPropertyName = "RaysPerPixel";
+      this.raysPerPixelDataGridViewTextBoxColumn.HeaderText = "Rays per Pixel";
+      this.raysPerPixelDataGridViewTextBoxColumn.Name = "raysPerPixelDataGridViewTextBoxColumn";
+      this.raysPerPixelDataGridViewTextBoxColumn.Width = 70;
+      // 
+      // VarianceFilter
+      // 
+      this.VarianceFilter.DataPropertyName = "VarianceFilter";
+      this.VarianceFilter.HeaderText = "Variance Filter";
+      this.VarianceFilter.Name = "VarianceFilter";
+      // 
+      // SigmaFilter
+      // 
+      this.SigmaFilter.DataPropertyName = "SigmaFilter";
+      this.SigmaFilter.HeaderText = "Sigma Filter";
+      this.SigmaFilter.Name = "SigmaFilter";
+      this.SigmaFilter.Width = 70;
+      // 
+      // MaxPasses
+      // 
+      this.MaxPasses.DataPropertyName = "MaxPasses";
+      this.MaxPasses.HeaderText = "Max Passes";
+      this.MaxPasses.Name = "MaxPasses";
+      // 
+      // maxRayDepthDataGridViewTextBoxColumn
+      // 
+      this.maxRayDepthDataGridViewTextBoxColumn.DataPropertyName = "MaxRayDepth";
+      this.maxRayDepthDataGridViewTextBoxColumn.HeaderText = "Ray Depth";
+      this.maxRayDepthDataGridViewTextBoxColumn.Name = "maxRayDepthDataGridViewTextBoxColumn";
+      this.maxRayDepthDataGridViewTextBoxColumn.Width = 70;
+      // 
+      // statusTextDataGridViewTextBoxColumn
+      // 
+      this.statusTextDataGridViewTextBoxColumn.DataPropertyName = "StatusText";
+      this.statusTextDataGridViewTextBoxColumn.HeaderText = "Status";
+      this.statusTextDataGridViewTextBoxColumn.Name = "statusTextDataGridViewTextBoxColumn";
+      this.statusTextDataGridViewTextBoxColumn.ReadOnly = true;
       // 
       // MainForm
       // 
@@ -364,13 +371,14 @@
     private System.Windows.Forms.Button removeJobsButton;
     private System.Windows.Forms.Button addJobButton;
     private System.Windows.Forms.DataGridView jobsGrid;
-    private System.Windows.Forms.DataGridViewTextBoxColumn sceneFilenameDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn outputFilenameDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn raysPerPixelDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn maxRayDepthDataGridViewTextBoxColumn;
-    private System.Windows.Forms.DataGridViewTextBoxColumn SigmaFilter;
-    private System.Windows.Forms.DataGridViewTextBoxColumn statusTextDataGridViewTextBoxColumn;
     private System.Windows.Forms.Label statusLabel;
+    private System.Windows.Forms.DataGridViewTextBoxColumn sceneFilenameDataGridViewTextBoxColumn;
+    private System.Windows.Forms.DataGridViewTextBoxColumn raysPerPixelDataGridViewTextBoxColumn;
+    private System.Windows.Forms.DataGridViewTextBoxColumn VarianceFilter;
+    private System.Windows.Forms.DataGridViewTextBoxColumn SigmaFilter;
+    private System.Windows.Forms.DataGridViewTextBoxColumn MaxPasses;
+    private System.Windows.Forms.DataGridViewTextBoxColumn maxRayDepthDataGridViewTextBoxColumn;
+    private System.Windows.Forms.DataGridViewTextBoxColumn statusTextDataGridViewTextBoxColumn;
   }
 }
 

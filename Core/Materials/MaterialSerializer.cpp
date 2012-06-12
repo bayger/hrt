@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "CookTorrance.h"
 #include "Ward.h"
 #include "Mirror.h"
+#include "Lambertian.h"
 
 namespace Hrt
 {
@@ -56,6 +57,12 @@ namespace Hrt
 			material->Deserialize(parser, context);
 			return material;
 		}
+    else if (exactType == "lambertian")
+    {
+      MaterialOwnedPtr material(new Lambertian());
+      material->Deserialize(parser, context);
+      return material;
+    }
 		else if (exactType == "mirror")
 		{
 			MaterialOwnedPtr material(new Mirror());

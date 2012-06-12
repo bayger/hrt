@@ -66,6 +66,30 @@ namespace HrtQueue
       }
     }
 
+    private float _varianceFilter;
+
+    public float VarianceFilter
+    {
+      get { return _varianceFilter; }
+      set
+      {
+        _varianceFilter = value;
+        OnPropertyChanged(new PropertyChangedEventArgs("VarianceFilter"));
+      }
+    }
+
+    private int _maxPasses;
+
+    public int MaxPasses
+    {
+      get { return _maxPasses; }
+      set
+      {
+        _maxPasses = value;
+        OnPropertyChanged(new PropertyChangedEventArgs("MaxPasses"));
+      }
+    }
+
     public string StatusText
     {
       get
