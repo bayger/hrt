@@ -16,5 +16,18 @@
 
 namespace Hrt
 {
+  class LipisSerializer
+  {
+  public:
+    static void Save(std::string materialSignature, 
+      size_t elevationCount,
+      size_t azimuthCount,
+      std::vector<shared_ptr<Lipis::LipisAngleData>>& angleData);
 
+    static bool Load(std::string materialSignature, 
+      size_t elevationCount,
+      size_t azimuthCount,
+      std::vector<shared_ptr<Lipis::LipisAngleData>>& angleData);
+
+  };
 }

@@ -24,11 +24,18 @@ int main(int argc, char* argv[])
 	SetPriorityClass(GetCurrentProcess(), BELOW_NORMAL_PRIORITY_CLASS);
 #endif
 
-	if (program.Initialize(argc, argv))
-	{
-		program.Run();
-		return 0;
-	}
+  try
+  {
+	  if (program.Initialize(argc, argv))
+	  {
+		  program.Run();
+		  return 0;
+	  }
+  }
+  catch (Hrt::Exception& ex)
+  {
+    std::cout << ex.GetMessageA() << std::endl;
+  }
 
 	return 1;
 }

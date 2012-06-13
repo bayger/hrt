@@ -25,6 +25,7 @@ namespace Hrt
     Lipis(void);
 
     virtual void Precompute(MaterialPtr material);
+
     virtual Vector3D SampleVector(number* sample, 
       const Vector3D& outgoingDirection, 
       const Vector3D& tangentU, 
@@ -40,7 +41,6 @@ namespace Hrt
       const Vector3D& n, 
       const LightingType::Enum lightingType);
 
-  private:
     struct LipisAngleData
     {
       number OutgoingAngle;
@@ -50,6 +50,7 @@ namespace Hrt
       std::vector<number> CdfValues;
     };
 
+  private:
     bool isPrecomputed;
     std::vector<shared_ptr<LipisAngleData>> angleData;
 

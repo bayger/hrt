@@ -51,7 +51,7 @@ namespace Hrt
 		return true;
 	}
 
-	static std::string yamlType("point-light");
+	static std::string yamlType("area-light");
 	const std::string& AreaLight::YamlType()
 	{
 		return yamlType;

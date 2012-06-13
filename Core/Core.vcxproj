@@ -160,6 +160,7 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Samplers\ConstSampler.cpp" />
     <ClCompile Include="Materials\CookTorrance.cpp" />
+    <ClCompile Include="Serialization\LipisSerializer.cpp" />
     <ClCompile Include="Shapes\Cylinder.cpp" />
     <ClCompile Include="Integrators\DeterministicIntegrator.cpp" />
     <ClCompile Include="Shapes\Disc.cpp" />

@@ -171,7 +171,8 @@ namespace Hrt
 		BOOST_FOREACH(primitive, m_primitives)
     {
 			m_geometry->AddPrimitive(primitive);
-      primitive->GetMaterial()->Initialize();
+      if (primitive->GetMaterial() != NULL)
+        primitive->GetMaterial()->Initialize();
     }
 
 		m_geometry->Preprocess();

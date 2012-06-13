@@ -14,6 +14,7 @@
  */
 #include "StdAfx.h"
 #include "Lipis.h"
+#include "..\Serialization\LipisSerializer.h"
 
 namespace Hrt
 {
@@ -157,7 +158,7 @@ namespace Hrt
 
   void Lipis::Precompute(MaterialPtr material)
   {
-    if (isPrecomputed)
+    if (isPrecomputed || LipisSerializer::Load(material->GetSignature(), ELEVATION_COUNT, AZIMUTH_COUNT, angleData))
       return;
 
     std::cout << "Precomputing importance sampling for " << material->GetSignature() << std::endl;
@@ -179,7 +180,7 @@ namespace Hrt
       number outElevation = (oe) * ELEVATION_STEP;
       intersection.RayDirection.Set(-Math::Sin(outElevation), 0, -Math::Cos(outElevation));
 
-      std::cout << oe*100/ELEVATION_COUNT << "%" << std::endl;
+      std::cout << std::setprecision(3) << (number)oe*100/ELEVATION_COUNT << "%" << std::endl;
 
       number idealReflection = ComputeIdealReflection(material, intersection);
       ComputeBrdfForNodes(material, values, intersection);
@@ -199,6 +200,7 @@ namespace Hrt
     }
 
     isPrecomputed = true;
+    LipisSerializer::Save(material->GetSignature(), ELEVATION_COUNT, AZIMUTH_COUNT, angleData);
   }
 
   Hrt::Vector3D Lipis::SampleVector(number* sample, 
