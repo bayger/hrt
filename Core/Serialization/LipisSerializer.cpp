@@ -118,6 +118,8 @@ namespace Hrt
         precalc->CdfValues.resize(cdfTableSize);
 
         inFile.read(reinterpret_cast<char*>(&precalc->OutgoingAngle), sizeof(number));
+        if (inFile.fail())
+          throw 1;
         inFile.read(reinterpret_cast<char*>(&precalc->PdfValues[0]), pdfTableSize*sizeof(number));
         if (inFile.fail())
           throw 1;
@@ -132,6 +134,7 @@ namespace Hrt
     }
     catch(...)
     {
+      angleData.clear();
       std::cerr << "Failed to load importance sampling for " << materialSignature << std::endl;
       return false;
     }

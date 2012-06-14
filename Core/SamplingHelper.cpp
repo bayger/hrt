@@ -53,8 +53,6 @@ namespace Hrt
 	Hrt::number SamplingHelper::GetPdfHemisphereCosineLobe(const Vector3D& n, const Vector3D& direction)
 	{
 		number cos_nd = n.Dot(direction);
-		if (cos_nd < 0)
-			std::cout << "";
 		return cos_nd < 0 ? 0 : cos_nd / Consts::Pi;
 	}
 

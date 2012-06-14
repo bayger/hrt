@@ -18,14 +18,14 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
   args.add("material-name", 1);
 
   Hrt::number step = 0.1;
-  Hrt::number incidentAngle = 30;
+  Hrt::number outgoingAngle = 30;
   po::options_description options("options");
   options.add_options()
     ("help", "shows this help")
     ("about", "shows information about this program")
     ("version,v", "shows version number of H-RayTracer")
     ("step,s", po::value<Hrt::number>(&step), "sets angle step for generated series [0.1]")
-    ("incident,i", po::value<Hrt::number>(&incidentAngle), "sets incident angle for generated series [30]")
+    ("outgoing,o", po::value<Hrt::number>(&outgoingAngle), "sets outgoing angle for generated series [30]")
     ("pdf,p", "outputs PDF instead of BRDF")
     ("precalc-all", "precalculates all materials in the scene")
     ("materials", "outputs only material names (line by line)");
@@ -84,7 +84,7 @@ bool BrdfGen::Initialize(int argc, _TCHAR* argv[])
   m_materialsOnly = m_cmdArgs.count("materials") > 0;
   m_outputPdf = m_cmdArgs.count("pdf") > 0;
   m_precalcAll = m_cmdArgs.count("precalc-all") > 0;
-  m_incidentAngle = incidentAngle;
+  m_outgoingAngle = outgoingAngle;
   return true;
 }
 
@@ -142,37 +142,44 @@ void BrdfGen::Run()
 
 void BrdfGen::OutputData()
 {
-  m_material->Initialize();
-
   std::cout << "# Material: " << m_material->GetName() << std::endl;
   std::cout << "# Signature: " << m_material->GetSignature() << std::endl;
-  std::cout << "AngleI\tAngleR";
+  
+  m_material->Initialize();
+  
+  std::cout << "AngleR\tAngleI";
   for(int i=0; i<Spectrum::LambdaCount; i++)
   {
     std::cout << "\tF(lambda=" << Spectrum::IndexToLambda(i) << ")";
   }
   std::cout << std::endl;
 
-  RayLight rayLight;
-  rayLight.Direction = -Vector3D::FromSpherical(0, Consts::Pi / 180 * m_incidentAngle);
-  rayLight.Radiance.SetOne();
+  Intersection intersection;
+  intersection.Normal = Vector3D::UnitZ;
+  intersection.Position.Set(0, 0, 0);
+  intersection.TangentU = Vector3D::UnitX;
+  intersection.TangentV = Vector3D::UnitY;
+  intersection.RayDirection = -Vector3D::FromSpherical(0, Consts::Pi / 180 * m_outgoingAngle);
+
   for(number angle=-90; angle<90.0; angle += m_step)
   {
-    Intersection intersection;
-    intersection.Normal = Vector3D::UnitZ;
-    intersection.Position.Set(0, 0, 0);
-    intersection.TangentU = Vector3D::UnitX;
-    intersection.TangentV = Vector3D::UnitY;
-    intersection.RayDirection = -Vector3D::FromSpherical(angle < 0 ? Consts::Pi : 0, 
+    RayLight rayLight;
+    rayLight.Direction = -Vector3D::FromSpherical(angle < 0 ? Consts::Pi : 0, 
       Math::Abs(angle) / 180 * Consts::Pi);
+    rayLight.Radiance.SetOne();
 
-    bool isInSpecularCone = Math::Abs(angle + m_incidentAngle) < epsilon;
+    bool isInSpecularCone = Math::Abs(angle + m_outgoingAngle) < epsilon;
 
-    std::cout << m_incidentAngle << "\t" << angle;
+    std::cout << m_outgoingAngle << "\t" << angle;
 
     if (m_outputPdf)
     {
-      Hrt::number pdf = m_material->CalculatePdf(-rayLight.Direction, intersection.TangentU, intersection.TangentV, intersection.Normal, intersection.RayDirection, static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
+      Hrt::number pdf = m_material->CalculatePdf(-intersection.RayDirection,
+        intersection.TangentU, 
+        intersection.TangentV, 
+        intersection.Normal, 
+        rayLight.Direction, 
+        static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
       std::cout << "\t" << pdf;
     }
     else

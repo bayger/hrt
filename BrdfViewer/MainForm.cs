@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace BrdfViewer
 {
@@ -63,7 +64,7 @@ namespace BrdfViewer
     {
       var data = new Dictionary<double, List<double>>();
       var args = sceneFileName.Text + " \"" + materials.Text 
-        + "\" -i "+incidentAngle.Value.ToString(CultureInfo.InvariantCulture) 
+        + "\" -o "+outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) 
         + " -s "+angleStep.Value.ToString(CultureInfo.InvariantCulture);
       if (pdfGen.Checked)
         args += " -p";
@@ -86,8 +87,8 @@ namespace BrdfViewer
 
         var split = line.Split('\t');
         double thetaR, thetaI, f;
-        var parsedR = double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaR);
-        var parsedI = double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaI);
+        var parsedR = double.TryParse(split[0], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaR);
+        var parsedI = double.TryParse(split[1], NumberStyles.Number, CultureInfo.InvariantCulture, out thetaI);
 
         if (parsedR && parsedI)
         {
@@ -99,11 +100,14 @@ namespace BrdfViewer
             else
               cells.Add(0);
           }
-          data.Add(thetaR, cells);
+          if (cells.Count > 1)
+            cells.Add(cells.Average() * Math.Cos(thetaI / 180 * Math.PI));
+
+          data.Add(thetaI, cells);
         }
       }
       angularPlotControl1.Data = data;
-      angularPlotControl1.IncidentAngle = (double) incidentAngle.Value;
+      angularPlotControl1.IncidentAngle = (double) outgoingAngle.Value;
       var item = materials.SelectedItem as MaterialItem;
       angularPlotControl1.ChartTitle = item != null ? item.Signature : string.Empty;
     }
@@ -118,7 +122,7 @@ namespace BrdfViewer
       var item = materials.SelectedItem as MaterialItem;
       if (item != null)
       {
-        angularPlotControl1.SaveToWmf(item.Name + ",angle=" + incidentAngle.Value.ToString(CultureInfo.InvariantCulture) +
+        angularPlotControl1.SaveToWmf(item.Name + ",angle=" + outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) +
                                       ".wmf");
       }
     }

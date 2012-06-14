@@ -45,7 +45,7 @@
       this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
       this.generate = new System.Windows.Forms.Button();
       this.label5 = new System.Windows.Forms.Label();
-      this.incidentAngle = new System.Windows.Forms.NumericUpDown();
+      this.outgoingAngle = new System.Windows.Forms.NumericUpDown();
       this.angleStep = new System.Windows.Forms.NumericUpDown();
       this.label4 = new System.Windows.Forms.Label();
       this.pdfGen = new System.Windows.Forms.RadioButton();
@@ -57,7 +57,7 @@
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.outgoingAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
       this.SuspendLayout();
@@ -172,7 +172,7 @@
       this.groupBox2.Controls.Add(this.angularPlotControl1);
       this.groupBox2.Controls.Add(this.generate);
       this.groupBox2.Controls.Add(this.label5);
-      this.groupBox2.Controls.Add(this.incidentAngle);
+      this.groupBox2.Controls.Add(this.outgoingAngle);
       this.groupBox2.Controls.Add(this.angleStep);
       this.groupBox2.Controls.Add(this.label4);
       this.groupBox2.Controls.Add(this.pdfGen);
@@ -229,38 +229,38 @@
       this.label5.AutoSize = true;
       this.label5.Location = new System.Drawing.Point(16, 74);
       this.label5.Name = "label5";
-      this.label5.Size = new System.Drawing.Size(77, 13);
+      this.label5.Size = new System.Drawing.Size(82, 13);
       this.label5.TabIndex = 6;
-      this.label5.Text = "Incident angle:";
+      this.label5.Text = "Outgoing angle:";
       // 
-      // incidentAngle
+      // outgoingAngle
       // 
-      this.incidentAngle.DecimalPlaces = 2;
-      this.incidentAngle.Increment = new decimal(new int[] {
+      this.outgoingAngle.DecimalPlaces = 2;
+      this.outgoingAngle.Increment = new decimal(new int[] {
             5,
             0,
             0,
             0});
-      this.incidentAngle.Location = new System.Drawing.Point(107, 72);
-      this.incidentAngle.Maximum = new decimal(new int[] {
+      this.outgoingAngle.Location = new System.Drawing.Point(107, 72);
+      this.outgoingAngle.Maximum = new decimal(new int[] {
             90,
             0,
             0,
             0});
-      this.incidentAngle.Minimum = new decimal(new int[] {
+      this.outgoingAngle.Minimum = new decimal(new int[] {
             90,
             0,
             0,
             -2147483648});
-      this.incidentAngle.Name = "incidentAngle";
-      this.incidentAngle.Size = new System.Drawing.Size(120, 20);
-      this.incidentAngle.TabIndex = 5;
-      this.incidentAngle.Value = new decimal(new int[] {
+      this.outgoingAngle.Name = "outgoingAngle";
+      this.outgoingAngle.Size = new System.Drawing.Size(120, 20);
+      this.outgoingAngle.TabIndex = 5;
+      this.outgoingAngle.Value = new decimal(new int[] {
             30,
             0,
             0,
             0});
-      this.incidentAngle.ValueChanged += new System.EventHandler(this.incidentAngle_ValueChanged);
+      this.outgoingAngle.ValueChanged += new System.EventHandler(this.incidentAngle_ValueChanged);
       // 
       // angleStep
       // 
@@ -366,7 +366,7 @@
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).EndInit();
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.incidentAngle)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.outgoingAngle)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
       this.ResumeLayout(false);
@@ -382,7 +382,7 @@
     private System.Windows.Forms.GroupBox groupBox1;
     private System.Windows.Forms.GroupBox groupBox2;
     private System.Windows.Forms.Label label5;
-    private System.Windows.Forms.NumericUpDown incidentAngle;
+    private System.Windows.Forms.NumericUpDown outgoingAngle;
     private System.Windows.Forms.NumericUpDown angleStep;
     private System.Windows.Forms.Label label4;
     private System.Windows.Forms.RadioButton pdfGen;

@@ -158,8 +158,13 @@ namespace Hrt
 
   void Lipis::Precompute(MaterialPtr material)
   {
-    if (isPrecomputed || LipisSerializer::Load(material->GetSignature(), ELEVATION_COUNT, AZIMUTH_COUNT, angleData))
+    if (isPrecomputed)
       return;
+    if (LipisSerializer::Load(material->GetSignature(), ELEVATION_COUNT, AZIMUTH_COUNT, angleData))
+    {
+      isPrecomputed = true;
+      return;
+    }
 
     std::cout << "Precomputing importance sampling for " << material->GetSignature() << std::endl;
 
@@ -257,8 +262,8 @@ namespace Hrt
     size_t outElevationIndex = (size_t)Math::Floor(outElevation / ELEVATION_STEP);
 
     // first check for ideal reflection case
-    if (lightingType == static_cast<LightingType::Enum>(LightingType::AllReflection | LightingType::IdealSpecular))
-      return angleData[outElevationIndex]->IdealReflectionPdf;
+    //if (lightingType == static_cast<LightingType::Enum>(LightingType::AllReflection | LightingType::IdealSpecular))
+    //  return angleData[outElevationIndex]->IdealReflectionPdf;
 
     Vector3D sv, su;
     if (outgoingDirection.Dot(n) < 1-epsilon)

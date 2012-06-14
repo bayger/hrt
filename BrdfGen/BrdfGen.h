@@ -15,7 +15,7 @@ private:
   bool m_materialsOnly;
   bool m_outputPdf;
   bool m_precalcAll;
-  Hrt::number m_incidentAngle;
+  Hrt::number m_outgoingAngle;
   void LoadScene();
   void OutputData();
   void OutputMaterialNames();
