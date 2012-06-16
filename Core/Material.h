@@ -35,13 +35,27 @@ namespace Hrt
 		};
 	}
 
+  namespace ImportanceSamplingType
+  {
+    enum Enum
+    {
+      Uniform = 0,
+      CosibeLobe = 1,
+      Lipis = 2,    // uses: linearly interpolated precomputed importance sampler
+      Sis = 3       // uses: stepped precomputed importance sampler
+    };
+  }
+
+  class ImportanceSampler;
+
 	/// Abstract class for all materials.
 	class Material
 		: public NamedObject,
-			public ISupportsConcurrency
+			public ISupportsConcurrency,
+      public enable_shared_from_this<Material>
 	{
 	public:
-		Material() : m_refractionRe(1), m_trasparency(0) {};
+		Material() : m_refractionRe(1), m_trasparency(0), m_importanceSamplingType(ImportanceSamplingType::CosibeLobe) {};
 		virtual ~Material() {};
 
 		/// Calculate selective BSDF equation.
@@ -92,16 +106,21 @@ namespace Hrt
 			m_trasparency = val; 
 		}
 
+    /// YAML serializer method
+    virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
+
 		/// Returns a signature of material (describes material and its properties)
 		virtual const std::string GetSignature()=0;
 
     /// Initializes material for usage in rendering
-    virtual void Initialize()=0;
+    virtual void Initialize();
 
 	protected:
 		Spectrum m_refractionRe;
 		Spectrum m_refractionIm;
 		Spectrum m_trasparency;
+    ImportanceSamplingType::Enum m_importanceSamplingType;
+    shared_ptr<ImportanceSampler> m_importanceSampler;
 	};
 
 	/// Reference to const shared-pointer of Material (used as params and returns)

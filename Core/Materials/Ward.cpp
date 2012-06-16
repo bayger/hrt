@@ -19,17 +19,17 @@ GNU General Public License for more details.
 namespace Hrt
 {
 	Ward::Ward()
-		: m_specular(num(0.5)), m_diffuse(num(0.5)), m_alphaX(num(0.1)), m_alphaY(num(0.1)),
-		m_importanceSampler(new PrecomputedImportanceSampler())
+		: m_specular(num(0.5)), m_diffuse(num(0.5)), m_alphaX(num(0.1)), m_alphaY(num(0.1))
 	{
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	Ward::Ward( number diffuse, number specular, number alphaX, number alphaY )
-		: m_alphaX(alphaX), m_alphaY(alphaY),
-		m_importanceSampler(new PrecomputedImportanceSampler())
+		: m_alphaX(alphaX), m_alphaY(alphaY)
 	{
 		SetDiffuse(diffuse);
 		SetSpecular(specular);
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	Hrt::Spectrum Ward::CalculateBsdf( const RayLight& incomingRay, 
@@ -103,10 +103,5 @@ namespace Hrt
 	const std::string Ward::GetSignature()
 	{
 		return str(format("%1%:s=%2%,d=%3%,ax=%4%,ay=%5%") % yamlType % m_specular % m_diffuse % m_alphaX % m_alphaY);
-	}
-
-	Hrt::Vector3D Ward::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-	{
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
 	}
 }

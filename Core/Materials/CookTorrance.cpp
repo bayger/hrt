@@ -21,21 +21,19 @@ namespace Hrt
 {
 	CookTorrance::CookTorrance()
 		: m_diffuse(num(0.5)), m_specular(num(0.5)), m_rms(0.6), 
-			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1),
-			m_importanceSampler(new Lipis)
-      //m_importanceSampler(new PrecomputedImportanceSampler)
+			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1)
 	{
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	CookTorrance::CookTorrance( number diffuse, number specular, number rms, 
 		SlopeDistribution::Enum distribution)
 		: m_rms(rms), m_distribution(distribution),
-		m_gaussianC(1), 
-    m_importanceSampler(new Lipis)
-    //m_importanceSampler(new PrecomputedImportanceSampler)
+		m_gaussianC(1)
 	{
 		SetDiffuse(diffuse);
 		SetSpecular(specular);
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	Hrt::Spectrum CookTorrance::CalculateBsdf( const RayLight& incomingRay, 
@@ -176,15 +174,5 @@ namespace Hrt
 	const std::string CookTorrance::GetSignature()
 	{
 		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % yamlType % m_specular % m_diffuse % m_rms % m_gaussianC);
-	}
-
-	Hrt::Vector3D CookTorrance::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-	{
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-	}
-
-	Hrt::number CookTorrance::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-	{
-		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
 	}
 }

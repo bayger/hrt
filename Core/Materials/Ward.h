@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 namespace Hrt
 {
-	class Ward : public Material, public enable_shared_from_this<Ward>
+	class Ward : public Material
 	{
 	public:
 		Ward();
@@ -30,11 +30,7 @@ namespace Hrt
 		virtual Spectrum CalculateBsdf(const RayLight& incomingRay, 
 			const Intersection& intersection, LightingType::Enum lightingType);
 
-		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, 
-			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
-
 		virtual const std::string GetSignature();
-    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
 
 		// --- Properties ---
 
@@ -71,8 +67,6 @@ namespace Hrt
 		number m_specular;
 		number m_alphaX;
 		number m_alphaY;
-		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
-
 	};
 }
 

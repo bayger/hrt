@@ -21,9 +21,9 @@ namespace Hrt
 	Phong::Phong()
 		: m_powerSpecular(10),
 		m_specular(num(0.5)),
-		m_diffuse(num(0.5)),
-		m_importanceSampler(new PrecomputedImportanceSampler())
+		m_diffuse(num(0.5))
 	{
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	Hrt::Spectrum Phong::CalculateBsdf( const RayLight& incomingRay, 
@@ -63,15 +63,5 @@ namespace Hrt
 	const std::string Phong::GetSignature()
 	{
 		return str(format("%1%:sp=%2%,d=%3%,s=%4%") % yamlType % m_powerSpecular % m_diffuse.ToString() % m_specular.ToString());
-	}
-
-	Hrt::Vector3D Phong::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-	{
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-	}
-
-	Hrt::number Phong::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-	{
-		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
 	}
 }

@@ -37,17 +37,24 @@ namespace Hrt
 
 	Hrt::Vector3D SamplingHelper::SampleHemisphereCosineLobe(number* sample, number& pdfResult)
 	{
-		number yAngle = Math::Arcos(Math::Sqrt(sample[1]));
-		pdfResult = Math::Cos(yAngle) / Consts::Pi;
-		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], yAngle);
+    number r = Math::Sqrt(sample[0]);
+    number theta = 2 * Consts::Pi * sample[1];
+    number dx = r * Math::Cos(theta);
+    number dy = r * Math::Sin(theta);
+    number dz = Math::Sqrt(Math::Max(number(0), number(1 - dx*dx - dy*dy)));
+    pdfResult = dz / Consts::Pi;
+
+    return Vector3D(dx, dy, dz);
 	}
 
 	Vector3D SamplingHelper::SampleHemisphereCosineLobe(number* sample, const Vector3D& xAxis, 
 		const Vector3D& yAxis, const Vector3D& zAxis, number& pdfResult)
 	{
-		number yAngle = Math::Arcos(Math::Sqrt(sample[1]));
-		pdfResult = Math::Cos(yAngle) / Consts::Pi;
-		return Vector3D::FromSpherical(Consts::TwoPi*sample[0], yAngle, xAxis, yAxis, zAxis);
+    Vector3D v = SampleHemisphereCosineLobe(sample, pdfResult);
+
+    return xAxis * v.X
+      + yAxis * v.Y
+      + zAxis * v.Z;
 	}
 
 	Hrt::number SamplingHelper::GetPdfHemisphereCosineLobe(const Vector3D& n, const Vector3D& direction)

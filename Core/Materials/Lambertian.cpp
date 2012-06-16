@@ -21,8 +21,7 @@ GNU General Public License for more details.
 namespace Hrt
 {
   Lambertian::Lambertian()
-    : m_reflectance(Spectrum(1)),
-    importanceSampler(new Lipis)
+    : m_reflectance(Spectrum(1))
   {
   }
 
@@ -55,17 +54,4 @@ namespace Hrt
 
     return m_reflectance / Consts::Pi * incomingRay.Radiance * nk2;
   }  
-
-  Hrt::Vector3D Lambertian::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-  {
-    return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-    //return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-  }
-
-  Hrt::number Lambertian::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-  {
-    return Material::CalculatePdf(outgoingDirection, tangentU, tangentV, n, incomingDirection, lightingType);
-    //return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
-  }
-
 }

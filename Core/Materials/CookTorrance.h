@@ -37,7 +37,7 @@ namespace Hrt
 	/// Cook-Torrance reflection model is based on microfacet distribution function
 	/// and is described in ACM Transactions of Graphics paper titled 'A Reflectance
 	/// model for Computer Graphics", 1982, vol. 1, issue 1.
-	class CookTorrance : public Material, public enable_shared_from_this<CookTorrance>
+	class CookTorrance : public Material
 	{
 	public:
 		CookTorrance();
@@ -49,12 +49,6 @@ namespace Hrt
 		virtual Spectrum CalculateBsdf(const RayLight& incomingRay, 
 			const Intersection& intersection, 
 			LightingType::Enum lightingType);
-
-		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, 
-			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
-
-		virtual number CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType);
 
 		// --- Properties ---
 
@@ -96,9 +90,6 @@ namespace Hrt
 		number m_rms;
 		SlopeDistribution::Enum m_distribution;
 		number m_gaussianC;
-
-		shared_ptr<ImportanceSampler> m_importanceSampler;
-    //shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
 
 		number CalculateG(number nh, number nl, number nv, number vh);
 		number CalculateD(number nh, number tan_alpha);

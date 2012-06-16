@@ -22,19 +22,13 @@ GNU General Public License for more details.
 namespace Hrt
 {
 
-	class Phong : public Material, public enable_shared_from_this<Phong>
+	class Phong : public Material
 	{
 	public:
 		Phong();
 
 		virtual Spectrum CalculateBsdf(const RayLight& incomingRay, 
 			const Intersection& intersection, LightingType::Enum lightingType);
-
-		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, 
-			const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType);
-
-		virtual number CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType);
 
 		// Specular absorption spectrum.
 		Hrt::Spectrum GetSpecular() const { return m_specular; }
@@ -48,7 +42,6 @@ namespace Hrt
 		void SetPowerSpecular(unsigned int val) { m_powerSpecular = val; }
 
 		virtual const std::string GetSignature();
-    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
 
 		// IYamlSerializable Implementation
 		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
@@ -58,7 +51,6 @@ namespace Hrt
 		unsigned int m_powerSpecular;
 		Spectrum m_specular;
 		Spectrum m_diffuse;
-		shared_ptr<PrecomputedImportanceSampler> m_importanceSampler;
 	};
 }
 

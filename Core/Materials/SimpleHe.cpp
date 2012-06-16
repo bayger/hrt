@@ -23,15 +23,15 @@ namespace Hrt
 {
 
   SimpleHe::SimpleHe(number gamma, number sigma, const Spectrum& a)
-    : gamma(gamma), sigma(sigma), a(a), isPrecalcDirty(true), useCosineLobeIS(false),
-    importanceSampler(new Lipis)
+    : gamma(gamma), sigma(sigma), a(a), isPrecalcDirty(true)
   {
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
   }
 
   SimpleHe::SimpleHe()
-    : gamma(0.38e-6), sigma(2e-6), a(0), isPrecalcDirty(true), useCosineLobeIS(false),
-    importanceSampler(new Lipis)
+    : gamma(0.38e-6), sigma(2e-6), a(0), isPrecalcDirty(true)
   {
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
   }
 
   /* Solves y=x*exp(x^2) for x given y */
@@ -263,13 +263,6 @@ namespace Hrt
       m_refractionIm = SerializationHelper::ReadSpectrum(parser);
     else if (scalarValue == "a")
       a = SerializationHelper::ReadSpectrum(parser);
-    else if (scalarValue == "importance-sampling")
-    {
-      std::string isMode;
-      parser.ReadScalar(isMode);
-      if (isMode == "cosine-lobe")
-        useCosineLobeIS = true;
-    }
     else
       return NamedObject::ProcessYamlScalar(parser, context);
 
@@ -282,25 +275,8 @@ namespace Hrt
     return yamlType;
   }
 
-  Hrt::Vector3D SimpleHe::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-  {
-    if (useCosineLobeIS)
-      return Material::SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-    else
-      return importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-  }
-
   const std::string SimpleHe::GetSignature()
   {
     return str(format("%1%:s=%2%,t=%3%,rr=%4%,ri=%5%,a=%6%") % yamlType % sigma % gamma % m_refractionRe.ToString() % m_refractionIm.ToString() % a.ToString());
   }
-
-  Hrt::number SimpleHe::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-  {
-    if (useCosineLobeIS)
-      return Material::CalculatePdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
-    else
-      return importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
-  }
-
 }

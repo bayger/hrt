@@ -26,10 +26,9 @@ namespace Hrt
 		m_specularFactor((number)0.1), 
 		m_diffuseFactor((number)0.9),
 		m_specular(Spectrum(1)), 
-		m_diffuse(Spectrum(1)),
-    //m_importanceSampler(new PrecomputedImportanceSampler)
-		m_importanceSampler(new Lipis)
+		m_diffuse(Spectrum(1))
 	{
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	ASPhong::ASPhong(number nu, 
@@ -41,10 +40,9 @@ namespace Hrt
 		m_specularFactor(specularFactor), 
 		m_diffuseFactor(diffuseFactor),
 		m_specular(Spectrum(1)), 
-		m_diffuse(Spectrum(1)),
-		//m_importanceSampler(new PrecomputedImportanceSampler)
-    m_importanceSampler(new Lipis)
+		m_diffuse(Spectrum(1))
 	{
+    m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	Spectrum ASPhong::CalculateBsdf(const RayLight& incomingRay,
@@ -144,15 +142,5 @@ namespace Hrt
 	{
 		return str(format("%1%:s=%2%,d=%3%,nu=%4%,nv=%5%,ss=%6%,ds=%7%") % yamlType % m_specularFactor % m_diffuseFactor % m_nu % m_nv
 			% m_specular.ToString() % m_diffuse.ToString());
-	}
-
-	Hrt::Vector3D ASPhong::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, number& pdf, LightingType::Enum& lightingType)
-	{
-		return m_importanceSampler->SampleVector(sample, outgoingDirection, tangentU, tangentV, n, pdf, lightingType);
-	}
-
-	Hrt::number ASPhong::CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, const Vector3D& incomingDirection, const LightingType::Enum lightingType)
-	{
-		return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
 	}
 }
