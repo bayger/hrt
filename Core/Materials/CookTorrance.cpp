@@ -20,19 +20,21 @@ GNU General Public License for more details.
 namespace Hrt
 {
 	CookTorrance::CookTorrance()
-		: m_diffuse(num(0.5)), m_specular(num(0.5)), m_rms(0.6), 
-			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1)
+		: m_diffuse(num(0.5)), m_specular(num(0.5)), 
+			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1),
+      m_beckmannComponents(1)
 	{
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
 	CookTorrance::CookTorrance( number diffuse, number specular, number rms, 
 		SlopeDistribution::Enum distribution)
-		: m_rms(rms), m_distribution(distribution),
-		m_gaussianC(1)
+		: m_distribution(distribution),
+		m_gaussianC(1), m_beckmannComponents(1)
 	{
 		SetDiffuse(diffuse);
 		SetSpecular(specular);
+    rmss.push_back(rms);
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
@@ -111,16 +113,29 @@ namespace Hrt
 		return Math::Min(num(1), num(2*nh*nv/vh), num(2*nh*nl/vh));
 	}
 
+  static number CalculateBeckmann(number tan_alpha, number nh, number rms)
+  {
+    return num(1/(Math::Square(rms)*Math::Pow(nh,4)) 
+      * Math::Exp(-Math::Square(tan_alpha/rms)) );
+  }
+
 	Hrt::number CookTorrance::CalculateD( number nh, number tan_alpha )
 	{
 		switch(m_distribution)
 		{
 		case SlopeDistribution::Beckmann:
-			return num(1/(Math::Square(m_rms)*Math::Pow(nh,4)) 
-				* Math::Exp(-Math::Square(tan_alpha/m_rms)) );
+      if (m_beckmannComponents == 1) // NOTE: special case where weight is not needed
+			  return CalculateBeckmann(tan_alpha, nh, rmss[0]);
+      else
+      {
+        number d = 0;
+        for(unsigned int i=0; i<m_beckmannComponents; i++)
+          d += weights[i] * CalculateBeckmann(tan_alpha, nh, rmss[i]);
+        return d;
+      }
 
 		case SlopeDistribution::Gaussian:
-			return Math::Exp(-Math::Square(Math::Arcos(nh)/m_rms))*m_gaussianC;
+			return Math::Exp(-Math::Square(Math::Arcos(nh)/rmss[0]))*m_gaussianC;
 		}
 
 		throw NotSupportedException(
@@ -131,7 +146,17 @@ namespace Hrt
 	{
 		std::string scalarValue = parser.CurrentValue();
 		if (scalarValue == "rms")
-			parser.ReadScalar(m_rms);
+    {
+      number rms;
+			parser.ReadScalar(rms);
+      rmss.push_back(rms);
+    }
+    else if (scalarValue == "weight")
+    {
+      number weight;
+      parser.ReadScalar(weight);
+      weights.push_back(weight);
+    }
 		else if (scalarValue == "gaussian-c")
 			parser.ReadScalar(m_gaussianC);
 		else if (scalarValue == "diffuse")
@@ -150,11 +175,17 @@ namespace Hrt
 		{
 			std::string name;
 			parser.ReadScalar(name);
-			if (name == "backmann")
+			if (name == "beckmann")
 				SetDistribution(SlopeDistribution::Beckmann);
 			else if (name == "gaussian")
 				SetDistribution(SlopeDistribution::Gaussian);
 		}
+    else if (scalarValue == "beckmann-components")
+    {
+      unsigned int u;
+      parser.ReadScalar(u);
+      SetBeckmannComponents(u);
+    }
 		else if (scalarValue == "refractive-real")
 			m_refractionRe = SerializationHelper::ReadSpectrum(parser);
 		else if (scalarValue == "refractive-imaginary")
@@ -173,6 +204,6 @@ namespace Hrt
 
 	const std::string CookTorrance::GetSignature()
 	{
-		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % yamlType % m_specular % m_diffuse % m_rms % m_gaussianC);
+		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % yamlType % m_specular % m_diffuse % rmss[0] % m_gaussianC);
 	}
 }

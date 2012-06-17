@@ -29,6 +29,7 @@ namespace Hrt
 		enum Enum
 		{
 			Beckmann,
+      Beckmann2,
 			Gaussian
 		};
 	}
@@ -72,12 +73,21 @@ namespace Hrt
 			if (m_diffuse + m_specular > 1)
 				m_diffuse = 1 - m_diffuse;
 		}
-		AUTO_PROPERTY(number, m_rms, Rms);
+		
 		AUTO_PROPERTY(SlopeDistribution::Enum, m_distribution, Distribution);
 		AUTO_PROPERTY(number, m_gaussianC, GaussianC);
+    AUTO_GETTER(unsigned int, m_beckmannComponents, BeckmannComponents);
+    void SetBeckmannComponents(const unsigned int val)
+    {
+      if (val < 1)
+        throw InvalidArgumentException("Beckmann slope component count must be greater than 0");
+
+      m_beckmannComponents = val;
+      rmss.clear();
+      weights.clear();
+    }
 
 		virtual const std::string GetSignature();
-    virtual void Initialize() { m_importanceSampler->Precompute(shared_from_this()); }
 
 		// --- IYamlSerializable Implementation ---
 
@@ -87,9 +97,11 @@ namespace Hrt
 	private:
 		number m_diffuse;
 		number m_specular;
-		number m_rms;
+    std::vector<number> rmss;
+    std::vector<number> weights;
 		SlopeDistribution::Enum m_distribution;
 		number m_gaussianC;
+    unsigned int m_beckmannComponents;
 
 		number CalculateG(number nh, number nl, number nv, number vh);
 		number CalculateD(number nh, number tan_alpha);
