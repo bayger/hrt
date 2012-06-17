@@ -40,9 +40,9 @@ namespace Hrt
     enum Enum
     {
       Uniform = 0,
-      CosibeLobe = 1,
+      CosineLobe = 1,
       Lipis = 2,    // uses: linearly interpolated precomputed importance sampler
-      Sis = 3       // uses: stepped precomputed importance sampler
+      Spis = 3       // uses: stepped precomputed importance sampler
     };
   }
 
@@ -55,7 +55,7 @@ namespace Hrt
       public enable_shared_from_this<Material>
 	{
 	public:
-		Material() : m_refractionRe(1), m_trasparency(0), m_importanceSamplingType(ImportanceSamplingType::CosibeLobe) {};
+		Material() : m_refractionRe(1), m_trasparency(0), m_importanceSamplingType(ImportanceSamplingType::CosineLobe) {};
 		virtual ~Material() {};
 
 		/// Calculate selective BSDF equation.

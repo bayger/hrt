@@ -164,7 +164,7 @@ std::string Program::ReadSceneFile()
 	std::ifstream sceneFile(sceneFileName.c_str());
 
 	sceneFile.seekg(0, std::ios_base::end);
-	long int size = sceneFile.tellg();
+	long int size = static_cast<long int>(sceneFile.tellg());
 	sceneFile.seekg(0, std::ios_base::beg);
 	scoped_array<char> buffer(new char[size+1]);
 	memset(buffer.get(), 0, sizeof(char)*(1+size));

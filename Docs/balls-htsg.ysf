@@ -3,8 +3,8 @@
 # --- global scene settings ---
 
 canvas:
-  width: 1000
-  height: 600
+  width: 1200
+  height: 300
   !gaussian-filter filter: 
     width: 1
     height: 1
@@ -14,12 +14,6 @@ camera:
   transform:
     rotate: 0 0 0
     translate: 0.01 -6.5 -30	# 0.01 to avoid debug-mode FPU exception
-  !const-sampler sampler:
-    dimension: 2
-    value: 0.5
-  !stratified-sampler aa-sampler:
-    dimension: 2
-    strata-count: 3
 
 # --- lights ---
 
@@ -110,14 +104,10 @@ camera:
   sigma: 0.00000058
   tau: 0.000003
 
-!cook-torrance material:
+!lambertian material:
   name: Diffuse Only
-  diffuse: 1
-  refractive-real: 0.158 0.126 0.142
-  refractive-imaginary: 2.336 3.307 4.523
-  rms: 0.8
-  slope-distribution: beckmann
-
+  reflectance: 0.710 0.748 0.737
+  
 # --- shape-material bindings ---
 
 primitive:

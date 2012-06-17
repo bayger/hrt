@@ -28,10 +28,10 @@ namespace Hrt
 		virtual ~Filter();
 
 		/// Gets the horizontal range of a filter.
-		int GetWidth() const { return m_width; }
+		number GetWidth() const { return m_width; }
 
 		/// Gets the vertical range of a filter.
-		int GetHeight() const { return m_height; }
+		number GetHeight() const { return m_height; }
 
 		/// Calculates weight for given coordinates.
 		/// \param x X-coordinate relative to filter center

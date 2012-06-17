@@ -102,7 +102,7 @@ namespace Hrt
 		{
       allPixelSamples.clear();
       number mean, standardDeviation, variance;
-      int passes = 0;
+      unsigned int passes = 0;
 
       do
       {

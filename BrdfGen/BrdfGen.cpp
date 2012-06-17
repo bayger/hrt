@@ -94,7 +94,7 @@ void BrdfGen::LoadScene()
   std::ifstream sceneFile(brdfFileName.c_str());
 
   sceneFile.seekg(0, std::ios_base::end);
-  long int size = sceneFile.tellg();
+  long int size = static_cast<long int>(sceneFile.tellg());
   if (size == -1)
   {
     std::cerr << "Scene file not found" << std::endl;

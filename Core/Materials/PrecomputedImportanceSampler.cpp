@@ -23,8 +23,8 @@ namespace Hrt
 	typedef std::tr1::unordered_map<std::string, weak_ptr<PrecomputedImportanceSampler>> sampling_cache;
 	sampling_cache s_samplingCache;
 
-	int elevationSteps = 180;
-	int azimuthSteps = 181;
+	size_t elevationSteps = 180;
+	size_t azimuthSteps = 181;
   const char fileHeader[] = "!BCF";
 
   struct BrdfFileHeader

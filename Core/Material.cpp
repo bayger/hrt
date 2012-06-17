@@ -64,7 +64,7 @@ namespace Hrt
   {
     switch(m_importanceSamplingType)
     {
-    case ImportanceSamplingType::CosibeLobe:
+    case ImportanceSamplingType::CosineLobe:
       return SamplingHelper::SampleHemisphereCosineLobe(sample, tangentU, tangentV, n, pdf);
     case ImportanceSamplingType::Uniform:
       return SamplingHelper::SampleHemisphere(sample, tangentU, tangentV, n, pdf);
@@ -78,7 +78,7 @@ namespace Hrt
   {
     switch(m_importanceSamplingType)
     {
-    case ImportanceSamplingType::CosibeLobe:
+    case ImportanceSamplingType::CosineLobe:
       return SamplingHelper::GetPdfHemisphereCosineLobe(n, -incomingDirection);
     case ImportanceSamplingType::Uniform:
       return SamplingHelper::GetPdfHemisphere(n, -incomingDirection);
@@ -96,13 +96,13 @@ namespace Hrt
       std::string isMode;
       parser.ReadScalar(isMode);
       if (isMode == "cosine-lobe")
-        m_importanceSamplingType = ImportanceSamplingType::CosibeLobe;
+        m_importanceSamplingType = ImportanceSamplingType::CosineLobe;
       else if (isMode == "uniform")
         m_importanceSamplingType = ImportanceSamplingType::Uniform;
       else if (isMode == "lipis")
         m_importanceSamplingType = ImportanceSamplingType::Lipis;
-      else if (isMode == "sis")
-        m_importanceSamplingType = ImportanceSamplingType::Sis;
+      else if (isMode == "spis")
+        m_importanceSamplingType = ImportanceSamplingType::Spis;
     }
     else
       return NamedObject::ProcessYamlScalar(parser, context);
@@ -118,7 +118,7 @@ namespace Hrt
       m_importanceSampler.reset(new Lipis());
       m_importanceSampler->Precompute(shared_from_this());
       break;
-    case ImportanceSamplingType::Sis:
+    case ImportanceSamplingType::Spis:
       m_importanceSampler.reset(new PrecomputedImportanceSampler());
       m_importanceSampler->Precompute(shared_from_this());
       break;
