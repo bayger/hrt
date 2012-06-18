@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "Intersection.h"
 #include "Random.h"
 #include "ISupportsConcurrency.h"
+#include "Modifiers/SpectrumModifier.h"
 
 namespace Hrt
 {
@@ -121,6 +122,7 @@ namespace Hrt
 		Spectrum m_trasparency;
     ImportanceSamplingType::Enum m_importanceSamplingType;
     shared_ptr<ImportanceSampler> m_importanceSampler;
+    shared_ptr<SpectrumModifier> m_outgoingRadianceModifier;
 	};
 
 	/// Reference to const shared-pointer of Material (used as params and returns)

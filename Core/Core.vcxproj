@@ -225,6 +225,7 @@
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CieXyz.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Modifiers\SpectrumModifier.h" />
     <ClInclude Include="Samplers\ConstSampler.h" />
     <ClInclude Include="Materials\CookTorrance.h" />
     <ClInclude Include="Serialization\LipisSerializer.h" />

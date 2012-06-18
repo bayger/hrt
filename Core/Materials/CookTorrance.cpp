@@ -20,7 +20,7 @@ GNU General Public License for more details.
 namespace Hrt
 {
 	CookTorrance::CookTorrance()
-		: m_diffuse(num(0.5)), m_specular(num(0.5)), 
+		: m_diffuse(0), m_specular(0), 
 			m_distribution(SlopeDistribution::Beckmann), m_gaussianC(1),
       m_beckmannComponents(1)
 	{
@@ -92,7 +92,7 @@ namespace Hrt
 			number D = CalculateD(nh, tan_alpha);
 
 			result[lambdaIndex] = incomingRay.Radiance[lambdaIndex] 
-				* ( m_specular * (fresnel * CalculateG(nh, nl, nv, vh) * D / (nl*nv)) 
+				* ( m_specular * (fresnel/Consts::Pi * CalculateG(nh, nl, nv, vh) * D / (nl*nv)) 
 					+ m_diffuse*fresnel/Consts::Pi);
 		}
 
