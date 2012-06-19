@@ -127,7 +127,7 @@ namespace Hrt
 		else if (scalarValue == "diffuse-absorption")
 			m_diffuse = SerializationHelper::ReadSpectrum(parser);
 		else
-			return NamedObject::ProcessYamlScalar(parser, context);
+			return Material::ProcessYamlScalar(parser, context);
 
 		return true;
 	}

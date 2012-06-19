@@ -24,7 +24,7 @@ namespace Hrt
   static void CalculateReflectedRay(MaterialPtr material, const RayLight& incomingRay, 
     const Intersection& intersection, RayLight& reflectedRay, bool isInSpecularCone )
   {
-    reflectedRay.Radiance = material->CalculateBrdf(incomingRay, intersection, 
+    reflectedRay.Radiance = material->CalculateRadiance(incomingRay, intersection, 
       (LightingType::Enum)(LightingType::AllReflection 
       + (isInSpecularCone 
       ? LightingType::IdealSpecular 

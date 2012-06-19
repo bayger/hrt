@@ -191,7 +191,7 @@ namespace Hrt
 		else if (scalarValue == "refractive-imaginary")
 			m_refractionIm = SerializationHelper::ReadSpectrum(parser);
 		else
-			return NamedObject::ProcessYamlScalar(parser, context);
+			return Material::ProcessYamlScalar(parser, context);
 
 		return true;
 	}

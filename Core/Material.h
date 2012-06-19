@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include "Intersection.h"
 #include "Random.h"
 #include "ISupportsConcurrency.h"
-#include "Modifiers/SpectrumModifier.h"
+#include "Modifiers\OutgoingRadianceModifier.h"
 
 namespace Hrt
 {
@@ -36,6 +36,7 @@ namespace Hrt
 		};
 	}
 
+  /// Defines methods of importance sampling
   namespace ImportanceSamplingType
   {
     enum Enum
@@ -58,6 +59,11 @@ namespace Hrt
 	public:
 		Material();;
 		virtual ~Material() {};
+
+    /// Calculate light interaction with the surface (outcome is radiance)
+    Spectrum CalculateRadiance(const RayLight& incomingRay,
+      const Intersection& intersection,
+      LightingType::Enum lightingType = LightingType::AllReflection);
 
 		/// Calculate selective BRDF equation.
 		virtual Spectrum CalculateBrdf(const RayLight& incomingRay,
@@ -108,6 +114,7 @@ namespace Hrt
 		Spectrum m_transparency;
     ImportanceSamplingType::Enum m_importanceSamplingType;
     shared_ptr<ImportanceSampler> m_importanceSampler;
+    shared_ptr<OutgoingRadianceModifier> m_outgoingRadianceModifier;
 	};
 
 	/// Reference to const shared-pointer of Material (used as params and returns)

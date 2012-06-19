@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #include "SamplingHelper.h"
 #include "Materials\Lipis.h"
 #include "Materials\PrecomputedImportanceSampler.h"
+#include "Modifiers\OutgoingRadianceModifier.h"
+#include "Modifiers\OutgoingRadianceModifierSerializer.h"
 
 namespace Hrt
 {
@@ -73,6 +75,12 @@ namespace Hrt
       else if (isMode == "spis")
         m_importanceSamplingType = ImportanceSamplingType::Spis;
     }
+    else if (scalarValue == "outgoing-radiance-modifier")
+    {
+      std::string scalarType = parser.CurrentTag();
+        m_outgoingRadianceModifier = Singleton<OutgoingRadianceModifierSerializer>::Instance()
+        .Deserialize(scalarType, parser, context);
+    }
     else
       return NamedObject::ProcessYamlScalar(parser, context);
 
@@ -96,5 +104,14 @@ namespace Hrt
       break;
     }
   }
+
+  Hrt::Spectrum Material::CalculateRadiance(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType /*= LightingType::AllReflection*/)
+  {
+    Spectrum radiance = CalculateBrdf(incomingRay, intersection, lightingType);
+    return m_outgoingRadianceModifier != NULL
+      ? m_outgoingRadianceModifier->Modify(radiance, incomingRay, intersection)
+      : radiance;
+  }
+
 
 }

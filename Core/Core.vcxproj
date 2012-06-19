@@ -158,6 +158,8 @@
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CieXyz.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="Modifiers\Checkerboard.cpp" />
+    <ClCompile Include="Modifiers\OutgoingRadianceModifierSerializer.cpp" />
     <ClCompile Include="Samplers\ConstSampler.cpp" />
     <ClCompile Include="Materials\CookTorrance.cpp" />
     <ClCompile Include="Serialization\LipisSerializer.cpp" />
@@ -225,7 +227,10 @@
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CieXyz.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="Modifiers\SpectrumModifier.h" />
+    <ClInclude Include="Modifiers\Checkerboard.h" />
+    <ClInclude Include="Modifiers\OutgoingRadianceModifier.h" />
+    <ClInclude Include="Modifiers\OutgoingRadianceModifierSerializer.h" />
+    <ClInclude Include="Modifiers\stdafx.h" />
     <ClInclude Include="Samplers\ConstSampler.h" />
     <ClInclude Include="Materials\CookTorrance.h" />
     <ClInclude Include="Serialization\LipisSerializer.h" />

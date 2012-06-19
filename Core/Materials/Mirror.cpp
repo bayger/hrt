@@ -68,7 +68,7 @@ namespace Hrt
 		if (scalarValue == "absorption")
 			m_absorption = SerializationHelper::ReadSpectrum(parser);
 		else
-			return NamedObject::ProcessYamlScalar(parser, context);
+			return Material::ProcessYamlScalar(parser, context);
 
 		return true;
 	}

@@ -42,7 +42,7 @@ namespace Hrt
     if (scalarValue == "reflectance")
       m_reflectance = SerializationHelper::ReadSpectrum(parser);
     else
-      return NamedObject::ProcessYamlScalar(parser, context);
+      return Material::ProcessYamlScalar(parser, context);
 
     return true;
   }

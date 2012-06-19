@@ -82,7 +82,7 @@ namespace Hrt
 			
 			rl.Direction = -direction;
 			rl.Radiance = 1;
-			f = material->CalculateBrdf(rl, is);
+			f = material->CalculateRadiance(rl, is);
 
 			lightSubpath.push_back(BdptVertex(prevPos, alpha));
 			
@@ -122,7 +122,7 @@ namespace Hrt
 
 			rl.Direction = -direction;
 			rl.Radiance = 1;
-			f = material->CalculateBrdf(rl, is);
+			f = material->CalculateRadiance(rl, is);
 
 			lightSubpath.push_back(BdptVertex(prevPos, alpha));
 
