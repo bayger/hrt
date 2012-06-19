@@ -184,7 +184,7 @@ void BrdfGen::OutputData()
     }
     else
     {
-      Spectrum x = m_material->CalculateBsdf(rayLight, intersection, 
+      Spectrum x = m_material->CalculateBrdf(rayLight, intersection, 
         static_cast<LightingType::Enum>(LightingType::AllReflection | (isInSpecularCone ? LightingType::IdealSpecular : 0)));
       for(int i=0; i<Spectrum::LambdaCount; i++)
       {

@@ -43,7 +43,7 @@ namespace Hrt
       Uniform = 0,
       CosineLobe = 1,
       Lipis = 2,    // uses: linearly interpolated precomputed importance sampler
-      Spis = 3       // uses: stepped precomputed importance sampler
+      Spis = 3      // uses: stepped precomputed importance sampler
     };
   }
 
@@ -56,56 +56,42 @@ namespace Hrt
       public enable_shared_from_this<Material>
 	{
 	public:
-		Material() : m_refractionRe(1), m_trasparency(0), m_importanceSamplingType(ImportanceSamplingType::CosineLobe) {};
+		Material();;
 		virtual ~Material() {};
 
-		/// Calculate selective BSDF equation.
-		virtual Spectrum CalculateBsdf(const RayLight& incomingRay,
+		/// Calculate selective BRDF equation.
+		virtual Spectrum CalculateBrdf(const RayLight& incomingRay,
 			const Intersection& intersection, 
-			LightingType::Enum lightingType)=0;
+			LightingType::Enum lightingType = LightingType::AllReflection)=0;
 
 		/// Sample reflected vector using importance sampling
-		virtual Vector3D SampleVector(number* sample, const Vector3D& outgoingDirection, 
-      const Vector3D& tangentU, const Vector3D& tangentV, const Vector3D& n, 
-      number& pdf, LightingType::Enum& lightingType);
+		virtual Vector3D SampleVector(number* sample, 
+      const Vector3D& outgoingDirection, 
+      const Vector3D& tangentU, 
+      const Vector3D& tangentV, 
+      const Vector3D& n, 
+      number& pdf, 
+      LightingType::Enum& lightingType);
 
 		/// Returns Pdf for given incoming ray and intersection
-		virtual number CalculatePdf(const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 
-			const Vector3D& n, const Vector3D& incomingDirectio, const LightingType::Enum lightingType);
+		virtual number CalculatePdf(const Vector3D& outgoingDirection, 
+      const Vector3D& tangentU, 
+      const Vector3D& tangentV, 
+			const Vector3D& n, 
+      const Vector3D& incomingDirectio, 
+      const LightingType::Enum lightingType);
 
-		/// Calculates light ray reflected by the surface.
-		virtual void CalculateReflectedRay( const RayLight& incomingRay, 
-			const Intersection& intersection, RayLight& reflectedRay, 
-			bool isInSpecularCone );
+    /// Returns true if material is somehow transparent. Opaque materials return false.
+		bool IsTransparent() const { return !m_transparency.IsZero(); }
 
-		/// Calculates complete BSDF equation.
-		Spectrum CalculateBsdf(const RayLight& incomingRay, 
-			const Intersection& intersection);
+		/// Transparency property
+    AUTO_PROPERTY(Spectrum, m_transparency, Transparency);
 
-		/// Calculates complete BSDF equation.
-		Spectrum CalculateBsdfIdealSpecular(const RayLight& incomingRay, 
-			const Intersection& intersection);
+    /// Refraction index property - real part
+    AUTO_PROPERTY(Spectrum, m_refractionRe, RefractionReal);
 
-		/// Gets the refraction index of this material.
-		const Spectrum& GetRefractiveIndex() const { return m_refractionRe; }
-
-		/// Sets the real part of the refraction index.
-		void RefractionRe(const Spectrum& val) { m_refractionRe = val; }
-
-		/// Sets the imaginary part of the refraction index.
-		void RefractionIm(const Spectrum& val) { m_refractionIm = val; }
-
-		/// Returns true if material is somehow transparent. Opaque materials return FALSE.
-		bool IsTransparent() const { return !m_trasparency.IsZero(); }
-
-		/// Gets transparency factor.
-		const Spectrum& GetTrasparency() const { return m_trasparency; }
-
-		/// Sets transparency factor.
-		void SetTrasparency(const Spectrum& val) 
-		{ 
-			m_trasparency = val; 
-		}
+    /// Refraction index property - imaginary part
+    AUTO_PROPERTY(Spectrum, m_refractionIm, RefractionImaginary);
 
     /// YAML serializer method
     virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
@@ -119,10 +105,9 @@ namespace Hrt
 	protected:
 		Spectrum m_refractionRe;
 		Spectrum m_refractionIm;
-		Spectrum m_trasparency;
+		Spectrum m_transparency;
     ImportanceSamplingType::Enum m_importanceSamplingType;
     shared_ptr<ImportanceSampler> m_importanceSampler;
-    shared_ptr<SpectrumModifier> m_outgoingRadianceModifier;
 	};
 
 	/// Reference to const shared-pointer of Material (used as params and returns)

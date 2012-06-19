@@ -108,7 +108,7 @@ namespace Hrt
 				{
 					if (geometry->CheckVisibility(incident.Position, intersection.Position))
 					{
-						Spectrum reflectedRadiance = material->CalculateBsdf(incident, intersection);
+						Spectrum reflectedRadiance = material->CalculateBrdf(incident, intersection);
 						number cos_in = intersection.Normal.Dot(-incident.Direction);
 
 						if (cos_in <= 0)
@@ -155,7 +155,7 @@ namespace Hrt
 									rayLight.Radiance = ls;
 									rayLight.Direction = -materialSampledVector;
 									rayLight.Position = lightIntersection.Position;
-									Spectrum lr = material->CalculateBsdf(rayLight, intersection);
+									Spectrum lr = material->CalculateBrdf(rayLight, intersection);
 
 									// convert material pdf to light area coordinates
 									number mPdf = materialPdf * -lightIntersection.RayDirection.Dot(ln)
@@ -189,7 +189,7 @@ namespace Hrt
 			if ((samples[0]+samples[1])/2 < q)
 				break;
 
-			Spectrum f = material->CalculateBsdf(vr, intersection);
+			Spectrum f = material->CalculateBrdf(vr, intersection);
 			throughput = throughput * f * (-vr.Direction.Dot(intersection.Normal) / (materialPdf * (1-q)));
 
 			// 4. set new direction

@@ -27,7 +27,7 @@ namespace Hrt
 
 		// --- Methods ---
 
-		virtual Spectrum CalculateBsdf(const RayLight& incomingRay, 
+		virtual Spectrum CalculateBrdf(const RayLight& incomingRay, 
 			const Intersection& intersection, LightingType::Enum lightingType);
 
 		virtual const std::string GetSignature();

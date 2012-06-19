@@ -26,7 +26,7 @@ namespace Hrt
         SimpleHe();
         SimpleHe(number gamma, number sigma, const Spectrum& a);
         
-        virtual Spectrum CalculateBsdf(const RayLight& incomingRay,
+        virtual Spectrum CalculateBrdf(const RayLight& incomingRay,
                 const Intersection& intersection,
                 LightingType::Enum lightingType);
 

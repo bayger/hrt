@@ -26,7 +26,7 @@ namespace Hrt
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
-	Hrt::Spectrum Phong::CalculateBsdf( const RayLight& incomingRay, 
+	Hrt::Spectrum Phong::CalculateBrdf( const RayLight& incomingRay, 
 		const Intersection& intersection, LightingType::Enum lightingType )
 	{
 		Vector3D h = (-(incomingRay.Direction + intersection.RayDirection)).Normalize();

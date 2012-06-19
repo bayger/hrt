@@ -21,42 +21,11 @@ GNU General Public License for more details.
 namespace Hrt
 {
 
-  Spectrum Material::CalculateBsdf(const RayLight& incomingRay,
-    const Intersection& intersection)
+  Material::Material() 
+    : m_refractionRe(1), 
+    m_transparency(0), 
+    m_importanceSamplingType(ImportanceSamplingType::CosineLobe)
   {
-    return CalculateBsdf(incomingRay, intersection, 
-      LightingType::AllReflection);
-  }
-
-  Hrt::Spectrum Material::CalculateBsdfIdealSpecular( const RayLight& incomingRay, 
-    const Intersection& intersection )
-  {
-    return CalculateBsdf(incomingRay, intersection,
-      (LightingType::Enum)(LightingType::AllReflection + 
-      LightingType::IdealSpecular));
-  }
-
-  void Material::CalculateReflectedRay( const RayLight& incomingRay, 
-    const Intersection& intersection, RayLight& reflectedRay, bool isInSpecularCone )
-  {
-    reflectedRay.Radiance = CalculateBsdf(incomingRay, intersection, 
-      (LightingType::Enum)(LightingType::AllReflection 
-      + (isInSpecularCone 
-      ? LightingType::IdealSpecular 
-      : LightingType::Nothing))
-      );
-
-    reflectedRay.MediumRefractionRe = incomingRay.MediumRefractionRe;
-    reflectedRay.MediumRefractionIm = incomingRay.MediumRefractionIm;
-    reflectedRay.Direction = -intersection.RayDirection;
-    reflectedRay.Position = intersection.Position;
-    reflectedRay.LightNormal = reflectedRay.Direction;
-    reflectedRay.TotalDistance = intersection.DistanceFromRayOrigin;
-
-    // ignore polarization by just copying data from incomingRay
-    for(unsigned i=0; i<Spectrum::LambdaCount; i++)
-      reflectedRay.Polarization[i] = incomingRay.Polarization[i];
-    reflectedRay.PolarizationVector = incomingRay.PolarizationVector;
   }
 
   Vector3D Material::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, 
@@ -127,6 +96,5 @@ namespace Hrt
       break;
     }
   }
-
 
 }

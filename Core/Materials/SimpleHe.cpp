@@ -82,7 +82,7 @@ namespace Hrt
     return sigma0/Math::Sqrt(1 + (squared_z0_over_sigma0));
   }
 
-  Spectrum SimpleHe::CalculateBsdf(const RayLight& incomingRay,
+  Spectrum SimpleHe::CalculateBrdf(const RayLight& incomingRay,
     const Intersection& intersection,
     LightingType::Enum lightingType)
   {

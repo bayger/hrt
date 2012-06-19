@@ -21,6 +21,30 @@
 namespace Hrt
 {
 
+  static void CalculateReflectedRay(MaterialPtr material, const RayLight& incomingRay, 
+    const Intersection& intersection, RayLight& reflectedRay, bool isInSpecularCone )
+  {
+    reflectedRay.Radiance = material->CalculateBrdf(incomingRay, intersection, 
+      (LightingType::Enum)(LightingType::AllReflection 
+      + (isInSpecularCone 
+      ? LightingType::IdealSpecular 
+      : LightingType::Nothing))
+      );
+
+    reflectedRay.MediumRefractionRe = incomingRay.MediumRefractionRe;
+    reflectedRay.MediumRefractionIm = incomingRay.MediumRefractionIm;
+    reflectedRay.Direction = -intersection.RayDirection;
+    reflectedRay.Position = intersection.Position;
+    reflectedRay.LightNormal = reflectedRay.Direction;
+    reflectedRay.TotalDistance = intersection.DistanceFromRayOrigin;
+
+    // ignore polarization by just copying data from incomingRay
+    for(unsigned i=0; i<Spectrum::LambdaCount; i++)
+      reflectedRay.Polarization[i] = incomingRay.Polarization[i];
+    reflectedRay.PolarizationVector = incomingRay.PolarizationVector;
+  }
+
+
   void DeterministicIntegrator::CalculateLight(const Ray& ray, Scene& scene,
     RayLight& result, unsigned level, RenderingContext& rc) const
   {
@@ -63,8 +87,7 @@ namespace Hrt
             intersection.Position))
           {
             RayLight reflectedLight;
-            material->CalculateReflectedRay(incident, intersection,
-              reflectedLight, false);
+            CalculateReflectedRay(material, incident, intersection, reflectedLight, false);
 
             if (isDelta)
               reflectedLight.Radiance *= phi;
@@ -106,8 +129,7 @@ namespace Hrt
 
         // apply reflected ray of light to the result
         RayLight reflectedSpecular;
-        material->CalculateReflectedRay(fromReflection, intersection,
-          reflectedSpecular, true);
+        CalculateReflectedRay(material, fromReflection, intersection, reflectedSpecular, true);
         reflectedSpecular.Radiance *= phi * phi / distance2 * (1/Consts::TwoPi);
 
         result = result + reflectedSpecular;

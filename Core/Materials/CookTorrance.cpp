@@ -38,7 +38,7 @@ namespace Hrt
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
-	Hrt::Spectrum CookTorrance::CalculateBsdf( const RayLight& incomingRay, 
+	Hrt::Spectrum CookTorrance::CalculateBrdf( const RayLight& incomingRay, 
 		const Intersection& intersection, LightingType::Enum lightingType )
 	{
 		Spectrum result;

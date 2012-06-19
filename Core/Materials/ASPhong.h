@@ -27,7 +27,7 @@ namespace Hrt
 		ASPhong();
 		ASPhong(number nu, number nv, number specularFactor, number diffuseFactor);
 
-		virtual Spectrum CalculateBsdf(const RayLight& incomingRay, 
+		virtual Spectrum CalculateBrdf(const RayLight& incomingRay, 
 			const Intersection& intersection, LightingType::Enum lightingType);
 
 		// Specular absorption spectrum.

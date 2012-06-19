@@ -47,7 +47,7 @@ namespace Hrt
     return true;
   }
 
-  Hrt::Spectrum Lambertian::CalculateBsdf(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType)
+  Hrt::Spectrum Lambertian::CalculateBrdf(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType)
   {
     Vector3D k2 = -intersection.RayDirection;
     number nk2 = intersection.Normal.Dot(k2);

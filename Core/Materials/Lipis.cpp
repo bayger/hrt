@@ -56,7 +56,7 @@ namespace Hrt
 
         // BRDF computation goes here
         LightingType::Enum lightingType = LightingType::AllReflection;
-        number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
+        number v = (material->CalculateBrdf(incomingRay, intersection, lightingType) 
           * Math::Abs(incomingRay.Direction.Z)).GetAverage();
 
         // NOTE: for now we are ignoring NaNs and put zeros instead
@@ -141,7 +141,7 @@ namespace Hrt
 
     // BRDF computation goes here
     LightingType::Enum lightingType = static_cast<LightingType::Enum>(LightingType::AllReflection | LightingType::IdealSpecular);
-    number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
+    number v = (material->CalculateBrdf(incomingRay, intersection, lightingType) 
       * Math::Abs(incomingRay.Direction.Z)).GetAverage();
 
     return v;

@@ -24,7 +24,7 @@ namespace Hrt
 	{
 	}
 
-	Hrt::Spectrum Mirror::CalculateBsdf(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType)
+	Hrt::Spectrum Mirror::CalculateBrdf(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType)
 	{
 		if ((lightingType & LightingType::SpecularOnly) == 0)
 			return Spectrum::Zero;

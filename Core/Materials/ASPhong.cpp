@@ -45,7 +45,7 @@ namespace Hrt
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
-	Spectrum ASPhong::CalculateBsdf(const RayLight& incomingRay,
+	Spectrum ASPhong::CalculateBrdf(const RayLight& incomingRay,
 		const Intersection& intersection, LightingType::Enum lightingType)
 	{
 		const Spectrum& incomingRadiance = incomingRay.Radiance;
@@ -89,7 +89,7 @@ namespace Hrt
 			if (pd > epsilon && (lightingType & LightingType::DiffuseOnly) != 0)
 			{
 				Spectrum diffuse = pd*m_diffuse;
-				result += incomingRadiance*diffuse*(1-m_trasparency.Values[0]); // TODO: change
+				result += incomingRadiance*diffuse*(1-m_transparency.Values[0]); // TODO: change
 			}
 			if (ps > epsilon && (lightingType & LightingType::SpecularOnly) != 0)
 			{
@@ -106,7 +106,7 @@ namespace Hrt
 			result = incomingRadiance;
 		}
 		else // incoming to inside	
-			result = incomingRadiance*(m_trasparency);
+			result = incomingRadiance*(m_transparency);
 
 		return result;
 	}

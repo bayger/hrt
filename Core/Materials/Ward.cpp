@@ -32,7 +32,7 @@ namespace Hrt
     m_importanceSamplingType = ImportanceSamplingType::Lipis;
 	}
 
-	Hrt::Spectrum Ward::CalculateBsdf( const RayLight& incomingRay, 
+	Hrt::Spectrum Ward::CalculateBrdf( const RayLight& incomingRay, 
 		const Intersection& intersection, LightingType::Enum lightingType )
 	{
 		Spectrum result;

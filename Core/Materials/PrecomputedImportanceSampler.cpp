@@ -197,13 +197,13 @@ namespace Hrt
           LightingType::Enum lightingType = static_cast<LightingType::Enum>(isIdealReflection 
             ? LightingType::AllReflection | LightingType::IdealSpecular 
             : LightingType::AllReflection);
-					number v = (material->CalculateBsdf(incomingRay, intersection, lightingType) 
+					number v = (material->CalculateBrdf(incomingRay, intersection, lightingType) 
 						* Math::Abs(incomingRay.Direction.Z)).GetAverage();
 					cdf += v;
 
           if (isIdealReflection)
           {
-            precalc->IdealSpecularValue = v - (material->CalculateBsdf(incomingRay, intersection, LightingType::AllReflection)
+            precalc->IdealSpecularValue = v - (material->CalculateBrdf(incomingRay, intersection, LightingType::AllReflection)
               * Math::Abs(incomingRay.Direction.Z)).GetAverage();
 
             // std::cout << precalc->IdealSpecularValue << " / " << v;
