@@ -306,7 +306,7 @@ namespace Hrt
 					return v/Spectrum::LambdaCount;
 				}
 
-        number Clamp(number minValue, number maxValue)
+        void Clamp(number minValue, number maxValue)
         {
 					for(int i=0; i<Spectrum::LambdaCount; i++)
 						if (Values[i] < minValue) Values[i] = minValue;

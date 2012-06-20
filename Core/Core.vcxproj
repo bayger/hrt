@@ -159,6 +159,7 @@
     <ClCompile Include="CieXyz.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Modifiers\Checkerboard.cpp" />
+    <ClCompile Include="Modifiers\RadianceFilter.cpp" />
     <ClCompile Include="Modifiers\OutgoingRadianceModifierSerializer.cpp" />
     <ClCompile Include="Samplers\ConstSampler.cpp" />
     <ClCompile Include="Materials\CookTorrance.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="CieXyz.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Modifiers\Checkerboard.h" />
+    <ClInclude Include="Modifiers\RadianceFilter.h" />
     <ClInclude Include="Modifiers\OutgoingRadianceModifier.h" />
     <ClInclude Include="Modifiers\OutgoingRadianceModifierSerializer.h" />
     <ClInclude Include="Modifiers\stdafx.h" />

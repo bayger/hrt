@@ -15,6 +15,7 @@ GNU General Public License for more details.
 #include "stdafx.h"
 #include "OutgoingRadianceModifierSerializer.h"
 #include "Checkerboard.h"
+#include "RadianceFilter.h"
 
 namespace Hrt
 {
@@ -26,6 +27,12 @@ namespace Hrt
     if (exactType == "checkerboard")
     {
       OutgoingRadianceModifierOwnedPtr modifier(new Checkerboard);
+      modifier->Deserialize(parser, context);
+      return modifier;
+    }
+    else if (exactType == "radiance-filter")
+    {
+      OutgoingRadianceModifierOwnedPtr modifier(new RadianceFilter);
       modifier->Deserialize(parser, context);
       return modifier;
     }
