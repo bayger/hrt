@@ -41,7 +41,7 @@ namespace Hrt
 	{
 		return m_emitter->GenerateRayLight(ray, pdf, rc);
 	}
-
+/*
 	bool AreaLight::ProcessYamlScalar(YamlParser& parser, SerializationContext& context)
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -56,7 +56,7 @@ namespace Hrt
 	{
 		return yamlType;
 	}
-
+  */
 	void AreaLight::SetEmitter(LightEmitterPtr emitter)
 	{
 		m_emitter = emitter;

@@ -14,7 +14,6 @@ GNU General Public License for more details.
 */
 #pragma once
 #include "Common.h"
-#include "Serialization/IYamlSerializable.h"
 
 namespace Hrt
 {
@@ -23,7 +22,6 @@ namespace Hrt
 
 	/// Matrix 4x4 class used in geometric transformations
 	class Matrix
-		: public IYamlSerializable
 	{
 	private:
 		number		data[4][4]; 			///< Matrix data
@@ -99,10 +97,6 @@ namespace Hrt
 		Matrix&	ApplyRotation( number h, number p, number b );
 
 		Matrix& Matrix::MakeLookAt(const Vector3D& eye, const Vector3D& lookAt, const Vector3D& up);
-
-		// IYamlSerializable Implementation
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
 		
 	};
 

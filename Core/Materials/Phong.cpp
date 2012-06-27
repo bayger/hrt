@@ -38,6 +38,7 @@ namespace Hrt
 		return result;
 	}
 
+  /*
 	bool Phong::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -59,9 +60,10 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+  */
 
 	const std::string Phong::GetSignature()
 	{
-		return str(format("%1%:sp=%2%,d=%3%,s=%4%") % yamlType % m_powerSpecular % m_diffuse.ToString() % m_specular.ToString());
+		return str(format("%1%:sp=%2%,d=%3%,s=%4%") % "phong" % m_powerSpecular % m_diffuse.ToString() % m_specular.ToString());
 	}
 }

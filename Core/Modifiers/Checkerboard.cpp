@@ -38,7 +38,7 @@ namespace Hrt
 
     return ((tx+ty+tz) & 1) == 1 ? originalSpectrum*m_whiteAbsorption : originalSpectrum*m_blackAbsorption;
   }
-
+/*
   bool Checkerboard::ProcessYamlScalar(YamlParser& parser, SerializationContext& context)
   {
     std::string scalarValue = parser.CurrentValue();
@@ -63,4 +63,5 @@ namespace Hrt
   {
     return yamlType;
   }
+  */
 }

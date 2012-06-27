@@ -15,7 +15,6 @@ GNU General Public License for more details.
 
 #include "stdafx.h"
 #include "ASPhong.h" 
-#include "../Serialization/SerializationHelper.h"
 #include "Lipis.h"
 
 namespace Hrt 
@@ -110,7 +109,7 @@ namespace Hrt
 
 		return result;
 	}
-
+/*
 	bool ASPhong::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -137,10 +136,10 @@ namespace Hrt
 	{
 		return yamlType;
 	}
-
+  */
 	const std::string ASPhong::GetSignature()
 	{
-		return str(format("%1%:s=%2%,d=%3%,nu=%4%,nv=%5%,ss=%6%,ds=%7%") % yamlType % m_specularFactor % m_diffuseFactor % m_nu % m_nv
+		return str(format("%1%:s=%2%,d=%3%,nu=%4%,nv=%5%,ss=%6%,ds=%7%") % "as" % m_specularFactor % m_diffuseFactor % m_nu % m_nv
 			% m_specular.ToString() % m_diffuse.ToString());
 	}
 }

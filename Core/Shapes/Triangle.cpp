@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include "../RayLight.h"
 #include "../Intersection.h"
 #include "../Matrix.h"
-#include "../Serialization/SerializationHelper.h"
 
 namespace Hrt
 {
@@ -79,7 +78,7 @@ namespace Hrt
 
 		return true;
 	}
-
+  /*
 	static std::string yamlType("triangle");
 	const std::string& Triangle::YamlType()
 	{
@@ -101,6 +100,11 @@ namespace Hrt
 		return true;
 	}
 
+  void Triangle::FinishDeserialization()
+  {
+    Initialize();
+  }
+  */
 	void Triangle::Initialize()
 	{
 		m_bbox = BoundingBox(
@@ -110,8 +114,4 @@ namespace Hrt
 			Math::Max(m_a.Z, m_b.Z, m_c.Z));
 	}
 
-	void Triangle::FinishDeserialization()
-	{
-		Initialize();
-	}
 }

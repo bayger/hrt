@@ -17,7 +17,7 @@ GNU General Public License for more details.
 
 namespace Hrt
 {
-
+/*
 	bool NamedObject::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -38,4 +38,5 @@ namespace Hrt
 		m_name = str(format("%1%-oid-%2%") % YamlType() % oid);
 		oid++;
 	}
+  */
 }

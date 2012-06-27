@@ -28,11 +28,6 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
-		// IYamlSerializable Implementation
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual void FinishDeserialization();
-
 	private:
 		number m_radius;
 		Matrix m_transform;

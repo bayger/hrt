@@ -82,7 +82,7 @@ namespace Hrt
 		m_recipDivNumber = (number)(1.0/m_divNumber);
 		Shuffle();
 	}
-
+/*
 	static std::string yamlType("stratified-sampler");
 	const std::string& StratifiedSampler::YamlType()
 	{
@@ -104,4 +104,5 @@ namespace Hrt
 	{
 		Initialize();
 	}
+  */
 }

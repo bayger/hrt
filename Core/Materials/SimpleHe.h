@@ -52,11 +52,7 @@ namespace Hrt
         { this->a = a; }
 
 				virtual const std::string GetSignature();
-        
-        // IYamlSerializable Implementation
-        virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-        virtual const std::string& YamlType();
-        
+                
     private:
         static const unsigned int DistributionIterations = 350;
         static const unsigned int DPartResolution = 500;

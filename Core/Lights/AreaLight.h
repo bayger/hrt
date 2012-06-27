@@ -54,12 +54,6 @@ namespace Hrt
 		void SetEmitter(LightEmitterPtr emitter);
 		LightEmitterPtr GetEmitter() { return m_emitter; }
 
-		// IYamlSerializable overrides
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-
-		virtual const std::string& YamlType();
-
 	private:
 		LightEmitterOwnedPtr m_emitter;
 		Vector3D m_targetPosition;

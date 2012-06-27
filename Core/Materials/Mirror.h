@@ -39,15 +39,8 @@ namespace Hrt
 		virtual const std::string GetSignature();
 
 		// Properties
-
 		Hrt::Spectrum GetDiffuse() const { return m_absorption; }
 		void SetDiffuse(const Hrt::Spectrum& val) { m_absorption = val; }
-
-		// IYamlSerializable overrides
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-
-		virtual const std::string& YamlType();
 
     virtual void Initialize() { }
 

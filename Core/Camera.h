@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #include "Matrix.h"
 #include "Canvas.h"
 #include "Sampler.h"
-#include "Serialization/IYamlSerializable.h"
 
 namespace Hrt
 {
@@ -26,7 +25,6 @@ namespace Hrt
 
 	/// Class that implements camera model for HRT.
 	class Camera
-		: public IYamlSerializable
 	{
 	public:
 		Camera(void);
@@ -56,11 +54,6 @@ namespace Hrt
 
 		/// Sets field of view of the camera.
 		void SetFov(number val);
-
-		// IYamlSerialization Implementation:
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
 
 	private:
 		Matrix m_matrix;

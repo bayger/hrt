@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "RayLight.h"
 #include "Filter.h"
 #include "CieXyz.h"
-#include "Filters/FilterSerializer.h"
 
 namespace Hrt
 {
@@ -198,7 +197,7 @@ namespace Hrt
 		m_image[i] = val;
 		m_weights[i] = 1;
 	}
-
+/*
 	bool Canvas::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -235,7 +234,7 @@ namespace Hrt
 		m_stencil.reset(new unsigned char[m_width*m_height]);
 		Prepare();
 	}
-
+*/
 	void Canvas::CollectRays(const std::vector<CanvasRay>& rays)
 	{
 		lock_guard<mutex> syncLock(m_collectMutex);

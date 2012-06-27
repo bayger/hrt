@@ -36,10 +36,6 @@ namespace Hrt
 
 		virtual SamplerOwnedPtr Clone() { return SamplerOwnedPtr(new StratifiedSampler(m_dimension, m_divNumber)); }
 
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context );
-		virtual void FinishDeserialization();
-
 	private:
 		int m_divNumber;
 		int* m_positions;

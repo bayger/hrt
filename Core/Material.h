@@ -99,9 +99,6 @@ namespace Hrt
     /// Refraction index property - imaginary part
     AUTO_PROPERTY(Spectrum, m_refractionIm, RefractionImaginary);
 
-    /// YAML serializer method
-    virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-
 		/// Returns a signature of material (describes material and its properties)
 		virtual const std::string GetSignature()=0;
 

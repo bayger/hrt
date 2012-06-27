@@ -13,7 +13,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #pragma once
-#include "..\Serialization\IYamlSerializable.h"
 #include "..\Spectrum.h"
 #include "..\RayLight.h"
 #include "..\Intersection.h"
@@ -22,7 +21,6 @@ namespace Hrt
 {
   /// Base class for outgoing radiance modifiers
   class OutgoingRadianceModifier
-    : public IYamlSerializable
   {
   public:
     virtual Spectrum Modify(const Spectrum& originalSpectrum, 

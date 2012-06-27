@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #include "Spectrum.h"
 #include "Filter.h"
 #include "Image.h"
-#include "Serialization/IYamlSerializable.h"
 #include <vector>
 
 namespace Hrt
@@ -41,7 +40,6 @@ namespace Hrt
 
 	/// This class holds HDR image data.
 	class Canvas
-		: public IYamlSerializable
 	{
 	public:
 		/// Creates not-initialized canvas
@@ -104,13 +102,6 @@ namespace Hrt
 		/// need of re-raytracing the scene. However this is only usable in systems with
 		/// a lot of memory (probably only 64-bit systems with far more than 4GB of RAM).
 		void SetStoringRays(bool isStoringRays) { m_isStoringRays = isStoringRays; }
-
-
-		// IYamlSerializable Implementation
-
-		virtual bool ProcessYamlScalar( YamlParser& parser, SerializationContext& context );
-		virtual const std::string& YamlType();
-		virtual void FinishDeserialization();
 		
 	private:
 		unsigned int m_width;

@@ -27,9 +27,6 @@
 #include "Material.h"
 #include "LightIntegrator.h"
 #include "CieXyz.h"
-#include "Materials/MaterialSerializer.h"
-#include "Shapes/ShapeSerializer.h"
-#include "Lights/LightSerializer.h"
 #include "Lights/AreaLight.h"
 #include "Common.h"
 #include "Geometries/PlainGeometry.h"
@@ -181,7 +178,7 @@ namespace Hrt
 
 
 	// IYamlSerializable
-
+  /*
 	bool Scene::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -257,7 +254,7 @@ namespace Hrt
 	{
 		Prepare();
 	}
-
+  */
 	void Scene::PrepareForConcurrency(size_t numberOfThreads)
 	{
 		ISupportsConcurrency::PrepareForConcurrency(numberOfThreads);

@@ -14,14 +14,12 @@ GNU General Public License for more details.
 */
 #pragma once
 #include "Common.h"
-#include "Serialization/IYamlSerializable.h"
 #include "Random.h"
 
 namespace Hrt
 {
 	/// Base class for all samplers used in Hrt.
 	class Sampler
-		: public IYamlSerializable
 	{
 	public:
 		/// Creates not-initialized sampler.
@@ -50,9 +48,6 @@ namespace Hrt
 
 		/// Gets the number of samples per shuffle.
 		virtual int GetCount()=0;
-
-		/// IYamlSerializable Implementation
-		virtual bool ProcessYamlScalar( YamlParser& parser, SerializationContext& context );
 
 		/// Makes a clean clone of self.
 		virtual shared_ptr<Sampler> Clone()=0;

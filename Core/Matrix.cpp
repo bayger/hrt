@@ -344,6 +344,7 @@ namespace Hrt
 		return m;
 	}
 
+  /*
 	bool Matrix::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -431,7 +432,7 @@ namespace Hrt
 	{
 		return yamlType;
 	}
-
+  */
 	Vector3D operator*(const Vector3D& v, const Matrix& m )
 	{
 		return Vector3D(

@@ -20,8 +20,6 @@
 #include "../RayLight.h"
 #include "../Intersection.h"
 #include "../Matrix.h"
-#include "../Serialization/SerializationHelper.h"
-#include "../Samplers/SamplerSerializer.h"
 #include "Tangent.h"
 
 namespace Hrt
@@ -171,7 +169,7 @@ namespace Hrt
 		LightEmitter::SetPower(power);
 		m_sampleRadiance = m_emitterPower / ( GetEmitterArea() * Consts::TwoPi );
 	}
-
+/*
 	static std::string yamlType("sphere");
 	const std::string& Sphere::YamlType()
 	{
@@ -203,7 +201,7 @@ namespace Hrt
 	{
 		Initialize();
 	}
-
+  */
 	void Sphere::Initialize()
 	{
 		m_bbox = BoundingBox(m_center.X-m_radius, m_center.Y-m_radius, m_center.Z-m_radius,

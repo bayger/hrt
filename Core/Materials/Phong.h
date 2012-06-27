@@ -15,8 +15,6 @@ GNU General Public License for more details.
 #pragma once
 #include "../Common.h"
 #include "../Material.h"
-#include "../Serialization/IYamlSerializable.h"
-#include "../Serialization/SerializationHelper.h"
 #include "PrecomputedImportanceSampler.h"
 
 namespace Hrt
@@ -42,10 +40,6 @@ namespace Hrt
 		void SetPowerSpecular(unsigned int val) { m_powerSpecular = val; }
 
 		virtual const std::string GetSignature();
-
-		// IYamlSerializable Implementation
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
 
 	private:
 		unsigned int m_powerSpecular;

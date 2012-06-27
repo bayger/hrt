@@ -27,6 +27,7 @@ namespace Hrt
 	{
 	}
 
+  /*
 	bool Primitive::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -40,6 +41,13 @@ namespace Hrt
 		return true;
 	}
 
+  static std::string yamlType("primitive");
+  const std::string& Primitive::YamlType()
+  {
+  return yamlType;
+  }
+
+  */
 	void Primitive::Initialize( ShapePtr shape, MaterialPtr material )
 	{
 		m_shape = shape;
@@ -48,9 +56,4 @@ namespace Hrt
 		m_materialName = material->GetName();
 	}
 
-	static std::string yamlType("primitive");
-	const std::string& Primitive::YamlType()
-	{
-		return yamlType;
-	}
 }

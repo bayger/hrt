@@ -48,7 +48,7 @@ namespace Hrt
 	{
 		m_isReset = true;
 	}
-
+/*
 	static std::string yamlType("const-sampler");
 	const std::string& ConstSampler::YamlType()
 	{
@@ -70,4 +70,5 @@ namespace Hrt
 
 		return true;
 	}
+  */
 }

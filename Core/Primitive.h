@@ -36,10 +36,6 @@ namespace Hrt
 		MaterialPtr GetMaterial() const { return m_material; }
 		const std::string& GetMaterialName() const { return m_materialName; }
 
-		// IYamlSerializable Implementation
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
-
 	private:
 		ShapeOwnedPtr m_shape;
 		MaterialOwnedPtr m_material;

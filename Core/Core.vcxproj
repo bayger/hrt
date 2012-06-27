@@ -160,7 +160,6 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Modifiers\Checkerboard.cpp" />
     <ClCompile Include="Modifiers\RadianceFilter.cpp" />
-    <ClCompile Include="Modifiers\OutgoingRadianceModifierSerializer.cpp" />
     <ClCompile Include="Samplers\ConstSampler.cpp" />
     <ClCompile Include="Materials\CookTorrance.cpp" />
     <ClCompile Include="Serialization\LipisSerializer.cpp" />
@@ -168,14 +167,11 @@
     <ClCompile Include="Integrators\DeterministicIntegrator.cpp" />
     <ClCompile Include="Shapes\Disc.cpp" />
     <ClCompile Include="Filter.cpp" />
-    <ClCompile Include="Filters\FilterSerializer.cpp" />
     <ClCompile Include="Filters\GaussianFilter.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Samplers\LhcSampler.cpp" />
-    <ClCompile Include="Lights\LightSerializer.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Materials\MaterialSerializer.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Materials\Mirror.cpp" />
@@ -192,12 +188,9 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderingContext.cpp" />
     <ClCompile Include="Sampler.cpp" />
-    <ClCompile Include="Samplers\SamplerSerializer.cpp" />
     <ClCompile Include="SamplingHelper.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Serialization\SerializationHelper.cpp" />
     <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="Shapes\ShapeSerializer.cpp" />
     <ClCompile Include="Materials\SimpleHe.cpp" />
     <ClCompile Include="Filters\SincFilter.cpp" />
     <ClCompile Include="Spectrum.cpp" />
@@ -213,7 +206,6 @@
     <ClCompile Include="Filters\TriangleFilter.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Materials\Ward.cpp" />
-    <ClCompile Include="Serialization\YamlParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lights\AreaLight.h" />
@@ -231,7 +223,6 @@
     <ClInclude Include="Modifiers\Checkerboard.h" />
     <ClInclude Include="Modifiers\RadianceFilter.h" />
     <ClInclude Include="Modifiers\OutgoingRadianceModifier.h" />
-    <ClInclude Include="Modifiers\OutgoingRadianceModifierSerializer.h" />
     <ClInclude Include="Modifiers\stdafx.h" />
     <ClInclude Include="Samplers\ConstSampler.h" />
     <ClInclude Include="Materials\CookTorrance.h" />
@@ -241,7 +232,6 @@
     <ClInclude Include="Shapes\Disc.h" />
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="Filter.h" />
-    <ClInclude Include="Filters\FilterSerializer.h" />
     <ClInclude Include="Materials\FresnelHelper.h" />
     <ClInclude Include="Filters\GaussianFilter.h" />
     <ClInclude Include="Geometry.h" />
@@ -251,14 +241,11 @@
     <ClInclude Include="Intersection.h" />
     <ClInclude Include="IProgressAware.h" />
     <ClInclude Include="ISupportsConcurrency.h" />
-    <ClInclude Include="Serialization\IYamlSerializable.h" />
     <ClInclude Include="Samplers\LhcSampler.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightEmitter.h" />
     <ClInclude Include="LightIntegrator.h" />
-    <ClInclude Include="Lights\LightSerializer.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="Materials\MaterialSerializer.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="External\MersenneTwister.h" />
@@ -281,13 +268,9 @@
     <ClInclude Include="RenderingContext.h" />
     <ClInclude Include="Rgba.h" />
     <ClInclude Include="Sampler.h" />
-    <ClInclude Include="Samplers\SamplerSerializer.h" />
     <ClInclude Include="SamplingHelper.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="Serialization\SerializationContext.h" />
-    <ClInclude Include="Serialization\SerializationHelper.h" />
     <ClInclude Include="Shape.h" />
-    <ClInclude Include="Shapes\ShapeSerializer.h" />
     <ClInclude Include="Materials\SimpleHe.h" />
     <ClInclude Include="Filters\SincFilter.h" />
     <ClInclude Include="Spectrum.h" />
@@ -305,11 +288,8 @@
     <ClInclude Include="Shapes\Tangent.h" />
     <ClInclude Include="Shapes\Triangle.h" />
     <ClInclude Include="Filters\TriangleFilter.h" />
-    <ClInclude Include="Serialization\TypeSerializer.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Materials\Ward.h" />
-    <ClInclude Include="Serialization\YamlParser.h" />
-    <ClInclude Include="Serialization\YamlSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

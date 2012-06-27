@@ -33,6 +33,7 @@ namespace Hrt
 	{
 	}
 
+  /*
 	bool Sampler::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -43,4 +44,5 @@ namespace Hrt
 
 		return true;
 	}
+  */
 }

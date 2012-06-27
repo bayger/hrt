@@ -67,12 +67,6 @@ namespace Hrt
 
 		void SetPosition(Hrt::Vector3D val) { m_position = val; }
 
-		// IYamlSerializable overrides
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-
-		virtual const std::string& YamlType();
-
 	private:
 		Spectrum m_power;
 		Spectrum m_intensity;

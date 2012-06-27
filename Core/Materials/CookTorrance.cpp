@@ -15,7 +15,6 @@ GNU General Public License for more details.
 #include "stdafx.h"
 #include "CookTorrance.h"
 #include "FresnelHelper.h"
-#include "../Serialization/SerializationHelper.h"
 
 namespace Hrt
 {
@@ -141,7 +140,7 @@ namespace Hrt
 		throw NotSupportedException(
 			"Cook-Torrance: Selected slope-distribution is not supported.");
 	}
-
+/*
 	bool CookTorrance::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -201,9 +200,9 @@ namespace Hrt
 	{
 		return yamlType;
 	}
-
+  */
 	const std::string CookTorrance::GetSignature()
 	{
-		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % yamlType % m_specular % m_diffuse % rmss[0] % m_gaussianC);
+		return str(format("%1%:s=%2%,d=%3%,rms=%4%,gc=%5%") % "ct" % m_specular % m_diffuse % rmss[0] % m_gaussianC);
 	}
 }

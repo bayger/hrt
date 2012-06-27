@@ -14,7 +14,6 @@ GNU General Public License for more details.
 */
 #include "stdafx.h"
 #include "Ward.h"
-#include "../Serialization/SerializationHelper.h"
 
 namespace Hrt
 {
@@ -65,6 +64,7 @@ namespace Hrt
 		return incomingRay.Radiance * (s*expo + m_diffuse/Consts::Pi);
 	}
 
+  /*
 	bool Ward::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -99,9 +99,10 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+  */
 
 	const std::string Ward::GetSignature()
 	{
-		return str(format("%1%:s=%2%,d=%3%,ax=%4%,ay=%5%") % yamlType % m_specular % m_diffuse % m_alphaX % m_alphaY);
+		return str(format("%1%:s=%2%,d=%3%,ax=%4%,ay=%5%") % "ward" % m_specular % m_diffuse % m_alphaX % m_alphaY);
 	}
 }

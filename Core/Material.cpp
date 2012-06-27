@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "Materials\Lipis.h"
 #include "Materials\PrecomputedImportanceSampler.h"
 #include "Modifiers\OutgoingRadianceModifier.h"
-#include "Modifiers\OutgoingRadianceModifierSerializer.h"
 
 namespace Hrt
 {
@@ -57,7 +56,7 @@ namespace Hrt
       return m_importanceSampler->GetPdf(incomingDirection, outgoingDirection, tangentU, tangentV, n, lightingType);
     }
   }
-
+/*
   bool Material::ProcessYamlScalar(YamlParser& parser, SerializationContext& context)
   {
     std::string scalarValue = parser.CurrentValue();
@@ -86,7 +85,7 @@ namespace Hrt
 
     return true;
   }
-
+  */
   void Material::Initialize()
   {
     switch (m_importanceSamplingType)

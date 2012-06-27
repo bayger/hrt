@@ -30,11 +30,6 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
-		// IYamlSerializable Implementation
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-
-
 		// TODO: hide the following fields!
 
 		/// Normal to the plane (A,B,C coefficients)

@@ -13,7 +13,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #pragma once
-#include "Serialization/IYamlSerializable.h"
 #include "NamedObject.h"
 #include "ISupportsConcurrency.h"
 
@@ -34,8 +33,6 @@ namespace Hrt
 		virtual bool Intersect(const Ray& ray, Intersection* intersection)=0;
 
 		virtual bool IsLuminaire() { return false; }
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
 	};
 
 	/// Reference to const shared-pointer of Shape (used as params and returns)

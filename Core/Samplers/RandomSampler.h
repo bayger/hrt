@@ -34,9 +34,6 @@ namespace Hrt
 		virtual int GetCount() { return m_noSamples; }
 
 		virtual SamplerOwnedPtr Clone() { return SamplerOwnedPtr(new RandomSampler(m_dimension, m_noSamples)); }
-
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context );
 		
 	private:
 		int m_noSamples;

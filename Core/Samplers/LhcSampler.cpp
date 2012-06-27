@@ -80,7 +80,7 @@ namespace Hrt
 
 		m_currentSample = 0;
 	}
-
+/*
 	static std::string yamlType("lhc-sampler");
 	const std::string& LhcSampler::YamlType()
 	{
@@ -102,4 +102,5 @@ namespace Hrt
 	{
 		m_places = new int[m_noSamples*m_dimension];
 	}
+  */
 }

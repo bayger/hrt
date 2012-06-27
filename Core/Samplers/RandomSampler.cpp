@@ -49,6 +49,7 @@ namespace Hrt
 		return true;
 	}
 
+  /*
 	static std::string yamlType("random-sampler");
 	const std::string& RandomSampler::YamlType()
 	{
@@ -65,5 +66,5 @@ namespace Hrt
 
 		return true;
 	}
-
+  */
 }

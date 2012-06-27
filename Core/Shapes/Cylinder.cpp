@@ -91,7 +91,7 @@ namespace Hrt
 		else
 			return false;
 	}
-
+  /*
 	static std::string yamlType("cylinder");
 	const std::string& Cylinder::YamlType()
 	{
@@ -113,14 +113,15 @@ namespace Hrt
 		return true;
 	}
 
+  void Cylinder::FinishDeserialization()
+  {
+    Initialize();
+  }
+  */
+
 	void Cylinder::Initialize()
 	{
 		m_inverseTransform = m_transform;
 		m_inverseTransform.InverseFast();
-	}
-
-	void Cylinder::FinishDeserialization()
-	{
-		Initialize();
 	}
 }

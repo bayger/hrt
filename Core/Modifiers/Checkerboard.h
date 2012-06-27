@@ -49,11 +49,6 @@ namespace Hrt
       m_blackAbsorption.Clamp(0, 1);
     }
 
-    virtual bool ProcessYamlScalar(YamlParser& parser, 
-      SerializationContext& context);
-
-    virtual const std::string& YamlType();
-
   private:
     number m_scaleX;
     number m_scaleY;

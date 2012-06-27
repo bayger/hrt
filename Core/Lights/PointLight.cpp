@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "PointLight.h"
 #include "../RayLight.h"
-#include "../Serialization/SerializationHelper.h"
 
 namespace Hrt
 {
@@ -47,6 +46,7 @@ namespace Hrt
 		return true;
 	}
 
+  /*
 	bool PointLight::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -65,6 +65,7 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+  */
 
   shared_ptr<Light> PointLight::Clone()
   {

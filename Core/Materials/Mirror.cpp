@@ -14,7 +14,6 @@ GNU General Public License for more details.
 */
 #include "stdafx.h"
 #include "Mirror.h"
-#include "..\Serialization\SerializationHelper.h"
 
 namespace Hrt
 {
@@ -50,13 +49,13 @@ namespace Hrt
 		return !incomingDirection.AlmostEqualTo(outgoingDirection.Reflect(n)) && lightingType == LightingType::IdealSpecular ? 0 : 1;
 	}
 
-	static std::string yamlType("mirror");
-
 	const std::string Mirror::GetSignature()
 	{
-		return str(format("%1%:%2%") % yamlType % m_absorption.ToString());
+		return str(format("%1%:%2%") % "mirror" % m_absorption.ToString());
 	}
 	
+  /*
+  static std::string yamlType("mirror");
 	const std::string& Mirror::YamlType()
 	{
 		return yamlType;
@@ -72,4 +71,5 @@ namespace Hrt
 
 		return true;
 	}
+  */
 }

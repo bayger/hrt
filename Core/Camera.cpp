@@ -67,7 +67,7 @@ namespace Hrt
 		ray.Direction = (Vector3D(canvasX-m_hw, canvasY-m_hh, m_d).Normalize() 
 			* m_matrix - ray.Position);
 	}
-
+/*
 	bool Camera::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -90,4 +90,5 @@ namespace Hrt
 	{
 		return yamlType;
 	}
+  */
 }

@@ -18,6 +18,8 @@ GNU General Public License for more details.
 #include "Utils.h"
 #include "../Core/Renderer.h"
 #include "../Tools/HdrCodec.h"
+#include "../YamlSerialization/YamlParser.h"
+#include "../YamlSerialization/SerializationContext.h"
 
 using namespace Hrt;
 
@@ -177,12 +179,13 @@ bool Program::LoadScene()
 {
 	m_scene.reset(new Scene);
 
-	YamlParser parser(ReadSceneFile());
+	Hrt::Serialization::YamlParser parser(ReadSceneFile());
 
 	try
 	{
-		SerializationContext context;
-		m_scene->Deserialize(parser, context);
+		Hrt::Serialization::SerializationContext context;
+    throw NotImplementedException("Work in progress");
+		//m_scene->Deserialize(parser, context);
 	}
 	catch (SerializationException& e)
 	{

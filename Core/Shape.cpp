@@ -26,9 +26,11 @@ namespace Hrt
 	{
 	}
 
+  /*
 	bool Shape::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
 		return NamedObject::ProcessYamlScalar(parser, context);
 	}
+  */
 }

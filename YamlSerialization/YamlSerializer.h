@@ -13,6 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #pragma once
+#include "YamlParser.h"
+#include "SerializationContext.h"
 
 namespace Hrt { namespace Serialization {
 

@@ -36,9 +36,6 @@ namespace Hrt
 
 		virtual SamplerOwnedPtr Clone() { return SamplerOwnedPtr(new ConstSampler(m_dimension)); }
 
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context );
-
 	private:
 		bool m_isReset;
 	};

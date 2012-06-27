@@ -15,7 +15,6 @@
 #include "stdafx.h"
 #include "SimpleHe.h"
 #include "FresnelHelper.h"
-#include "../Serialization/SerializationHelper.h"
 #include "PrecomputedImportanceSampler.h"
 #include "Lipis.h"
 
@@ -247,9 +246,7 @@ namespace Hrt
     return x*x*Htsg_sum(g, T);
   }
 
-
-
-
+  /*
   bool SimpleHe::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
   {
     std::string scalarValue = parser.CurrentValue();
@@ -274,9 +271,10 @@ namespace Hrt
   {
     return yamlType;
   }
+  */
 
   const std::string SimpleHe::GetSignature()
   {
-    return str(format("%1%:s=%2%,t=%3%,rr=%4%,ri=%5%,a=%6%") % yamlType % sigma % gamma % m_refractionRe.ToString() % m_refractionIm.ToString() % a.ToString());
+    return str(format("%1%:s=%2%,t=%3%,rr=%4%,ri=%5%,a=%6%") % "htsg" % sigma % gamma % m_refractionRe.ToString() % m_refractionIm.ToString() % a.ToString());
   }
 }

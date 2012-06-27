@@ -29,6 +29,7 @@ namespace Hrt
     return originalSpectrum * m_filteringFactor;
   }
 
+  /*
   bool RadianceFilter::ProcessYamlScalar(YamlParser& parser, SerializationContext& context)
   {
     std::string scalarValue = parser.CurrentValue();
@@ -45,5 +46,6 @@ namespace Hrt
   {
     return yamlType;
   }
+  */
 
 }

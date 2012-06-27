@@ -67,12 +67,6 @@ namespace Hrt
 
 		virtual number CalculatePdf(const Vector3D& position, RenderingContext& rc);
 
-
-		// IYamlSerializable Implementation
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual void FinishDeserialization();
-
 		// ISupportsConcurrency
 
 		virtual void PrepareForConcurrency(size_t numberOfThreads);

@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "Plane.h"
 #include "../Intersection.h"
 #include "../Ray.h"
-#include "../Serialization/SerializationHelper.h"
 #include "Tangent.h"
 
 namespace Hrt
@@ -63,6 +62,7 @@ namespace Hrt
 		return false;
 	}
 
+  /*
 	static std::string yamlType("plane");
 	const std::string& Plane::YamlType()
 	{
@@ -81,5 +81,6 @@ namespace Hrt
 
 		return true;
 	}
+  */
 
 }

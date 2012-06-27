@@ -15,7 +15,6 @@ GNU General Public License for more details.
 #pragma once
 #include "../Common.h"
 #include "../Filter.h"
-#include "../Serialization/IYamlSerializable.h"
 
 namespace Hrt
 {
@@ -27,9 +26,6 @@ namespace Hrt
 		BoxFilter(number boxSize = num(0.5));
 
 		virtual number Calculate(number x, number y);
-
-		// IYamlSerializable Implementation
-		virtual const std::string& YamlType();
 	};
 
 }

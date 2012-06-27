@@ -36,11 +36,6 @@ namespace Hrt
       m_filteringFactor.Clamp(0, 1);
     }
 
-    virtual bool ProcessYamlScalar(YamlParser& parser, 
-      SerializationContext& context);
-
-    virtual const std::string& YamlType();
-
   private:
     Spectrum m_filteringFactor;
   };

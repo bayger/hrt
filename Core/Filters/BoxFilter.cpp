@@ -35,9 +35,11 @@ namespace Hrt
 		return (number)(Math::Abs(x) < m_width && Math::Abs(y) < m_height ? 1 : 0);
 	}
 
+  /*
 	std::string yamlType("box-filter");
 	const std::string& BoxFilter::YamlType()
 	{
 		return yamlType;
 	}
+  */
 }

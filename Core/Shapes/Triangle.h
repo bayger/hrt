@@ -33,13 +33,6 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
-
-		// IYamlSerializable Implementation
-
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual void FinishDeserialization();
-
 	private:
 		BoundingBox m_bbox;
 		Vector3D m_a;

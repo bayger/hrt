@@ -89,11 +89,6 @@ namespace Hrt
 
 		virtual const std::string GetSignature();
 
-		// --- IYamlSerializable Implementation ---
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
-
 	private:
 		number m_diffuse;
 		number m_specular;

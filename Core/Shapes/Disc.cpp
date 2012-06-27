@@ -63,7 +63,7 @@ namespace Hrt
 
 		return false;
 	}
-
+  /*
 	static std::string yamlType("disc");
 	const std::string& Disc::YamlType()
 	{
@@ -83,14 +83,15 @@ namespace Hrt
 		return true;
 	}
 
+  void Disc::FinishDeserialization()
+  {
+    Initialize();
+  }
+  */
+
 	void Disc::Initialize()
 	{
 		m_inverseTransform = m_transform;
 		m_inverseTransform.InverseFast();
-	}
-
-	void Disc::FinishDeserialization()
-	{
-		Initialize();
 	}
 }

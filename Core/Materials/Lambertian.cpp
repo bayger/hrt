@@ -25,16 +25,16 @@ namespace Hrt
   {
   }
 
-  static std::string yamlType("lambertian");
-  const std::string& Lambertian::YamlType()
-  {
-    return yamlType;
-  }
-
   const std::string Lambertian::GetSignature()
   {
     return str(format("r=%1%") % m_reflectance.ToString());
   }
+/*
+static std::string yamlType("lambertian");
+const std::string& Lambertian::YamlType()
+{
+return yamlType;
+}
 
   bool Lambertian::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
   {
@@ -46,7 +46,7 @@ namespace Hrt
 
     return true;
   }
-
+  */
   Hrt::Spectrum Lambertian::CalculateBrdf(const RayLight& incomingRay, const Intersection& intersection, LightingType::Enum lightingType)
   {
     return m_reflectance / Consts::Pi * incomingRay.Radiance;

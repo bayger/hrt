@@ -14,7 +14,6 @@ GNU General Public License for more details.
 */
 #pragma once
 #include "Common.h"
-#include "Serialization/IYamlSerializable.h"
 #include "IProgressAware.h"
 #include <boost/timer.hpp>
 
@@ -34,7 +33,6 @@ namespace Hrt
   typedef stdext::hash_map<std::string, MaterialOwnedPtr> NamedMaterialMap;
 
 	class Scene : public enable_shared_from_this<Scene>,
-		public IYamlSerializable,
 		public ISupportsConcurrency
 	{
 	public:
@@ -68,14 +66,6 @@ namespace Hrt
     NamedMaterialMap& GetAllMaterials();
 
 		void Prepare();
-
-
-		// IYamlSerialization Implementation:
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
-		virtual void FinishDeserialization();
-
 
 		// ISupportsConcurrency
 

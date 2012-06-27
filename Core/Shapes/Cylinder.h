@@ -40,13 +40,6 @@ namespace Hrt
 
 		void SetTransform(Hrt::Matrix val);
 
-
-		// IYamlSerializable Implementation
-
-		virtual const std::string& YamlType();
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual void FinishDeserialization();
-
 	private:
 		number m_height;
 		number m_radius;

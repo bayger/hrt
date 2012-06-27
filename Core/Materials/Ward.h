@@ -57,11 +57,6 @@ namespace Hrt
 		AUTO_PROPERTY(number, m_alphaX, AlphaX);
 		AUTO_PROPERTY(number, m_alphaY, AlphaY);
 
-		// --- IYamlSerializable Implementation ---
-
-		virtual bool ProcessYamlScalar(YamlParser& parser, SerializationContext& context);
-		virtual const std::string& YamlType();
-
 	private:
 		number m_diffuse;
 		number m_specular;

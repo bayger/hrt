@@ -27,7 +27,7 @@ namespace Hrt
 	Filter::~Filter()
 	{
 	}
-
+/*
 	bool Filter::ProcessYamlScalar( YamlParser& parser, SerializationContext& context )
 	{
 		std::string scalarValue = parser.CurrentValue();
@@ -40,4 +40,5 @@ namespace Hrt
 
 		return true;
 	}
+  */
 }

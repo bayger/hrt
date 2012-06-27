@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "..\Core\Common.h"
 #include "BrdfGen.h"
-#include "..\Core\Serialization\YamlParser.h"
-#include "..\Core\Serialization\SerializationContext.h"
+#include "..\YamlSerialization\YamlParser.h"
+#include "..\YamlSerialization\SerializationContext.h"
 #include "..\Core\Math.h"
 #include "..\Core\Vector3D.h"
 
@@ -105,13 +105,14 @@ void BrdfGen::LoadScene()
   memset(buffer.get(), 0, sizeof(char)*(1+size));
   sceneFile.read(buffer.get(), size);
 
-  YamlParser parser(std::string(buffer.get()));
+  Hrt::Serialization::YamlParser parser(std::string(buffer.get()));
   m_scene.reset(new Scene);
 
   try
   {
-    SerializationContext context;
-    m_scene->Deserialize(parser, context);
+    Hrt::Serialization::SerializationContext context;
+    throw NotImplementedException("Work in progress");
+    //m_scene->Deserialize(parser, context);
   }
   catch (SerializationException& e)
   {
