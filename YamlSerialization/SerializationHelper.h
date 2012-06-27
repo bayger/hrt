@@ -7,8 +7,8 @@ namespace Hrt { namespace Serialization
 	class SerializationHelper
 	{
 	public:
-		static Vector3D ReadVector3D(YamlParser& parser);
-		static Spectrum ReadSpectrum(YamlParser& parser);
+		static Vector3D ReadVector3D(IParser& parser);
+		static Spectrum ReadSpectrum(IParser& parser);
 
 	private:
 		SerializationHelper();

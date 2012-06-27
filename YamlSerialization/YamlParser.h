@@ -13,12 +13,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #pragma once
+#include "IParser.h"
 
 namespace Hrt { namespace Serialization {
 
 	class IYamlSerializable;
 
 	class YamlParser
+    : public IParser
 	{
 	public:
 		YamlParser(const std::string& inputString);
@@ -36,11 +38,12 @@ namespace Hrt { namespace Serialization {
 		void ReadMappingStart();
 		void ReadMappingEnd();
 		void ReadScalar();
-		void ReadScalar(std::string& outValue);
-		void ReadScalar(number& outValue);
-		void ReadScalar(unsigned int& outValue);
-		void ReadScalar(int& outValue);
-		void ReadScalar(bool& outValue);
+
+		virtual void ReadScalar(std::string& outValue);
+		virtual void ReadScalar(number& outValue);
+		virtual void ReadScalar(unsigned int& outValue);
+		virtual void ReadScalar(int& outValue);
+		virtual void ReadScalar(bool& outValue);
 
 	private:
 		yaml_parser_t parser;

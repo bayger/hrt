@@ -13,15 +13,38 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 */
 #include "stdafx.h"
-#include "Register.h"
+#include "Metadata.h"
+#include "SerializationHelper.h"
 
 namespace Hrt { namespace Serialization 
 {
 
+  static void RegisterShapes()
+  {
+    // Shape
+    RegisterType<Shape>("Shape");
+
+    // Plane
+    RegisterSubtype<Plane, Shape>("Plane");
+    RegisterProperty<Plane>("Normal", 
+      [](Plane& plane, IParser& parser) { plane.Normal = SerializationHelper::ReadVector3D(parser); } );
+    RegisterProperty<Plane>("Distance",
+      [](Plane& plane, IParser& parser) { plane.D = parser.ReadNumber(); });
+
+    // Cylinder
+    RegisterSubtype<Cylinder, Shape>("Cylinder");
+    RegisterProperty<Cylinder>("Radius",
+      [](Cylinder& cylinder, IParser& parser) { cylinder.SetRadius(parser.ReadNumber()); });
+    RegisterProperty<Cylinder>("Height",
+      [](Cylinder& cylinder, IParser& parser) { cylinder.SetHeight(parser.ReadNumber()); });
+    RegisterProperty<Cylinder>("Transform",
+      [](Cylinder& cylinder, IParser& parser) { cylinder.SetTransform(DeserializeObject<Matrix>(parser)); });
+  }
+
   void Initialize()
   {
     // register all YAML-serializable types here with their tags->serializers
-    //Singleton<Register<Shape>>.Instance()
+    RegisterShapes();
   }
 
 }}

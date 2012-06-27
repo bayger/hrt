@@ -3,7 +3,7 @@
 
 namespace Hrt { namespace Serialization
 {
-	Hrt::Vector3D SerializationHelper::ReadVector3D( YamlParser& parser )
+	Hrt::Vector3D SerializationHelper::ReadVector3D( IParser& parser )
 	{
 		number x,y,z;
 		std::string vectorString;
@@ -27,7 +27,7 @@ namespace Hrt { namespace Serialization
 		return Vector3D(x, y, z);
 	}
 
-	Hrt::Spectrum SerializationHelper::ReadSpectrum( YamlParser& parser )
+	Hrt::Spectrum SerializationHelper::ReadSpectrum( IParser& parser )
 	{
 		Spectrum result;
 		std::string vectorString;

@@ -76,10 +76,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Initialize.h" />
-    <ClInclude Include="Register.h" />
+    <ClInclude Include="IParser.h" />
+    <ClInclude Include="Metadata.h" />
     <ClInclude Include="SerializationContext.h" />
     <ClInclude Include="SerializationHelper.h" />
-    <ClInclude Include="Shapes\Plane.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="YamlParser.h" />
     <ClInclude Include="YamlSerializer.h" />
@@ -87,6 +87,7 @@
   <ItemGroup>
     <ClCompile Include="Initialize.cpp" />
     <ClCompile Include="SerializationHelper.cpp" />
+    <ClCompile Include="Shapes.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
