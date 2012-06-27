@@ -17,8 +17,6 @@ GNU General Public License for more details.
 
 namespace Hrt { namespace Serialization {
 
-	class IYamlSerializable;
-
 	class YamlParser
     : public IParser
 	{

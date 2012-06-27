@@ -51,7 +51,9 @@ namespace Hrt
 
 		void Initialize();
 
-		// LightEmitter Implementation
+    void SetEmitterSampler(SamplerPtr sampler);
+    
+    // LightEmitter Implementation
 
 		virtual uint GetRaysCount() { return m_emitterSampler != NULL ? m_emitterSampler->GetCount() : 0; }
 

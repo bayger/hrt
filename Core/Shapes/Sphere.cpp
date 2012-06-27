@@ -236,4 +236,10 @@ namespace Hrt
 
 		m_state.resize(numberOfThreads);
 	}
+
+  void Sphere::SetEmitterSampler(SamplerPtr sampler)
+  {
+    m_emitterSampler = sampler;
+  }
+
 }

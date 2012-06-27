@@ -28,6 +28,10 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
+    AUTO_PROPERTY(number, m_radius, Radius);
+
+    AUTO_PROPERTY(Matrix, m_transform, Transform);
+
 	private:
 		number m_radius;
 		Matrix m_transform;

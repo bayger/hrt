@@ -20,12 +20,14 @@ GNU General Public License for more details.
 #include "../Tools/HdrCodec.h"
 #include "../Serialization/Yaml/YamlParser.h"
 #include "../Serialization/SerializationContext.h"
+#include "../Serialization/Initialize.h"
 
 using namespace Hrt;
 
 Program::Program(void)
 : cpus(1), saveVariance(false), dontUseAdaptiveRR(false)
 {
+  Serialization::Initialize();
 	FreeImage_Initialise();
 }
 
@@ -179,11 +181,11 @@ bool Program::LoadScene()
 {
 	m_scene.reset(new Scene);
 
-	Hrt::Serialization::YamlParser parser(ReadSceneFile());
+	Serialization::YamlParser parser(ReadSceneFile());
 
 	try
 	{
-		Hrt::Serialization::SerializationContext context;
+		Serialization::SerializationContext context;
     throw NotImplementedException("Work in progress");
 		//m_scene->Deserialize(parser, context);
 	}

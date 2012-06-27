@@ -23,14 +23,14 @@ namespace Hrt { namespace Serialization {
   template<typename T>
   static void RegisterType(const std::string& typeName)
   {
-
+    
   }
 
   /// Registers subtype of already registered type.
   template<typename T, typename B>
   static void RegisterSubtype(const std::string& typeName)
   {
-
+    
   }
 
   /// Registers property and its handlers.
@@ -38,13 +38,18 @@ namespace Hrt { namespace Serialization {
   static void RegisterProperty(const std::string& propertyName,
     boost::function<void (T& obj, IParser& parser)> deserializer)
   {
-
+    
   }
 
   template<typename T>
   static T DeserializeObject(IParser& parser)
   {
-
+    throw NotImplementedException();
   }
 
+  template<typename T>
+  static shared_ptr<T> DeserializeSharedObject(IParser& parser)
+  {
+    throw NotImplementedException();
+  }
 }}

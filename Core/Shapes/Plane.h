@@ -30,13 +30,16 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
-		// TODO: hide the following fields!
+		AUTO_PROPERTY(Vector3D, m_normal, Normal);
 
+    AUTO_PROPERTY(number, m_distance, Distance);
+
+  private:
 		/// Normal to the plane (A,B,C coefficients)
-		Vector3D Normal;
+		Vector3D m_normal;
 
 		/// Coefficient D of plane's equation
-		number D;
+		number m_distance;
 	};
 
 }

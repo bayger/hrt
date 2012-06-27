@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #include "Exceptions.h"
 #include "Matrix.h"
 #include "Vector3D.h"
-#include "Serialization/SerializationHelper.h"
 
 namespace Hrt
 {

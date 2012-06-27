@@ -24,12 +24,12 @@ namespace Hrt
 {
 
 	Plane::Plane(void)
-		: Normal(Vector3D::Zero), D(0)
+		: m_normal(Vector3D::Zero), m_distance(0)
 	{
 	}
 
 	Plane::Plane(Vector3D normal, number d)
-		: Normal(normal), D(d)
+		: m_normal(normal), m_distance(d)
 	{
 	}
 
@@ -39,15 +39,15 @@ namespace Hrt
 
 	bool Plane::Intersect(const Ray& ray, Intersection* intersection)
 	{
-		number r = (Normal.X*ray.Direction.X + Normal.Y*ray.Direction.Y + Normal.Z*ray.Direction.Z);
+		number r = (m_normal.X*ray.Direction.X + m_normal.Y*ray.Direction.Y + m_normal.Z*ray.Direction.Z);
 		number t = 0;
 
 		if (r != 0)
-			t = (number)(-(D+Normal.X*ray.Position.X + Normal.Y*ray.Position.Y + Normal.Z*ray.Position.Z) / r);
+			t = (number)(-(m_distance+m_normal.X*ray.Position.X + m_normal.Y*ray.Position.Y + m_normal.Z*ray.Position.Z) / r);
 
 		if (t > 0)
 		{
-			intersection->Normal = Normal;
+			intersection->Normal = m_normal;
 			intersection->Position.X = ray.Position.X + t*ray.Direction.X;
 			intersection->Position.Y = ray.Position.Y + t*ray.Direction.Y;
 			intersection->Position.Z = ray.Position.Z + t*ray.Direction.Z;

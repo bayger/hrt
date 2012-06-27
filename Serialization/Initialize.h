@@ -18,4 +18,4 @@ namespace Hrt { namespace Serialization
 
   void Initialize();
 
-}
+}}

@@ -23,6 +23,8 @@ namespace Hrt { namespace Serialization
   static void RegisterBaseClasses()
   {
     RegisterType<NamedObject>("NamedObject");
+    RegisterProperty<NamedObject>("Name",
+      [](NamedObject& namedObject, IParser& parser) { namedObject.SetName(parser.ReadString()); } );
   }
 
   static void RegisterShapes()
@@ -33,9 +35,9 @@ namespace Hrt { namespace Serialization
     // Plane
     RegisterSubtype<Plane, Shape>("Plane");
     RegisterProperty<Plane>("Normal", 
-      [](Plane& plane, IParser& parser) { plane.Normal = SerializationHelper::ReadVector3D(parser); } );
+      [](Plane& plane, IParser& parser) { plane.SetNormal(SerializationHelper::ReadVector3D(parser)); } );
     RegisterProperty<Plane>("Distance",
-      [](Plane& plane, IParser& parser) { plane.D = parser.ReadNumber(); });
+      [](Plane& plane, IParser& parser) { plane.SetDistance(parser.ReadNumber()); });
 
     // Cylinder
     RegisterSubtype<Cylinder, Shape>("Cylinder");
@@ -45,6 +47,24 @@ namespace Hrt { namespace Serialization
       [](Cylinder& cylinder, IParser& parser) { cylinder.SetHeight(parser.ReadNumber()); });
     RegisterProperty<Cylinder>("Transform",
       [](Cylinder& cylinder, IParser& parser) { cylinder.SetTransform(DeserializeObject<Matrix>(parser)); });
+
+    // Disc
+    RegisterSubtype<Disc, Shape>("Disc");
+    RegisterProperty<Disc>("Radius",
+      [](Disc& disc, IParser& parser) { disc.SetRadius(parser.ReadNumber()); });
+    RegisterProperty<Disc>("Transform",
+      [](Disc& disc, IParser& parser) { disc.SetTransform(DeserializeObject<Matrix>(parser)); });
+
+    // Sphere
+    RegisterSubtype<Sphere, Shape>("Sphere");
+    RegisterProperty<Sphere>("Center",
+      [](Sphere& sphere, IParser& parser) { sphere.SetCenter(SerializationHelper::ReadVector3D(parser)); });
+    RegisterProperty<Sphere>("Radius",
+      [](Sphere& sphere, IParser& parser) { sphere.SetRadius(parser.ReadNumber()); });
+    RegisterProperty<Sphere>("EmitterPower",
+      [](Sphere& sphere, IParser& parser) { sphere.SetPower(SerializationHelper::ReadSpectrum(parser)); } );
+    RegisterProperty<Sphere>("EmitterSampler",
+      [](Sphere& sphere, IParser& parser) { sphere.SetEmitterSampler(DeserializeSharedObject<Sampler>(parser)); } );
   }
 
   void Initialize()
