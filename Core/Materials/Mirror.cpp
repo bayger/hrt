@@ -33,7 +33,7 @@ namespace Hrt
 		if (!intersection.RayDirection.AlmostEqualTo(r))
 			return Spectrum::Zero;
 
-		return incomingRay.Radiance * m_absorption;
+		return incomingRay.Radiance * m_absorption / intersection.Normal.Dot(-intersection.RayDirection);
 	}
 
 	Hrt::Vector3D Mirror::SampleVector(number* sample, const Vector3D& outgoingDirection, const Vector3D& tangentU, const Vector3D& tangentV, 

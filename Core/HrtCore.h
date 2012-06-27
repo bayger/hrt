@@ -16,6 +16,7 @@ GNU General Public License for more details.
 
 // base code:
 #include "Common.h"
+#include "Exceptions.h"
 #include "Math.h"
 #include "Matrix.h"
 #include "Box.h"

@@ -1,0 +1,397 @@
+# sample scene with cylinder and ball inside a box
+
+# --- global scene settings ---
+
+canvas:
+  width: 1280
+  height: 960
+  !gaussian-filter filter: 
+    width: 1
+    height: 1
+
+camera:
+  fov: 1.5
+  transform:
+    rotate: 0 0 0
+    translate: -9 9 -9.9
+    look-at: 0 -4 0
+
+# --- shapes ---
+
+!plane shape:
+  name: Floor
+  normal: 0 1 0
+  distance: 10
+  
+!plane shape:
+  name: Left Wall
+  normal: 1 0 0
+  distance: 10
+  
+!plane shape:
+  name: Right Wall
+  normal: -1 0 0
+  distance: 10
+
+!plane shape:
+  name: Ceiling
+  normal: 0 -1 0
+  distance: 10
+
+!plane shape:
+  name: Back Wall
+  normal: 0 0 -1
+  distance: 10
+  
+!plane shape:
+  name: Front Wall
+  normal: 0 0 1
+  distance: 10
+  
+# spheric nodes
+  
+!sphere shape:
+  name: BFL
+  radius: 1
+  center: -5 -9 -5
+
+!sphere shape:
+  name: BFR
+  radius: 1
+  center: 5 -9 -5
+
+!sphere shape:
+  name: BBL
+  radius: 1
+  center: -5 -9 5
+
+!sphere shape:
+  name: BBR
+  radius: 1
+  center: 5 -9 5
+
+!sphere shape:
+  name: TFL
+  radius: 1
+  center: -5 1 -5
+
+!sphere shape:
+  name: TFR
+  radius: 1
+  center: 5 1 -5
+
+!sphere shape:
+  name: TBL
+  radius: 1
+  center: -5 1 5
+
+!sphere shape:
+  name: TBR
+  radius: 1
+  center: 5 1 5  
+  
+!cylinder shape:
+  name: FL
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 -5
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: FR
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 -5
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BL
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 5
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BR
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 5
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: FL2
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 -5
+    rotate: 0 0 1.5707963267948966
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: FR2
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 -5
+    rotate: 0 0 1.5707963267948966
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BL2
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 5
+    rotate: 0 0 1.5707963267948966
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BR2
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 5
+    rotate: 0 0 1.5707963267948966
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: FL3
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 -5
+    rotate: 0 1.5707963267948966 0
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: FR3
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 -5
+    rotate: 0 1.5707963267948966 0
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BL3
+  radius: 0.25
+  height: 10
+  transform:
+    translate: -5 -5 5
+    rotate: 0 1.5707963267948966 0
+    translate: 0 -4 0
+
+!cylinder shape:
+  name: BR3
+  radius: 0.25
+  height: 10
+  transform:
+    translate: 5 -5 5
+    rotate: 0 1.5707963267948966 0
+    translate: 0 -4 0
+
+!sphere shape:
+  name: Lightball
+  radius: 1
+  center: 0 9 0
+  emitter-power: 7800 8400 7000
+  !random-sampler emitter-sampler: 
+    dimension: 2
+    count: 1
+
+# --- lights ---
+
+#!point-light light:
+#  position: 7 7 -9
+#  power: 1500 1500 1500
+  
+#!point-light light:
+#  position: -7 -7 -9
+#  power: 300 300 300
+
+!area-light light:
+  emitter-shape: Lightball
+  
+# --- materials ---
+
+!cook-torrance material:
+  name: Copper CT
+  specular: 0.8
+  refractive-real: 1.017 1.015 0.412
+  refractive-imaginary: 2.300 2.893 4.203
+  rms: 0.25
+  slope-distribution: beckmann
+  
+!cook-torrance material:
+  name: Gold CT
+  specular: 1
+  refractive-real: 1.587 0.347 0.161
+  refractive-imaginary: 1.921 2.638 3.952
+  rms: 0.05
+  slope-distribution: beckmann
+
+!cook-torrance material:
+  name: Silver CT
+  specular: 1
+  refractive-real: 0.158 0.126 0.142
+  refractive-imaginary: 2.336 3.307 4.523
+  rms: 0.05
+  slope-distribution: beckmann
+
+!cook-torrance material:
+  name: Iron CT
+  specular: 0.75
+  refractive-real: 2.51 2.94 2.87
+  refractive-imaginary: 2.73 2.93 3.18
+  rms: 0.35
+  slope-distribution: beckmann
+
+!htsg material:
+  name: Silver HTSG
+  refractive-real: 0.158 0.126 0.142
+  refractive-imaginary: 2.336 3.307 4.523
+  sigma: 0.08e-5
+  tau: 3e-5
+
+!htsg material:
+  name: Gold HTSG
+  refractive-real: 1.587 0.347 0.161
+  refractive-imaginary: 1.921 2.638 3.952
+  sigma: 0.08e-5
+  tau: 3e-5
+
+!lambertian material:
+  name: Cornel Green
+  reflectance: 0.094 0.406 0.159
+
+!lambertian material:
+  name: Cornel Red
+  reflectance: 0.056 0.061 0.642
+  
+!lambertian material:
+  name: Cornel White
+  reflectance: 0.710 0.748 0.737
+
+!lambertian material:
+  name: Checkerboard
+  reflectance: 0.710 0.748 0.737
+  !checkerboard outgoing-radiance-modifier:
+    black-absorption: 0.01 0.01 0.01
+    scale-x: 0.4
+    scale-y: 0.4
+    scale-z: 0.4
+  
+!mirror material:
+  name: Mirror
+  !radiance-filter outgoing-radiance-modifier:
+    pass-through: 0.9 0.9 0.9
+
+# --- shape-material bindings ---
+
+primitive:
+  shape-name: BFL
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: BFR
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: BBL
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: BBR
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: TFL
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: TFR
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: TBL
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: TBR
+  material-name: Gold HTSG
+
+primitive:
+  shape-name: FL
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: FR
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BL
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BR
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: FL2
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: FR2
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BL2
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BR2
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: FL3
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: FR3
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BL3
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: BR3
+  material-name: Silver HTSG
+
+primitive:
+  shape-name: Floor
+  material-name: Checkerboard
+  
+primitive:
+  shape-name: Ceiling
+  material-name: Cornel White
+
+primitive:
+  shape-name: Left Wall
+  material-name: Mirror
+
+primitive:
+  shape-name: Right Wall
+  material-name: Mirror
+
+primitive:
+  shape-name: Back Wall
+  material-name: Mirror
+  
+primitive:
+  shape-name: Front Wall
+  material-name: Mirror
