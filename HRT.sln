@@ -19,6 +19,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HrtRender", "HrtRender\HrtRender.vcxproj", "{709126CF-1B1C-409C-B2E2-E388FCF6B6AF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F} = {5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}
+		{3B37CEF4-7337-4491-B4C4-FA715C5F6F1B} = {3B37CEF4-7337-4491-B4C4-FA715C5F6F1B}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml", "..\yaml-0.1.4\win32\vs2008\yaml.vcxproj", "{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}"
@@ -32,7 +33,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BrdfGen", "BrdfGen\BrdfGen.
 		{2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE} = {2341E8FD-2ECC-456E-A0DA-40EB9CFD71AE}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "YamlSerialization", "YamlSerialization\YamlSerialization.vcxproj", "{3B37CEF4-7337-4491-B4C4-FA715C5F6F1B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Serialization", "Serialization\Serialization.vcxproj", "{3B37CEF4-7337-4491-B4C4-FA715C5F6F1B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9DBBFF71-E221-412C-B55B-F9D8C2456F45} = {9DBBFF71-E221-412C-B55B-F9D8C2456F45}
 	EndProjectSection

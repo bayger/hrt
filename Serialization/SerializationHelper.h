@@ -1,5 +1,5 @@
 #pragma once
-#include "YamlParser.h"
+#include "IParser.h"
 
 namespace Hrt { namespace Serialization
 {

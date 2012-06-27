@@ -18,11 +18,17 @@ GNU General Public License for more details.
 
 namespace Hrt { namespace Serialization 
 {
+  static bool isInitialized = false;
+
+  static void RegisterBaseClasses()
+  {
+    RegisterType<NamedObject>("NamedObject");
+  }
 
   static void RegisterShapes()
   {
     // Shape
-    RegisterType<Shape>("Shape");
+    RegisterSubtype<Shape, NamedObject>("Shape");
 
     // Plane
     RegisterSubtype<Plane, Shape>("Plane");
@@ -43,8 +49,14 @@ namespace Hrt { namespace Serialization
 
   void Initialize()
   {
-    // register all YAML-serializable types here with their tags->serializers
+    if (isInitialized)
+      return;
+
+    // register all serializable types here:
+    RegisterBaseClasses();
     RegisterShapes();
+
+    isInitialized = true;
   }
 
 }}

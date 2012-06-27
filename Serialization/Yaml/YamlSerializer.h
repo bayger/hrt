@@ -15,6 +15,7 @@ GNU General Public License for more details.
 #pragma once
 #include "YamlParser.h"
 #include "SerializationContext.h"
+#include "Initialize.h"
 
 namespace Hrt { namespace Serialization {
 
@@ -24,6 +25,8 @@ namespace Hrt { namespace Serialization {
 	public:
 		static shared_ptr<T> LoadFromFile(std::string fileName)
 		{
+      Initialize();
+
 			shared_ptr<T> obj(new T());
 			std::ifstream objFile;
 

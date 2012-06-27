@@ -18,8 +18,8 @@ GNU General Public License for more details.
 #include "Utils.h"
 #include "../Core/Renderer.h"
 #include "../Tools/HdrCodec.h"
-#include "../YamlSerialization/YamlParser.h"
-#include "../YamlSerialization/SerializationContext.h"
+#include "../Serialization/Yaml/YamlParser.h"
+#include "../Serialization/SerializationContext.h"
 
 using namespace Hrt;
 

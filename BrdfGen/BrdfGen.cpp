@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "..\Core\Common.h"
 #include "BrdfGen.h"
-#include "..\YamlSerialization\YamlParser.h"
-#include "..\YamlSerialization\SerializationContext.h"
+#include "..\Serialization\Yaml\YamlParser.h"
+#include "..\Serialization\SerializationContext.h"
 #include "..\Core\Math.h"
 #include "..\Core\Vector3D.h"
 
