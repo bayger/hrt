@@ -83,7 +83,6 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Program Files %28x86%29\boost\boost_1_47;C:\Projects\gsl-1.15;C:\Projects\yaml-0.1.4\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include</IncludePath>
   </PropertyGroup>
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -159,7 +158,6 @@
     <ClInclude Include="SerializationHelper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Yaml\YamlParser.h" />
-    <ClInclude Include="Yaml\YamlSerializer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Initialize.cpp" />

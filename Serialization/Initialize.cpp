@@ -65,6 +65,11 @@ namespace Hrt { namespace Serialization
       [](Sphere& sphere, IParser& parser) { sphere.SetPower(SerializationHelper::ReadSpectrum(parser)); } );
     RegisterProperty<Sphere>("EmitterSampler",
       [](Sphere& sphere, IParser& parser) { sphere.SetEmitterSampler(DeserializeSharedObject<Sampler>(parser)); } );
+
+    // Triangle
+    RegisterSubtype<Triangle, Shape>("Triangle");
+    RegisterProperty<Triangle>("A",
+      [](Triangle& tri, IParser& parser) { tri.SetPointA(SerializationHelper::ReadVector3D(parser)); });
   }
 
   void Initialize()

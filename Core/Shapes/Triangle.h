@@ -33,6 +33,12 @@ namespace Hrt
 
 		virtual bool Intersect(const Ray& ray, Intersection* intersection);
 
+    AUTO_PROPERTY(Vector3D, m_a, PointA);
+
+    AUTO_PROPERTY(Vector3D, m_b, PointB);
+
+    AUTO_PROPERTY(Vector3D, m_c, PointC);
+
 	private:
 		BoundingBox m_bbox;
 		Vector3D m_a;
