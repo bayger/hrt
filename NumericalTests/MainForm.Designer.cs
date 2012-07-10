@@ -60,17 +60,19 @@
       this.numZ = new System.Windows.Forms.TextBox();
       this.label8 = new System.Windows.Forms.Label();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
-      this.calcSum = new System.Windows.Forms.Button();
-      this.mpfrAnswer = new System.Windows.Forms.TextBox();
-      this.label11 = new System.Windows.Forms.Label();
-      this.approx = new System.Windows.Forms.TextBox();
-      this.approxAnswer = new System.Windows.Forms.Label();
-      this.numLambda = new System.Windows.Forms.NumericUpDown();
-      this.label12 = new System.Windows.Forms.Label();
-      this.numVxy = new System.Windows.Forms.NumericUpDown();
-      this.label13 = new System.Windows.Forms.Label();
       this.numG = new System.Windows.Forms.TextBox();
       this.label14 = new System.Windows.Forms.Label();
+      this.numVxy = new System.Windows.Forms.NumericUpDown();
+      this.label13 = new System.Windows.Forms.Label();
+      this.numLambda = new System.Windows.Forms.NumericUpDown();
+      this.label12 = new System.Windows.Forms.Label();
+      this.approx = new System.Windows.Forms.TextBox();
+      this.approxAnswer = new System.Windows.Forms.Label();
+      this.mpfrAnswer = new System.Windows.Forms.TextBox();
+      this.label11 = new System.Windows.Forms.Label();
+      this.calcSum = new System.Windows.Forms.Button();
+      this.sumOutput = new System.Windows.Forms.Button();
+      this.label15 = new System.Windows.Forms.Label();
       ((System.ComponentModel.ISupportInitialize)(this.numY)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numSigma0)).BeginInit();
@@ -84,8 +86,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.numThetaI)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).BeginInit();
       this.groupBox3.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.numVxy)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).BeginInit();
       this.SuspendLayout();
       // 
       // label1
@@ -501,6 +503,8 @@
       // 
       // groupBox3
       // 
+      this.groupBox3.Controls.Add(this.label15);
+      this.groupBox3.Controls.Add(this.sumOutput);
       this.groupBox3.Controls.Add(this.numG);
       this.groupBox3.Controls.Add(this.label14);
       this.groupBox3.Controls.Add(this.numVxy);
@@ -519,86 +523,22 @@
       this.groupBox3.TabStop = false;
       this.groupBox3.Text = "Sum calculation";
       // 
-      // calcSum
+      // numG
       // 
-      this.calcSum.Location = new System.Drawing.Point(455, 124);
-      this.calcSum.Name = "calcSum";
-      this.calcSum.Size = new System.Drawing.Size(102, 23);
-      this.calcSum.TabIndex = 0;
-      this.calcSum.Text = "Calculate";
-      this.calcSum.UseVisualStyleBackColor = true;
-      this.calcSum.Click += new System.EventHandler(this.calcSum_Click);
+      this.numG.Location = new System.Drawing.Point(261, 60);
+      this.numG.Name = "numG";
+      this.numG.ReadOnly = true;
+      this.numG.Size = new System.Drawing.Size(185, 19);
+      this.numG.TabIndex = 34;
       // 
-      // mpfrAnswer
+      // label14
       // 
-      this.mpfrAnswer.Location = new System.Drawing.Point(12, 99);
-      this.mpfrAnswer.Name = "mpfrAnswer";
-      this.mpfrAnswer.ReadOnly = true;
-      this.mpfrAnswer.Size = new System.Drawing.Size(545, 19);
-      this.mpfrAnswer.TabIndex = 26;
-      // 
-      // label11
-      // 
-      this.label11.AutoSize = true;
-      this.label11.Location = new System.Drawing.Point(9, 83);
-      this.label11.Name = "label11";
-      this.label11.Size = new System.Drawing.Size(47, 13);
-      this.label11.TabIndex = 25;
-      this.label11.Text = "MPFR:";
-      // 
-      // approx
-      // 
-      this.approx.Location = new System.Drawing.Point(12, 60);
-      this.approx.Name = "approx";
-      this.approx.ReadOnly = true;
-      this.approx.Size = new System.Drawing.Size(185, 19);
-      this.approx.TabIndex = 28;
-      // 
-      // approxAnswer
-      // 
-      this.approxAnswer.AutoSize = true;
-      this.approxAnswer.Location = new System.Drawing.Point(9, 44);
-      this.approxAnswer.Name = "approxAnswer";
-      this.approxAnswer.Size = new System.Drawing.Size(119, 13);
-      this.approxAnswer.TabIndex = 27;
-      this.approxAnswer.Text = "Approximation:";
-      // 
-      // numLambda
-      // 
-      this.numLambda.DecimalPlaces = 12;
-      this.numLambda.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            589824});
-      this.numLambda.Location = new System.Drawing.Point(37, 20);
-      this.numLambda.Maximum = new decimal(new int[] {
-            1410065408,
-            2,
-            0,
-            0});
-      this.numLambda.Minimum = new decimal(new int[] {
-            1410065408,
-            2,
-            0,
-            -2147483648});
-      this.numLambda.Name = "numLambda";
-      this.numLambda.Size = new System.Drawing.Size(160, 19);
-      this.numLambda.TabIndex = 29;
-      this.numLambda.Value = new decimal(new int[] {
-            451,
-            0,
-            0,
-            589824});
-      // 
-      // label12
-      // 
-      this.label12.AutoSize = true;
-      this.label12.Location = new System.Drawing.Point(9, 22);
-      this.label12.Name = "label12";
-      this.label12.Size = new System.Drawing.Size(23, 13);
-      this.label12.TabIndex = 30;
-      this.label12.Text = "λ=";
+      this.label14.AutoSize = true;
+      this.label14.Location = new System.Drawing.Point(232, 63);
+      this.label14.Name = "label14";
+      this.label14.Size = new System.Drawing.Size(23, 13);
+      this.label14.TabIndex = 33;
+      this.label14.Text = "g=";
       // 
       // numVxy
       // 
@@ -637,22 +577,105 @@
       this.label13.TabIndex = 32;
       this.label13.Text = "vxy=";
       // 
-      // numG
+      // numLambda
       // 
-      this.numG.Location = new System.Drawing.Point(261, 60);
-      this.numG.Name = "numG";
-      this.numG.ReadOnly = true;
-      this.numG.Size = new System.Drawing.Size(185, 19);
-      this.numG.TabIndex = 34;
+      this.numLambda.DecimalPlaces = 12;
+      this.numLambda.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            589824});
+      this.numLambda.Location = new System.Drawing.Point(37, 20);
+      this.numLambda.Maximum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            0});
+      this.numLambda.Minimum = new decimal(new int[] {
+            1410065408,
+            2,
+            0,
+            -2147483648});
+      this.numLambda.Name = "numLambda";
+      this.numLambda.Size = new System.Drawing.Size(160, 19);
+      this.numLambda.TabIndex = 29;
+      this.numLambda.Value = new decimal(new int[] {
+            451,
+            0,
+            0,
+            589824});
       // 
-      // label14
+      // label12
       // 
-      this.label14.AutoSize = true;
-      this.label14.Location = new System.Drawing.Point(232, 63);
-      this.label14.Name = "label14";
-      this.label14.Size = new System.Drawing.Size(23, 13);
-      this.label14.TabIndex = 33;
-      this.label14.Text = "g=";
+      this.label12.AutoSize = true;
+      this.label12.Location = new System.Drawing.Point(9, 22);
+      this.label12.Name = "label12";
+      this.label12.Size = new System.Drawing.Size(23, 13);
+      this.label12.TabIndex = 30;
+      this.label12.Text = "λ=";
+      // 
+      // approx
+      // 
+      this.approx.Location = new System.Drawing.Point(12, 60);
+      this.approx.Name = "approx";
+      this.approx.ReadOnly = true;
+      this.approx.Size = new System.Drawing.Size(185, 19);
+      this.approx.TabIndex = 28;
+      // 
+      // approxAnswer
+      // 
+      this.approxAnswer.AutoSize = true;
+      this.approxAnswer.Location = new System.Drawing.Point(9, 44);
+      this.approxAnswer.Name = "approxAnswer";
+      this.approxAnswer.Size = new System.Drawing.Size(119, 13);
+      this.approxAnswer.TabIndex = 27;
+      this.approxAnswer.Text = "Approximation:";
+      // 
+      // mpfrAnswer
+      // 
+      this.mpfrAnswer.Location = new System.Drawing.Point(12, 99);
+      this.mpfrAnswer.Name = "mpfrAnswer";
+      this.mpfrAnswer.ReadOnly = true;
+      this.mpfrAnswer.Size = new System.Drawing.Size(545, 19);
+      this.mpfrAnswer.TabIndex = 26;
+      // 
+      // label11
+      // 
+      this.label11.AutoSize = true;
+      this.label11.Location = new System.Drawing.Point(9, 83);
+      this.label11.Name = "label11";
+      this.label11.Size = new System.Drawing.Size(47, 13);
+      this.label11.TabIndex = 25;
+      this.label11.Text = "MPFR:";
+      // 
+      // calcSum
+      // 
+      this.calcSum.Location = new System.Drawing.Point(455, 124);
+      this.calcSum.Name = "calcSum";
+      this.calcSum.Size = new System.Drawing.Size(102, 23);
+      this.calcSum.TabIndex = 0;
+      this.calcSum.Text = "Calculate";
+      this.calcSum.UseVisualStyleBackColor = true;
+      this.calcSum.Click += new System.EventHandler(this.calcSum_Click);
+      // 
+      // sumOutput
+      // 
+      this.sumOutput.Location = new System.Drawing.Point(12, 124);
+      this.sumOutput.Name = "sumOutput";
+      this.sumOutput.Size = new System.Drawing.Size(185, 23);
+      this.sumOutput.TabIndex = 35;
+      this.sumOutput.Text = "Save iterations...";
+      this.sumOutput.UseVisualStyleBackColor = true;
+      this.sumOutput.Click += new System.EventHandler(this.sumOutput_Click);
+      // 
+      // label15
+      // 
+      this.label15.AutoSize = true;
+      this.label15.Location = new System.Drawing.Point(423, 22);
+      this.label15.Name = "label15";
+      this.label15.Size = new System.Drawing.Size(23, 13);
+      this.label15.TabIndex = 36;
+      this.label15.Text = "*λ";
       // 
       // MainForm
       // 
@@ -684,8 +707,8 @@
       ((System.ComponentModel.ISupportInitialize)(this.numThetaK)).EndInit();
       this.groupBox3.ResumeLayout(false);
       this.groupBox3.PerformLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.numVxy)).EndInit();
+      ((System.ComponentModel.ISupportInitialize)(this.numLambda)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -735,6 +758,8 @@
     private System.Windows.Forms.Label label13;
     private System.Windows.Forms.TextBox numG;
     private System.Windows.Forms.Label label14;
+    private System.Windows.Forms.Button sumOutput;
+    private System.Windows.Forms.Label label15;
   }
 }
 

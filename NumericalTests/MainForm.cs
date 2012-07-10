@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Gnu.MP;
 using MicrosoftResearch.Infer.Maths;
@@ -14,20 +16,20 @@ namespace NumericalTests
       InitializeComponent();
     }
 
-    static double solve_xexpx2(double y, int iterations)
-		{
-			var x=(y>1)?Math.Sqrt(Math.Log(y)):y;
-			int i;
-			if (y > 3.0)
-				for (i=0;i<iterations;i++)
-					x=Math.Sqrt(Math.Log(y/x));
-			else
-				for (i=0;i<iterations;i++)
-					x=0.5*(x+y*Math.Exp(-(x*x)));
-			return x;
-		}
+    private static double solve_xexpx2(double y, int iterations)
+    {
+      var x = (y > 1) ? Math.Sqrt(Math.Log(y)) : y;
+      int i;
+      if (y > 3.0)
+        for (i = 0; i < iterations; i++)
+          x = Math.Sqrt(Math.Log(y/x));
+      else
+        for (i = 0; i < iterations; i++)
+          x = 0.5*(x + y*Math.Exp(-(x*x)));
+      return x;
+    }
 
-    double solve_xexpx(double y)
+    private double solve_xexpx(double y)
     {
       const int iterations = 50000;
       var x = y < 500 ? 1.0 : 100.0;
@@ -35,7 +37,7 @@ namespace NumericalTests
       var err = 0.0;
       do
       {
-        var new_x = x - (x * Math.Exp(x) - y) / ((x + 1) * Math.Exp(x));
+        var new_x = x - (x*Math.Exp(x) - y)/((x + 1)*Math.Exp(x));
         if (double.IsNaN(new_x))
           x = 0;
         x = new_x;
@@ -55,8 +57,8 @@ namespace NumericalTests
       var result = solve_xexpx(y);
       this.result.Text = result.ToString("0.00000000");
 
-      var verification = Math.Abs(y - result * Math.Exp(result)) / y;
-      verify.Text = verification.ToString("p8");      
+      var verification = Math.Abs(y - result*Math.Exp(result))/y;
+      verify.Text = verification.ToString("p8");
     }
 
     private void numY_ValueChanged(object sender, EventArgs e)
@@ -77,15 +79,15 @@ namespace NumericalTests
 
     private void updateZ()
     {
-      var sigma0 = (double)numSigma0.Value;
-      var thetaI = (double) numThetaI.Value / 180 * Math.PI;
-      var thetaK = (double)numThetaK.Value / 180 * Math.PI;
+      var sigma0 = (double) numSigma0.Value;
+      var thetaI = (double) numThetaI.Value/180*Math.PI;
+      var thetaK = (double) numThetaK.Value/180*Math.PI;
       var tau = (double) numTau.Value;
 
       var Ki = Math.Tan(thetaI)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaI));
       var Kr = Math.Tan(thetaK)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaK));
       var K = (Ki + Kr)/4;
-      
+
       var y = 2*K*K/Math.PI;
       var x = solve_xexpx(y);
       var zz = x*sigma0*sigma0;
@@ -102,11 +104,17 @@ namespace NumericalTests
       var d2 = Math.Abs(left2 - right);
       var d = d1 < d2 ? d1 : d2;
 
-      verifyZ.Text = string.Format("±{0:p8}", Math.Abs(d / right));
+      verifyZ.Text = string.Format("±{0:p8}", Math.Abs(d/right));
       textBoxK.Text = K.ToString();
 
-      var sigma = calcedSigma = sigma0 / Math.Sqrt(1 + x);
+      var sigma = calcedSigma = sigma0/Math.Sqrt(1 + x);
       textBoxSigma.Text = sigma.ToString("0.000000000000");
+
+      var sinI = Math.Sin(thetaI);
+      var sinR = Math.Sin(thetaK);
+      var vxy = Math.Sqrt(sinI*sinI + sinR*sinR);
+      numVxy.Value = (decimal) vxy;
+      CalcSums();
     }
 
     private void numK_ValueChanged(object sender, EventArgs e)
@@ -135,23 +143,23 @@ namespace NumericalTests
     private Dictionary<double, double> GenerateSigmaSeries(Action<double, Thetas> thetasUpdater, Thetas thetas)
     {
       var results = new Dictionary<double, double>();
-      var sigma0 = (double)numSigma0.Value;
-      var tau = (double)numTau.Value;
+      var sigma0 = (double) numSigma0.Value;
+      var tau = (double) numTau.Value;
 
-      for(double angle=0; angle <= 90.0; angle += 0.1)
+      for (double angle = 0; angle <= 90.0; angle += 0.1)
       {
         thetasUpdater(angle, thetas);
 
-        var thetaI = thetas.I / 180 * Math.PI;
-        var thetaR = thetas.R / 180 * Math.PI;
+        var thetaI = thetas.I/180*Math.PI;
+        var thetaR = thetas.R/180*Math.PI;
 
-        var Ki = Math.Tan(thetaI) * MMath.Erfc(tau / (2 * sigma0) / Math.Tan(thetaI));
-        var Kr = Math.Tan(thetaR) * MMath.Erfc(tau / (2 * sigma0) / Math.Tan(thetaR));
-        var K = (Ki + Kr) / 4;
+        var Ki = Math.Tan(thetaI)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaI));
+        var Kr = Math.Tan(thetaR)*MMath.Erfc(tau/(2*sigma0)/Math.Tan(thetaR));
+        var K = (Ki + Kr)/4;
 
-        var y = 2 * K * K / Math.PI;
+        var y = 2*K*K/Math.PI;
         var x = solve_xexpx(y);
-        var sigma = sigma0 / Math.Sqrt(1 + x);
+        var sigma = sigma0/Math.Sqrt(1 + x);
         results.Add(angle, sigma);
       }
 
@@ -171,10 +179,10 @@ namespace NumericalTests
     private void genSigmaOfR_Click(object sender, EventArgs e)
     {
       var thetas = new Thetas
-      {
-        I = (double)numThetaI.Value,
-        R = 0
-      };
+                     {
+                       I = (double) numThetaI.Value,
+                       R = 0
+                     };
       var series = GenerateSigmaSeries((angle, ts) => ts.R = angle, thetas);
     }
 
@@ -184,7 +192,7 @@ namespace NumericalTests
       var lastResult = new Real(1);
       var xi = new Real(x);
       var factorial = new Real(1);
-      for(int i=1; i<10000; i++)
+      for (int i = 1; i < 10000; i++)
       {
         lastResult = result;
         factorial *= i;
@@ -200,12 +208,13 @@ namespace NumericalTests
 
     private Real calculateD(double tau, double lambda, double g, double vxy)
     {
+      vxy *= 2*Math.PI / lambda;
       var exp_neg_g = Exp(-g);
       var sum = new Real(0);
       var gm = new Real(g);
       var factorial = new Real(1);
       var exp2 = new Real(-(vxy*vxy*tau*tau/4));
-      for(int m=1; m<100; m++)
+      for (int m = 1; m < 100; m++)
       {
         factorial *= m;
         var a = gm*exp_neg_g/(factorial*m)*Exp(exp2/m);
@@ -218,11 +227,19 @@ namespace NumericalTests
 
     private void calcSum_Click(object sender, EventArgs e)
     {
+      CalcSums();
+    }
+
+    private void CalcSums()
+    {
       Real.DefaultPrecision = 256;
       var val = new Real(1234.5678);
 
-      var g = (2*Math.PI*calcedSigma/(double) numLambda.Value)*
-              (Math.Cos((double) numThetaI.Value) + Math.Cos((double) numThetaK.Value));
+      var thetaI = (double)numThetaI.Value / 180 * Math.PI;
+      var thetaK = (double)numThetaK.Value / 180 * Math.PI;
+
+      var g = (2 * Math.PI * calcedSigma / (double)numLambda.Value) *
+              (Math.Cos(thetaI) + Math.Cos(thetaK)); 
       g *= g;
 
       numG.Text = g.ToString("E18", CultureInfo.InvariantCulture);
@@ -234,38 +251,76 @@ namespace NumericalTests
     }
 
 
-
-
-
-  static double Htsg_sum(double g, double T)
-  {
-    // T = -v_xy^2*(PI*tau/lamda)^2
-    if (g < 15) {
-      double sum=0;
-      int m=1;
-      double term1=Math.Exp(-g);
-      for (;m<40;m++) {
-        double recm=(1.0/(double)m);
-        term1*=g*recm;
-        sum += term1*recm*Math.Exp(T*recm);
+    private static double Htsg_sum(double g, double T)
+    {
+      // T = -v_xy^2*(PI*tau/lamda)^2
+      if (g < 15)
+      {
+        double sum = 0;
+        int m = 1;
+        double term1 = Math.Exp(-g);
+        for (; m < 40; m++)
+        {
+          double recm = (1.0/(double) m);
+          term1 *= g*recm;
+          sum += term1*recm*Math.Exp(T*recm);
+        }
+        return sum;
       }
-      return sum;
+      double mx = g;
+      int i;
+      for (i = 0; i < 4; i++)
+        mx = g*Math.Exp(-1.5/mx - T/(mx*mx));
+      return Math.Sqrt(g)*Math.Exp(mx*Math.Log(g) - g - (mx + 1.5)*Math.Log(mx) + mx + T/mx);
     }
-    double mx=g;
-    int i;
-    for (i=0;i<4;i++)
-      mx=g*Math.Exp(-1.5/mx-T/(mx*mx));
-    return Math.Sqrt(g)*Math.Exp(mx*Math.Log(g)-g-(mx+1.5)*Math.Log(mx)+mx+T/mx);
-  }
 
 
-  double CalcDiffuseDistribution(double tau, double vxy, double g, double lambda)
-  {
-    double pi_gamma_by_lambda = Math.PI*tau/lambda;
-    double T = -(vxy*vxy)*(pi_gamma_by_lambda*pi_gamma_by_lambda);
+    private double CalcDiffuseDistribution(double tau, double vxy, double g, double lambda)
+    {
+      double pi_tau_over_lambda = Math.PI*tau/lambda;
+      double sqr = pi_tau_over_lambda*pi_tau_over_lambda;
+      double T = -(vxy*vxy)*(sqr);
 
-    double x = Math.PI*tau/lambda/2;
-    return x*x*Htsg_sum(g, T);
-  }
+      return sqr/4*Htsg_sum(g, T);
+    }
+
+
+    private IEnumerable<Real> calculateDSeries(double tau, double lambda, double g, double vxy)
+    {
+      var exp_neg_g = Exp(-g);
+      var sum = new Real(0);
+      var gm = new Real(g);
+      var factorial = new Real(1);
+      var exp2 = new Real(-(vxy*vxy*tau*tau/4));
+      for (int m = 1; m < 100; m++)
+      {
+        factorial *= m;
+        var a = gm*exp_neg_g/(factorial*m)*Exp(exp2/m);
+        sum += a;
+        gm *= g;
+
+        yield return sum;
+      }
+    }
+
+    private void sumOutput_Click(object sender, EventArgs e)
+    {
+      var thetaI = (double)numThetaI.Value / 180 * Math.PI;
+      var thetaK = (double)numThetaK.Value / 180 * Math.PI;
+
+      var g = (2*Math.PI*calcedSigma/(double) numLambda.Value)*
+              (Math.Cos(thetaI) + Math.Cos(thetaK));
+      g *= g;
+
+      var series = calculateDSeries((double) numTau.Value, (double) numLambda.Value, g, (double) numVxy.Value)
+        .ToArray();
+
+      using(var writer = new StreamWriter("d_series.txt"))
+      {
+        writer.WriteLine("# tau={0} lambda={1} g={2} vxy={3}", numTau.Value, numLambda.Value, g, numVxy.Value);
+        foreach(var val in series)
+          writer.WriteLine(val.ToString(50));
+      }
+    }
   }
 }

@@ -73,12 +73,14 @@ namespace Hrt
     return x;
   }
 
-  static inline number CalculateSigma(number sigma0, number gamma, number theta_i, number theta_r)
+  static inline number CalculateSigma(number sigma0, number gamma, number theta_i, number theta_r, number& Ki, number& Kr)
   {
     number K_i = Math::Tan(theta_i)*Math::Erfc((gamma*Math::Ctg(theta_i)) / (2*sigma0));
     number K_r = Math::Tan(theta_r)*Math::Erfc((gamma*Math::Ctg(theta_r)) / (2*sigma0));
-    number two_K2_over_PI = 2*Math::Square(K_i+K_r) / Consts::Pi;
+    number two_K2_over_PI = 2*Math::Square((K_i+K_r)/4) / Consts::Pi;
     number squared_z0_over_sigma0 = solve_xexpx(two_K2_over_PI);
+    Ki = K_i;
+    Kr = K_r;
     return sigma0/Math::Sqrt(1 + (squared_z0_over_sigma0));
   }
 
@@ -115,7 +117,8 @@ namespace Hrt
     number theta_i = Math::Arcos(cos_theta_i);
     number theta_r = Math::Arcos(cos_theta_r);
 
-    number sigma2 = CalculateSigma(sigma, gamma, theta_i, theta_r);
+    number Ki, Kr;
+    number sigma2 = CalculateSigma(sigma, gamma, theta_i, theta_r, Ki, Kr);
 
     number vh = Math::Min(num(1), (-intersection.RayDirection-incomingRay.Direction).Normalize()
       .Dot(-intersection.RayDirection));
@@ -150,6 +153,7 @@ namespace Hrt
       number F_p = 0;
       FresnelHelper::CalcFresnel3(m_refractionRe[lambdaIndex],
         m_refractionIm[lambdaIndex], Math::Arcos(vh), F_s, F_p);
+
 
       // Calculate geometrical attenuation factor and v
       // (note the differences from the paper: v and v2 are different)
