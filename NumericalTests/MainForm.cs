@@ -114,6 +114,12 @@ namespace NumericalTests
       var sinR = Math.Sin(thetaK);
       var vxy = Math.Sqrt(sinI*sinI + sinR*sinR);
       numVxy.Value = (decimal) vxy;
+
+      var g = (2 * Math.PI * calcedSigma / (double)numLambda.Value) *
+        (Math.Cos(thetaI) + Math.Cos(thetaK));
+      g *= g;
+      numG.Value = (decimal) g;
+
       CalcSums();
     }
 
@@ -238,9 +244,7 @@ namespace NumericalTests
       var thetaI = (double)numThetaI.Value / 180 * Math.PI;
       var thetaK = (double)numThetaK.Value / 180 * Math.PI;
 
-      var g = (2 * Math.PI * calcedSigma / (double)numLambda.Value) *
-              (Math.Cos(thetaI) + Math.Cos(thetaK)); 
-      g *= g;
+      var g = (double) numG.Value;
 
       numG.Text = g.ToString("E18", CultureInfo.InvariantCulture);
       var result = calculateD((double) numTau.Value, (double) numLambda.Value, g, (double) numVxy.Value);

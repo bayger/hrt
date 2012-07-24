@@ -39,10 +39,7 @@
       this.getMaterials = new System.Windows.Forms.Button();
       this.materials = new System.Windows.Forms.ComboBox();
       this.materialsSource = new System.Windows.Forms.BindingSource(this.components);
-      this.materialSignature = new System.Windows.Forms.Label();
       this.groupBox2 = new System.Windows.Forms.GroupBox();
-      this.savePlot = new System.Windows.Forms.Button();
-      this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
       this.generate = new System.Windows.Forms.Button();
       this.label5 = new System.Windows.Forms.Label();
       this.outgoingAngle = new System.Windows.Forms.NumericUpDown();
@@ -54,12 +51,21 @@
       this.timer = new System.Windows.Forms.Timer(this.components);
       this.pictureBox1 = new System.Windows.Forms.PictureBox();
       this.panel1 = new System.Windows.Forms.Panel();
+      this.materialSignature = new System.Windows.Forms.Label();
+      this.angularPlotControl1 = new BrdfViewer.AngularPlotControl();
+      this.groupBox3 = new System.Windows.Forms.GroupBox();
+      this.label6 = new System.Windows.Forms.Label();
+      this.outAngleStep = new System.Windows.Forms.NumericUpDown();
+      this.batch = new System.Windows.Forms.Button();
+      this.savePlot = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.materialsSource)).BeginInit();
       this.groupBox2.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.outgoingAngle)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+      this.groupBox3.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.outAngleStep)).BeginInit();
       this.SuspendLayout();
       // 
       // label1
@@ -77,14 +83,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
       this.sceneFileName.Location = new System.Drawing.Point(107, 22);
       this.sceneFileName.Name = "sceneFileName";
-      this.sceneFileName.Size = new System.Drawing.Size(569, 20);
+      this.sceneFileName.Size = new System.Drawing.Size(548, 20);
       this.sceneFileName.TabIndex = 1;
       this.sceneFileName.Text = "experimental.ysf";
       // 
       // browseSceneFile
       // 
       this.browseSceneFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.browseSceneFile.Location = new System.Drawing.Point(682, 20);
+      this.browseSceneFile.Location = new System.Drawing.Point(661, 20);
       this.browseSceneFile.Name = "browseSceneFile";
       this.browseSceneFile.Size = new System.Drawing.Size(75, 23);
       this.browseSceneFile.TabIndex = 2;
@@ -154,22 +160,8 @@
       // 
       this.materialsSource.DataSource = typeof(BrdfViewer.MaterialItem);
       // 
-      // materialSignature
-      // 
-      this.materialSignature.Location = new System.Drawing.Point(262, 79);
-      this.materialSignature.Name = "materialSignature";
-      this.materialSignature.Size = new System.Drawing.Size(641, 13);
-      this.materialSignature.TabIndex = 7;
-      this.materialSignature.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-      // 
       // groupBox2
       // 
-      this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.groupBox2.Controls.Add(this.savePlot);
-      this.groupBox2.Controls.Add(this.materialSignature);
-      this.groupBox2.Controls.Add(this.angularPlotControl1);
       this.groupBox2.Controls.Add(this.generate);
       this.groupBox2.Controls.Add(this.label5);
       this.groupBox2.Controls.Add(this.outgoingAngle);
@@ -180,39 +172,10 @@
       this.groupBox2.Controls.Add(this.label3);
       this.groupBox2.Location = new System.Drawing.Point(12, 184);
       this.groupBox2.Name = "groupBox2";
-      this.groupBox2.Size = new System.Drawing.Size(774, 490);
+      this.groupBox2.Size = new System.Drawing.Size(392, 107);
       this.groupBox2.TabIndex = 6;
       this.groupBox2.TabStop = false;
       this.groupBox2.Text = "BRDF Data Generation";
-      // 
-      // savePlot
-      // 
-      this.savePlot.Location = new System.Drawing.Point(371, 20);
-      this.savePlot.Name = "savePlot";
-      this.savePlot.Size = new System.Drawing.Size(103, 23);
-      this.savePlot.TabIndex = 12;
-      this.savePlot.Text = "Save plot...";
-      this.savePlot.UseVisualStyleBackColor = true;
-      this.savePlot.Click += new System.EventHandler(this.savePlot_Click);
-      // 
-      // angularPlotControl1
-      // 
-      this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.DimGray;
-      this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
-      this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
-      this.angularPlotControl1.ChartSecondaryAxisColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-      this.angularPlotControl1.ChartTitle = null;
-      this.angularPlotControl1.Data = null;
-      this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-      this.angularPlotControl1.IncidentAngle = 0D;
-      this.angularPlotControl1.Location = new System.Drawing.Point(19, 108);
-      this.angularPlotControl1.Name = "angularPlotControl1";
-      this.angularPlotControl1.Size = new System.Drawing.Size(738, 362);
-      this.angularPlotControl1.TabIndex = 11;
-      this.angularPlotControl1.Text = "angularPlotControl1";
       // 
       // generate
       // 
@@ -347,11 +310,116 @@
       this.panel1.Size = new System.Drawing.Size(2, 73);
       this.panel1.TabIndex = 8;
       // 
+      // materialSignature
+      // 
+      this.materialSignature.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.materialSignature.Location = new System.Drawing.Point(12, 294);
+      this.materialSignature.Name = "materialSignature";
+      this.materialSignature.Size = new System.Drawing.Size(774, 13);
+      this.materialSignature.TabIndex = 12;
+      this.materialSignature.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      // 
+      // angularPlotControl1
+      // 
+      this.angularPlotControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.angularPlotControl1.ChartAxisColor = System.Drawing.Color.DimGray;
+      this.angularPlotControl1.ChartBackColor = System.Drawing.Color.White;
+      this.angularPlotControl1.ChartPlotColor = System.Drawing.Color.Blue;
+      this.angularPlotControl1.ChartSecondaryAxisColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+      this.angularPlotControl1.ChartTitle = null;
+      this.angularPlotControl1.Data = null;
+      this.angularPlotControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.76923F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+      this.angularPlotControl1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+      this.angularPlotControl1.IncidentAngle = 0D;
+      this.angularPlotControl1.Location = new System.Drawing.Point(12, 310);
+      this.angularPlotControl1.Name = "angularPlotControl1";
+      this.angularPlotControl1.Size = new System.Drawing.Size(774, 364);
+      this.angularPlotControl1.TabIndex = 13;
+      this.angularPlotControl1.Text = "angularPlotControl1";
+      // 
+      // groupBox3
+      // 
+      this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+      this.groupBox3.Controls.Add(this.label6);
+      this.groupBox3.Controls.Add(this.outAngleStep);
+      this.groupBox3.Controls.Add(this.batch);
+      this.groupBox3.Controls.Add(this.savePlot);
+      this.groupBox3.Location = new System.Drawing.Point(411, 185);
+      this.groupBox3.Name = "groupBox3";
+      this.groupBox3.Size = new System.Drawing.Size(375, 106);
+      this.groupBox3.TabIndex = 14;
+      this.groupBox3.TabStop = false;
+      this.groupBox3.Text = "Plot Saving";
+      // 
+      // label6
+      // 
+      this.label6.AutoSize = true;
+      this.label6.Location = new System.Drawing.Point(7, 50);
+      this.label6.Name = "label6";
+      this.label6.Size = new System.Drawing.Size(105, 13);
+      this.label6.TabIndex = 19;
+      this.label6.Text = "Outgoing angle step:";
+      // 
+      // outAngleStep
+      // 
+      this.outAngleStep.DecimalPlaces = 2;
+      this.outAngleStep.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+      this.outAngleStep.Location = new System.Drawing.Point(118, 48);
+      this.outAngleStep.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+      this.outAngleStep.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
+      this.outAngleStep.Name = "outAngleStep";
+      this.outAngleStep.Size = new System.Drawing.Size(103, 20);
+      this.outAngleStep.TabIndex = 18;
+      this.outAngleStep.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+      // 
+      // batch
+      // 
+      this.batch.Location = new System.Drawing.Point(118, 19);
+      this.batch.Name = "batch";
+      this.batch.Size = new System.Drawing.Size(103, 23);
+      this.batch.TabIndex = 17;
+      this.batch.Text = "Save batch";
+      this.batch.UseVisualStyleBackColor = true;
+      this.batch.Click += new System.EventHandler(this.batch_Click);
+      // 
+      // savePlot
+      // 
+      this.savePlot.Location = new System.Drawing.Point(9, 19);
+      this.savePlot.Name = "savePlot";
+      this.savePlot.Size = new System.Drawing.Size(103, 23);
+      this.savePlot.TabIndex = 16;
+      this.savePlot.Text = "Save current";
+      this.savePlot.UseVisualStyleBackColor = true;
+      this.savePlot.Click += new System.EventHandler(this.savePlot_Click);
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(798, 686);
+      this.Controls.Add(this.groupBox3);
+      this.Controls.Add(this.materialSignature);
+      this.Controls.Add(this.angularPlotControl1);
       this.Controls.Add(this.panel1);
       this.Controls.Add(this.pictureBox1);
       this.Controls.Add(this.groupBox2);
@@ -369,6 +437,9 @@
       ((System.ComponentModel.ISupportInitialize)(this.outgoingAngle)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.angleStep)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+      this.groupBox3.ResumeLayout(false);
+      this.groupBox3.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.outAngleStep)).EndInit();
       this.ResumeLayout(false);
 
     }
@@ -389,16 +460,20 @@
     private System.Windows.Forms.RadioButton brdfGen;
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.Button generate;
-    private AngularPlotControl angularPlotControl1;
     private System.Windows.Forms.Button getMaterials;
     private System.Windows.Forms.ComboBox materials;
     private System.Windows.Forms.BindingSource materialsSource;
-    private System.Windows.Forms.Button savePlot;
     private System.Windows.Forms.Timer timer;
-    private System.Windows.Forms.Label materialSignature;
     private System.Windows.Forms.Button precalcAll;
     private System.Windows.Forms.PictureBox pictureBox1;
     private System.Windows.Forms.Panel panel1;
+    private System.Windows.Forms.Label materialSignature;
+    private AngularPlotControl angularPlotControl1;
+    private System.Windows.Forms.GroupBox groupBox3;
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.NumericUpDown outAngleStep;
+    private System.Windows.Forms.Button batch;
+    private System.Windows.Forms.Button savePlot;
   }
 }
 

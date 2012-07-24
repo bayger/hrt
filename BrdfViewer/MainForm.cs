@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
@@ -42,7 +43,7 @@ namespace BrdfViewer
     private void getMaterials_Click(object sender, EventArgs e)
     {
       materialsSource.Clear();
-      var process = generateBrdf("--materials " + sceneFileName.Text);
+      var process = generateBrdf("--materials \"" + sceneFileName.Text+"\"");
       while (!process.StandardOutput.EndOfStream)
       {
         var line = process.StandardOutput.ReadLine();
@@ -63,7 +64,7 @@ namespace BrdfViewer
     private void generateData()
     {
       var data = new Dictionary<double, List<double>>();
-      var args = sceneFileName.Text + " \"" + materials.Text 
+      var args = "\"" +sceneFileName.Text + "\" \"" + materials.Text 
         + "\" -o "+outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) 
         + " -s "+angleStep.Value.ToString(CultureInfo.InvariantCulture);
       if (pdfGen.Checked)
@@ -100,8 +101,8 @@ namespace BrdfViewer
             else
               cells.Add(0);
           }
-          if (cells.Count > 1)
-            cells.Add(cells.Average() * Math.Cos(thetaI / 180 * Math.PI));
+//          if (cells.Count > 1)
+//            cells.Add(cells.Average() * Math.Cos(thetaI / 180 * Math.PI));
 
           data.Add(thetaI, cells);
         }
@@ -122,7 +123,8 @@ namespace BrdfViewer
       var item = materials.SelectedItem as MaterialItem;
       if (item != null)
       {
-        angularPlotControl1.SaveToWmf(item.Name + ",angle=" + outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) +
+        var name = escapeFilename(item.Name);
+        angularPlotControl1.SaveToWmf(name + ",angle=" + outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) +
                                       ".wmf");
       }
     }
@@ -171,6 +173,31 @@ namespace BrdfViewer
       };
 
       Process.Start(psi);
+    }
+
+    private string escapeFilename(string fileName)
+    {
+      return fileName.Replace("\\", "-").Replace("/", "-");
+    }
+
+    private void batch_Click(object sender, EventArgs e)
+    {
+      var item = materials.SelectedItem as MaterialItem;
+      if (item != null)
+      {
+        var name = escapeFilename(item.Name);
+        outgoingAngle.Value = 0;
+        for (Decimal angle = 0; angle <= 90; angle += outAngleStep.Value)
+        {
+          outgoingAngle.Value = angle;
+          var fn = name + ",angle=" +
+                   outgoingAngle.Value.ToString(CultureInfo.InvariantCulture) +
+                   ".wmf";
+          generateData();
+          angularPlotControl1.SaveToWmf(fn);
+          Application.DoEvents();
+        }
+      }
     }
   }
 }

@@ -242,7 +242,7 @@ namespace BrdfViewer
           g.DrawString(label, Font, brush, angle <= 90 ? ex : ex - labelSize.Width, ey - labelSize.Height);
         }
 
-        using (var pen = new Pen(Color.DarkCyan))
+        using (var pen = new Pen(Color.DarkCyan, 1))
         {
           var inRadians = (IncidentAngle + 90) / 180 * Math.PI;
           var ix = (float)(offsetX + size + Math.Cos(inRadians) * size);

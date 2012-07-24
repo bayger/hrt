@@ -187,7 +187,7 @@ namespace Hrt
         ? (F2 / Consts::Pi) * ((G*S*D)/(cos_theta_r*cos_theta_i))
         : 0;
       number rho_ud = (lightingType & LightingType::DiffuseOnly) != 0 
-        ? a[lambdaIndex] * cos_theta_i
+        ? a[lambdaIndex]// * cos_theta_i
         : 0;
 
       result.Values[lambdaIndex] = (rho_sp + rho_dd + rho_ud)
